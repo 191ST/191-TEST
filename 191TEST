@@ -9,11 +9,11 @@ ScreenGui.Parent = player:WaitForChild("PlayerGui")
 ScreenGui.Name = "TP_Hub_191"
 ScreenGui.ResetOnSpawn = false
 
--- Main Frame (DIPERBESAR)
+-- Main Frame
 local Frame = Instance.new("Frame")
 Frame.Parent = ScreenGui
-Frame.Size = UDim2.new(0,450,0,600)  -- Dari 300x450 jadi 450x600
-Frame.Position = UDim2.new(0.5,-225,0.5,-300)  -- Disesuaikan posisinya
+Frame.Size = UDim2.new(0,400,0,550)
+Frame.Position = UDim2.new(0.5,-200,0.5,-275)
 Frame.BackgroundColor3 = Color3.fromRGB(25,25,35)
 Frame.BackgroundTransparency = 0.1
 Frame.BorderSizePixel = 0
@@ -26,16 +26,10 @@ local Corner = Instance.new("UICorner")
 Corner.Parent = Frame
 Corner.CornerRadius = UDim.new(0,10)
 
--- Stroke
-local Stroke = Instance.new("UIStroke")
-Stroke.Parent = Frame
-Stroke.Color = Color3.fromRGB(45,45,55)
-Stroke.Thickness = 2
-
--- Title Bar (DIPERBESAR)
+-- Title Bar
 local TitleBar = Instance.new("Frame")
 TitleBar.Parent = Frame
-TitleBar.Size = UDim2.new(1,0,0,50)  -- Dari 40 jadi 50
+TitleBar.Size = UDim2.new(1,0,0,40)
 TitleBar.BackgroundColor3 = Color3.fromRGB(35,35,45)
 TitleBar.BorderSizePixel = 0
 
@@ -46,88 +40,88 @@ TitleCorner.CornerRadius = UDim.new(0,10)
 -- Title
 local Title = Instance.new("TextLabel")
 Title.Parent = TitleBar
-Title.Size = UDim2.new(1,-50,1,0)  -- Disesuaikan
-Title.Position = UDim2.new(0,15,0,0)
+Title.Size = UDim2.new(1,-40,1,0)
+Title.Position = UDim2.new(0,10,0,0)
 Title.BackgroundTransparency = 1
 Title.Text = "! 191 STORE !"
 Title.TextColor3 = Color3.fromRGB(255,255,255)
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 20  -- Dari 16 jadi 20
+Title.TextSize = 18
 
--- Minimize Button (DIPERBESAR)
+-- Minimize Button
 local MinBtn = Instance.new("TextButton")
 MinBtn.Parent = TitleBar
-MinBtn.Size = UDim2.new(0,35,0,35)  -- Dari 30x30 jadi 35x35
-MinBtn.Position = UDim2.new(1,-45,0,7.5)  -- Disesuaikan
+MinBtn.Size = UDim2.new(0,30,0,30)
+MinBtn.Position = UDim2.new(1,-35,0,5)
 MinBtn.BackgroundColor3 = Color3.fromRGB(60,60,70)
 MinBtn.Text = "−"
 MinBtn.TextColor3 = Color3.fromRGB(255,255,255)
-MinBtn.TextSize = 24  -- Dari 20 jadi 24
+MinBtn.TextSize = 20
 MinBtn.Font = Enum.Font.GothamBold
 
 local MinCorner = Instance.new("UICorner")
 MinCorner.Parent = MinBtn
 MinCorner.CornerRadius = UDim.new(0,8)
 
--- Tab Buttons (DIPERBESAR)
+-- Tab Buttons
 local TabFrame = Instance.new("Frame")
 TabFrame.Parent = Frame
-TabFrame.Size = UDim2.new(1,0,0,50)  -- Dari 40 jadi 50
-TabFrame.Position = UDim2.new(0,0,0,50)  -- Disesuaikan
+TabFrame.Size = UDim2.new(1,0,0,40)
+TabFrame.Position = UDim2.new(0,0,0,40)
 TabFrame.BackgroundColor3 = Color3.fromRGB(30,30,40)
 TabFrame.BorderSizePixel = 0
 
--- TP Tab Button (DIPERBESAR)
+-- TP Tab Button
 local TPTabBtn = Instance.new("TextButton")
 TPTabBtn.Parent = TabFrame
-TPTabBtn.Size = UDim2.new(0.33,-4,1,-10)  -- Disesuaikan
-TPTabBtn.Position = UDim2.new(0,5,0,5)
+TPTabBtn.Size = UDim2.new(0.33,-2,1,-8)
+TPTabBtn.Position = UDim2.new(0,4,0,4)
 TPTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
 TPTabBtn.Text = "🚀 TP"
 TPTabBtn.TextColor3 = Color3.fromRGB(255,255,255)
 TPTabBtn.Font = Enum.Font.GothamBold
-TPTabBtn.TextSize = 16  -- Dari 14 jadi 16
+TPTabBtn.TextSize = 14
 
 local TPTabCorner = Instance.new("UICorner")
 TPTabCorner.Parent = TPTabBtn
 TPTabCorner.CornerRadius = UDim.new(0,8)
 
--- MS Loop Tab Button (DIPERBESAR)
+-- MS Loop Tab Button
 local MSLoopTabBtn = Instance.new("TextButton")
 MSLoopTabBtn.Parent = TabFrame
-MSLoopTabBtn.Size = UDim2.new(0.33,-4,1,-10)
-MSLoopTabBtn.Position = UDim2.new(0.33,0,0,5)
+MSLoopTabBtn.Size = UDim2.new(0.33,-2,1,-8)
+MSLoopTabBtn.Position = UDim2.new(0.33,0,0,4)
 MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
 MSLoopTabBtn.Text = "🔄 MS LOOP"
 MSLoopTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
 MSLoopTabBtn.Font = Enum.Font.GothamBold
-MSLoopTabBtn.TextSize = 16
+MSLoopTabBtn.TextSize = 14
 
 local MSLoopTabCorner = Instance.new("UICorner")
 MSLoopTabCorner.Parent = MSLoopTabBtn
 MSLoopTabCorner.CornerRadius = UDim.new(0,8)
 
--- Auto Buy Tab Button (DIPERBESAR)
+-- Auto Buy Tab Button
 local AutoBuyTabBtn = Instance.new("TextButton")
 AutoBuyTabBtn.Parent = TabFrame
-AutoBuyTabBtn.Size = UDim2.new(0.34,-4,1,-10)
-AutoBuyTabBtn.Position = UDim2.new(0.66,0,0,5)
+AutoBuyTabBtn.Size = UDim2.new(0.34,-2,1,-8)
+AutoBuyTabBtn.Position = UDim2.new(0.66,0,0,4)
 AutoBuyTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
 AutoBuyTabBtn.Text = "💰 AUTO BUY"
 AutoBuyTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
 AutoBuyTabBtn.Font = Enum.Font.GothamBold
-AutoBuyTabBtn.TextSize = 16
+AutoBuyTabBtn.TextSize = 14
 
 local AutoBuyTabCorner = Instance.new("UICorner")
 AutoBuyTabCorner.Parent = AutoBuyTabBtn
 AutoBuyTabCorner.CornerRadius = UDim.new(0,8)
 
--- Content Container (DIPERBESAR)
+-- Content Container
 local Content = Instance.new("Frame")
 Content.Parent = Frame
-Content.Size = UDim2.new(1,0,1,-100)  -- Dari -80 jadi -100
-Content.Position = UDim2.new(0,0,0,100)  -- Dari 80 jadi 100
+Content.Size = UDim2.new(1,0,1,-80)
+Content.Position = UDim2.new(0,0,0,80)
 Content.BackgroundColor3 = Color3.fromRGB(25,25,35)
 Content.BorderSizePixel = 0
 Content.BackgroundTransparency = 0.1
@@ -136,38 +130,38 @@ local ContentCorner = Instance.new("UICorner")
 ContentCorner.Parent = Content
 ContentCorner.CornerRadius = UDim.new(0,10)
 
--- TP Tab Content (DIPERBESAR)
+-- TP Tab Content
 local TPContent = Instance.new("ScrollingFrame")
 TPContent.Parent = Content
 TPContent.Size = UDim2.new(1,0,1,0)
 TPContent.BackgroundTransparency = 1
 TPContent.Visible = true
-TPContent.ScrollBarThickness = 8  -- Dari 6 jadi 8
-TPContent.CanvasSize = UDim2.new(0,0,0,350)  -- Dari 250 jadi 350
+TPContent.ScrollBarThickness = 6
+TPContent.CanvasSize = UDim2.new(0,0,0,250)
 
--- MS Loop Tab Content (DIPERBESAR)
+-- MS Loop Tab Content
 local MSLoopContent = Instance.new("ScrollingFrame")
 MSLoopContent.Parent = Content
 MSLoopContent.Size = UDim2.new(1,0,1,0)
 MSLoopContent.BackgroundTransparency = 1
 MSLoopContent.Visible = false
-MSLoopContent.ScrollBarThickness = 8
-MSLoopContent.CanvasSize = UDim2.new(0,0,0,550)  -- Dari 400 jadi 550
+MSLoopContent.ScrollBarThickness = 6
+MSLoopContent.CanvasSize = UDim2.new(0,0,0,450)
 
--- Auto Buy Tab Content (DIPERBESAR)
+-- Auto Buy Tab Content
 local AutoBuyContent = Instance.new("ScrollingFrame")
 AutoBuyContent.Parent = Content
 AutoBuyContent.Size = UDim2.new(1,0,1,0)
 AutoBuyContent.BackgroundTransparency = 1
 AutoBuyContent.Visible = false
-AutoBuyContent.ScrollBarThickness = 8
-AutoBuyContent.CanvasSize = UDim2.new(0,0,0,400)  -- Dari 300 jadi 400
+AutoBuyContent.ScrollBarThickness = 6
+AutoBuyContent.CanvasSize = UDim2.new(0,0,0,300)
 
--- TP Buttons (DIPERBESAR)
+-- TP Buttons
 local BtnBahan = Instance.new("TextButton")
 BtnBahan.Parent = TPContent
-BtnBahan.Size = UDim2.new(1,-30,0,90)  -- Dari 70 jadi 90
-BtnBahan.Position = UDim2.new(0,15,0,25)  -- Disesuaikan
+BtnBahan.Size = UDim2.new(1,-20,0,70)
+BtnBahan.Position = UDim2.new(0,10,0,20)
 BtnBahan.BackgroundColor3 = Color3.fromRGB(50,50,70)
 BtnBahan.Text = ""
 BtnBahan.BorderSizePixel = 0
@@ -178,40 +172,40 @@ BtnBahanCorner.CornerRadius = UDim.new(0,8)
 
 local BahanIcon = Instance.new("TextLabel")
 BahanIcon.Parent = BtnBahan
-BahanIcon.Size = UDim2.new(0,60,1,0)  -- Dari 40 jadi 60
-BahanIcon.Position = UDim2.new(0,15,0,0)  -- Dari 10 jadi 15
+BahanIcon.Size = UDim2.new(0,40,1,0)
+BahanIcon.Position = UDim2.new(0,10,0,0)
 BahanIcon.BackgroundTransparency = 1
 BahanIcon.Text = "⚒️"
-BahanIcon.TextSize = 40  -- Dari 30 jadi 40
+BahanIcon.TextSize = 30
 BahanIcon.Font = Enum.Font.GothamBold
 BahanIcon.TextColor3 = Color3.fromRGB(255,255,255)
 
 local BahanText = Instance.new("TextLabel")
 BahanText.Parent = BtnBahan
-BahanText.Size = UDim2.new(1,-90,0,40)  -- Disesuaikan
-BahanText.Position = UDim2.new(0,75,0,15)  -- Dari 50,10 jadi 75,15
+BahanText.Size = UDim2.new(1,-60,0,30)
+BahanText.Position = UDim2.new(0,50,0,10)
 BahanText.BackgroundTransparency = 1
 BahanText.Text = "TP MS BAHAN"
 BahanText.TextColor3 = Color3.fromRGB(255,255,255)
 BahanText.TextXAlignment = Enum.TextXAlignment.Left
 BahanText.Font = Enum.Font.GothamBold
-BahanText.TextSize = 20  -- Dari 16 jadi 20
+BahanText.TextSize = 16
 
 local BahanDesc = Instance.new("TextLabel")
 BahanDesc.Parent = BtnBahan
-BahanDesc.Size = UDim2.new(1,-90,0,25)  -- Disesuaikan
-BahanDesc.Position = UDim2.new(0,75,0,45)  -- Dari 35 jadi 45
+BahanDesc.Size = UDim2.new(1,-60,0,20)
+BahanDesc.Position = UDim2.new(0,50,0,35)
 BahanDesc.BackgroundTransparency = 1
 BahanDesc.Text = "Material Storage"
 BahanDesc.TextColor3 = Color3.fromRGB(180,180,180)
 BahanDesc.TextXAlignment = Enum.TextXAlignment.Left
 BahanDesc.Font = Enum.Font.Gotham
-BahanDesc.TextSize = 14  -- Dari 12 jadi 14
+BahanDesc.TextSize = 12
 
 local BtnRS = Instance.new("TextButton")
 BtnRS.Parent = TPContent
-BtnRS.Size = UDim2.new(1,-30,0,90)
-BtnRS.Position = UDim2.new(0,15,0,130)  -- Dari 100 jadi 130
+BtnRS.Size = UDim2.new(1,-20,0,70)
+BtnRS.Position = UDim2.new(0,10,0,100)
 BtnRS.BackgroundColor3 = Color3.fromRGB(70,50,50)
 BtnRS.Text = ""
 BtnRS.BorderSizePixel = 0
@@ -222,57 +216,57 @@ BtnRSCorner.CornerRadius = UDim.new(0,8)
 
 local RSIcon = Instance.new("TextLabel")
 RSIcon.Parent = BtnRS
-RSIcon.Size = UDim2.new(0,60,1,0)
-RSIcon.Position = UDim2.new(0,15,0,0)
+RSIcon.Size = UDim2.new(0,40,1,0)
+RSIcon.Position = UDim2.new(0,10,0,0)
 RSIcon.BackgroundTransparency = 1
 RSIcon.Text = "🏥"
-RSIcon.TextSize = 40
+RSIcon.TextSize = 30
 RSIcon.Font = Enum.Font.GothamBold
 RSIcon.TextColor3 = Color3.fromRGB(255,255,255)
 
 local RSText = Instance.new("TextLabel")
 RSText.Parent = BtnRS
-RSText.Size = UDim2.new(1,-90,0,40)
-RSText.Position = UDim2.new(0,75,0,15)
+RSText.Size = UDim2.new(1,-60,0,30)
+RSText.Position = UDim2.new(0,50,0,10)
 RSText.BackgroundTransparency = 1
 RSText.Text = "TP RS"
 RSText.TextColor3 = Color3.fromRGB(255,255,255)
 RSText.TextXAlignment = Enum.TextXAlignment.Left
 RSText.Font = Enum.Font.GothamBold
-RSText.TextSize = 20
+RSText.TextSize = 16
 
 local RSDesc = Instance.new("TextLabel")
 RSDesc.Parent = BtnRS
-RSDesc.Size = UDim2.new(1,-90,0,25)
-RSDesc.Position = UDim2.new(0,75,0,45)
+RSDesc.Size = UDim2.new(1,-60,0,20)
+RSDesc.Position = UDim2.new(0,50,0,35)
 RSDesc.BackgroundTransparency = 1
 RSDesc.Text = "Hospital"
 RSDesc.TextColor3 = Color3.fromRGB(180,180,180)
 RSDesc.TextXAlignment = Enum.TextXAlignment.Left
 RSDesc.Font = Enum.Font.Gotham
-RSDesc.TextSize = 14
+RSDesc.TextSize = 12
 
--- MS LOOP CONTENT (DIPERBESAR SEMUA)
+-- MS LOOP CONTENT (SEDERHANA)
 local MSLoopTitle = Instance.new("TextLabel")
 MSLoopTitle.Parent = MSLoopContent
-MSLoopTitle.Size = UDim2.new(1,-30,0,40)  -- Dari 30 jadi 40
-MSLoopTitle.Position = UDim2.new(0,15,0,15)  -- Dari 10 jadi 15
+MSLoopTitle.Size = UDim2.new(1,-20,0,30)
+MSLoopTitle.Position = UDim2.new(0,10,0,10)
 MSLoopTitle.BackgroundTransparency = 1
-MSLoopTitle.Text = "🔄 MATERIAL STORAGE LOOP (AUTO EQUIP)"
+MSLoopTitle.Text = "🔄 MATERIAL STORAGE LOOP"
 MSLoopTitle.TextColor3 = Color3.fromRGB(100,255,100)
 MSLoopTitle.TextXAlignment = Enum.TextXAlignment.Left
 MSLoopTitle.Font = Enum.Font.GothamBold
-MSLoopTitle.TextSize = 18  -- Dari 16 jadi 18
+MSLoopTitle.TextSize = 16
 
 local MSLoopStatus = Instance.new("TextLabel")
 MSLoopStatus.Parent = MSLoopContent
-MSLoopStatus.Size = UDim2.new(1,-30,0,40)  -- Dari 30 jadi 40
-MSLoopStatus.Position = UDim2.new(0,15,0,60)  -- Dari 45 jadi 60
+MSLoopStatus.Size = UDim2.new(1,-20,0,30)
+MSLoopStatus.Position = UDim2.new(0,10,0,45)
 MSLoopStatus.BackgroundColor3 = Color3.fromRGB(40,40,50)
 MSLoopStatus.Text = "⏹️ LOOP STOPPED"
 MSLoopStatus.TextColor3 = Color3.fromRGB(255,100,100)
 MSLoopStatus.Font = Enum.Font.GothamBold
-MSLoopStatus.TextSize = 16  -- Dari 14 jadi 16
+MSLoopStatus.TextSize = 14
 
 local MSLoopStatusCorner = Instance.new("UICorner")
 MSLoopStatusCorner.Parent = MSLoopStatus
@@ -280,36 +274,36 @@ MSLoopStatusCorner.CornerRadius = UDim.new(0,8)
 
 local MSLoopStepLabel = Instance.new("TextLabel")
 MSLoopStepLabel.Parent = MSLoopContent
-MSLoopStepLabel.Size = UDim2.new(1,-30,0,30)  -- Dari 25 jadi 30
-MSLoopStepLabel.Position = UDim2.new(0,15,0,110)  -- Dari 85 jadi 110
+MSLoopStepLabel.Size = UDim2.new(1,-20,0,25)
+MSLoopStepLabel.Position = UDim2.new(0,10,0,85)
 MSLoopStepLabel.BackgroundTransparency = 1
 MSLoopStepLabel.Text = "Current Step: Waiting..."
 MSLoopStepLabel.TextColor3 = Color3.fromRGB(200,200,200)
 MSLoopStepLabel.TextXAlignment = Enum.TextXAlignment.Left
 MSLoopStepLabel.Font = Enum.Font.Gotham
-MSLoopStepLabel.TextSize = 15  -- Dari 13 jadi 15
+MSLoopStepLabel.TextSize = 13
 
 local MSLoopTimer = Instance.new("TextLabel")
 MSLoopTimer.Parent = MSLoopContent
-MSLoopTimer.Size = UDim2.new(1,-30,0,30)
-MSLoopTimer.Position = UDim2.new(0,15,0,140)  -- Dari 110 jadi 140
+MSLoopTimer.Size = UDim2.new(1,-20,0,25)
+MSLoopTimer.Position = UDim2.new(0,10,0,110)
 MSLoopTimer.BackgroundTransparency = 1
 MSLoopTimer.Text = "Timer: 0s"
 MSLoopTimer.TextColor3 = Color3.fromRGB(200,200,200)
 MSLoopTimer.TextXAlignment = Enum.TextXAlignment.Left
 MSLoopTimer.Font = Enum.Font.Gotham
-MSLoopTimer.TextSize = 15
+MSLoopTimer.TextSize = 13
 
--- Tool Selection Buttons (DIPERBESAR)
+-- Tool Selection Buttons
 local SelectWaterBtn = Instance.new("TextButton")
 SelectWaterBtn.Parent = MSLoopContent
-SelectWaterBtn.Size = UDim2.new(1,-30,0,45)  -- Dari 35 jadi 45
-SelectWaterBtn.Position = UDim2.new(0,15,0,185)  -- Dari 145 jadi 185
+SelectWaterBtn.Size = UDim2.new(1,-20,0,35)
+SelectWaterBtn.Position = UDim2.new(0,10,0,145)
 SelectWaterBtn.BackgroundColor3 = Color3.fromRGB(0,100,200)
-SelectWaterBtn.Text = "💧 1. SELECT WATER TOOL"
+SelectWaterBtn.Text = "💧 PILIH WATER TOOL"
 SelectWaterBtn.TextColor3 = Color3.fromRGB(255,255,255)
 SelectWaterBtn.Font = Enum.Font.GothamBold
-SelectWaterBtn.TextSize = 15  -- Dari 13 jadi 15
+SelectWaterBtn.TextSize = 13
 
 local SelectWaterCorner = Instance.new("UICorner")
 SelectWaterCorner.Parent = SelectWaterBtn
@@ -317,13 +311,13 @@ SelectWaterCorner.CornerRadius = UDim.new(0,6)
 
 local SelectSugarBtn = Instance.new("TextButton")
 SelectSugarBtn.Parent = MSLoopContent
-SelectSugarBtn.Size = UDim2.new(1,-30,0,45)
-SelectSugarBtn.Position = UDim2.new(0,15,0,235)  -- Dari 185 jadi 235
+SelectSugarBtn.Size = UDim2.new(1,-20,0,35)
+SelectSugarBtn.Position = UDim2.new(0,10,0,185)
 SelectSugarBtn.BackgroundColor3 = Color3.fromRGB(200,100,0)
-SelectSugarBtn.Text = "🍬 2. SELECT SUGAR TOOL"
+SelectSugarBtn.Text = "🍬 PILIH SUGAR TOOL"
 SelectSugarBtn.TextColor3 = Color3.fromRGB(255,255,255)
 SelectSugarBtn.Font = Enum.Font.GothamBold
-SelectSugarBtn.TextSize = 15
+SelectSugarBtn.TextSize = 13
 
 local SelectSugarCorner = Instance.new("UICorner")
 SelectSugarCorner.Parent = SelectSugarBtn
@@ -331,13 +325,13 @@ SelectSugarCorner.CornerRadius = UDim.new(0,6)
 
 local SelectGelatinBtn = Instance.new("TextButton")
 SelectGelatinBtn.Parent = MSLoopContent
-SelectGelatinBtn.Size = UDim2.new(1,-30,0,45)
-SelectGelatinBtn.Position = UDim2.new(0,15,0,285)  -- Dari 225 jadi 285
+SelectGelatinBtn.Size = UDim2.new(1,-20,0,35)
+SelectGelatinBtn.Position = UDim2.new(0,10,0,225)
 SelectGelatinBtn.BackgroundColor3 = Color3.fromRGB(200,0,200)
-SelectGelatinBtn.Text = "🧪 3. SELECT GELATIN TOOL"
+SelectGelatinBtn.Text = "🧪 PILIH GELATIN TOOL"
 SelectGelatinBtn.TextColor3 = Color3.fromRGB(255,255,255)
 SelectGelatinBtn.Font = Enum.Font.GothamBold
-SelectGelatinBtn.TextSize = 15
+SelectGelatinBtn.TextSize = 13
 
 local SelectGelatinCorner = Instance.new("UICorner")
 SelectGelatinCorner.Parent = SelectGelatinBtn
@@ -345,73 +339,72 @@ SelectGelatinCorner.CornerRadius = UDim.new(0,6)
 
 local SelectBagBtn = Instance.new("TextButton")
 SelectBagBtn.Parent = MSLoopContent
-SelectBagBtn.Size = UDim2.new(1,-30,0,45)
-SelectBagBtn.Position = UDim2.new(0,15,0,335)  -- Dari 265 jadi 335
+SelectBagBtn.Size = UDim2.new(1,-20,0,35)
+SelectBagBtn.Position = UDim2.new(0,10,0,265)
 SelectBagBtn.BackgroundColor3 = Color3.fromRGB(100,100,100)
-SelectBagBtn.Text = "👜 4. SELECT EMPTY BAG TOOL"
+SelectBagBtn.Text = "👜 PILIH BAG TOOL"
 SelectBagBtn.TextColor3 = Color3.fromRGB(255,255,255)
 SelectBagBtn.Font = Enum.Font.GothamBold
-SelectBagBtn.TextSize = 15
+SelectBagBtn.TextSize = 13
 
 local SelectBagCorner = Instance.new("UICorner")
 SelectBagCorner.Parent = SelectBagBtn
 SelectBagCorner.CornerRadius = UDim.new(0,6)
 
--- Status Tool Terpilih (DIPERBESAR dan dipindah)
+-- Status Label
 local WaterStatus = Instance.new("TextLabel")
 WaterStatus.Parent = MSLoopContent
-WaterStatus.Size = UDim2.new(1,-60,0,25)  -- Dari 20 jadi 25
-WaterStatus.Position = UDim2.new(0,30,0,225)  -- Disesuaikan
+WaterStatus.Size = UDim2.new(1,-40,0,20)
+WaterStatus.Position = UDim2.new(0,20,0,180)
 WaterStatus.BackgroundTransparency = 1
-WaterStatus.Text = "❌ Not selected"
+WaterStatus.Text = "❌"
 WaterStatus.TextColor3 = Color3.fromRGB(255,100,100)
 WaterStatus.TextXAlignment = Enum.TextXAlignment.Right
 WaterStatus.Font = Enum.Font.Gotham
-WaterStatus.TextSize = 13  -- Dari 11 jadi 13
+WaterStatus.TextSize = 12
 
 local SugarStatus = Instance.new("TextLabel")
 SugarStatus.Parent = MSLoopContent
-SugarStatus.Size = UDim2.new(1,-60,0,25)
-SugarStatus.Position = UDim2.new(0,30,0,275)
+SugarStatus.Size = UDim2.new(1,-40,0,20)
+SugarStatus.Position = UDim2.new(0,20,0,220)
 SugarStatus.BackgroundTransparency = 1
-SugarStatus.Text = "❌ Not selected"
+SugarStatus.Text = "❌"
 SugarStatus.TextColor3 = Color3.fromRGB(255,100,100)
 SugarStatus.TextXAlignment = Enum.TextXAlignment.Right
 SugarStatus.Font = Enum.Font.Gotham
-SugarStatus.TextSize = 13
+SugarStatus.TextSize = 12
 
 local GelatinStatus = Instance.new("TextLabel")
 GelatinStatus.Parent = MSLoopContent
-GelatinStatus.Size = UDim2.new(1,-60,0,25)
-GelatinStatus.Position = UDim2.new(0,30,0,325)
+GelatinStatus.Size = UDim2.new(1,-40,0,20)
+GelatinStatus.Position = UDim2.new(0,20,0,260)
 GelatinStatus.BackgroundTransparency = 1
-GelatinStatus.Text = "❌ Not selected"
+GelatinStatus.Text = "❌"
 GelatinStatus.TextColor3 = Color3.fromRGB(255,100,100)
 GelatinStatus.TextXAlignment = Enum.TextXAlignment.Right
 GelatinStatus.Font = Enum.Font.Gotham
-GelatinStatus.TextSize = 13
+GelatinStatus.TextSize = 12
 
 local BagStatus = Instance.new("TextLabel")
 BagStatus.Parent = MSLoopContent
-BagStatus.Size = UDim2.new(1,-60,0,25)
-BagStatus.Position = UDim2.new(0,30,0,375)
+BagStatus.Size = UDim2.new(1,-40,0,20)
+BagStatus.Position = UDim2.new(0,20,0,300)
 BagStatus.BackgroundTransparency = 1
-BagStatus.Text = "❌ Not selected"
+BagStatus.Text = "❌"
 BagStatus.TextColor3 = Color3.fromRGB(255,100,100)
 BagStatus.TextXAlignment = Enum.TextXAlignment.Right
 BagStatus.Font = Enum.Font.Gotham
-BagStatus.TextSize = 13
+BagStatus.TextSize = 12
 
--- Start/Stop Buttons (DIPERBESAR)
 local MSLoopStartBtn = Instance.new("TextButton")
 MSLoopStartBtn.Parent = MSLoopContent
-MSLoopStartBtn.Size = UDim2.new(0.5,-20,0,50)  -- Dari 40 jadi 50
-MSLoopStartBtn.Position = UDim2.new(0,15,0,420)  -- Dari 315 jadi 420
+MSLoopStartBtn.Size = UDim2.new(0.5,-15,0,40)
+MSLoopStartBtn.Position = UDim2.new(0,10,0,320)
 MSLoopStartBtn.BackgroundColor3 = Color3.fromRGB(50,150,50)
 MSLoopStartBtn.Text = "▶️ START LOOP"
 MSLoopStartBtn.TextColor3 = Color3.fromRGB(255,255,255)
 MSLoopStartBtn.Font = Enum.Font.GothamBold
-MSLoopStartBtn.TextSize = 16  -- Dari 14 jadi 16
+MSLoopStartBtn.TextSize = 14
 
 local MSLoopStartCorner = Instance.new("UICorner")
 MSLoopStartCorner.Parent = MSLoopStartBtn
@@ -419,35 +412,35 @@ MSLoopStartCorner.CornerRadius = UDim.new(0,8)
 
 local MSLoopStopBtn = Instance.new("TextButton")
 MSLoopStopBtn.Parent = MSLoopContent
-MSLoopStopBtn.Size = UDim2.new(0.5,-20,0,50)
-MSLoopStopBtn.Position = UDim2.new(0.5,5,0,420)
+MSLoopStopBtn.Size = UDim2.new(0.5,-15,0,40)
+MSLoopStopBtn.Position = UDim2.new(0.5,5,0,320)
 MSLoopStopBtn.BackgroundColor3 = Color3.fromRGB(150,50,50)
 MSLoopStopBtn.Text = "⏹️ STOP LOOP"
 MSLoopStopBtn.TextColor3 = Color3.fromRGB(255,255,255)
 MSLoopStopBtn.Font = Enum.Font.GothamBold
-MSLoopStopBtn.TextSize = 16
+MSLoopStopBtn.TextSize = 14
 
 local MSLoopStopCorner = Instance.new("UICorner")
 MSLoopStopCorner.Parent = MSLoopStopBtn
 MSLoopStopCorner.CornerRadius = UDim.new(0,8)
 
--- AUTO BUY CONTENT (DIPERBESAR)
+-- AUTO BUY CONTENT
 local AutoBuyTitle = Instance.new("TextLabel")
 AutoBuyTitle.Parent = AutoBuyContent
-AutoBuyTitle.Size = UDim2.new(1,-30,0,40)
-AutoBuyTitle.Position = UDim2.new(0,15,0,15)
+AutoBuyTitle.Size = UDim2.new(1,-20,0,30)
+AutoBuyTitle.Position = UDim2.new(0,10,0,10)
 AutoBuyTitle.BackgroundTransparency = 1
 AutoBuyTitle.Text = "💰 AUTO BUY MATERIALS"
 AutoBuyTitle.TextColor3 = Color3.fromRGB(255,200,100)
 AutoBuyTitle.TextXAlignment = Enum.TextXAlignment.Left
 AutoBuyTitle.Font = Enum.Font.GothamBold
-AutoBuyTitle.TextSize = 18
+AutoBuyTitle.TextSize = 16
 
--- Slider Background (DIPERBESAR)
+-- Slider Background
 local SliderBg = Instance.new("Frame")
 SliderBg.Parent = AutoBuyContent
-SliderBg.Size = UDim2.new(1,-60,0,60)  -- Dari 50 jadi 60
-SliderBg.Position = UDim2.new(0,30,0,65)  -- Dari 20,50 jadi 30,65
+SliderBg.Size = UDim2.new(1,-40,0,50)
+SliderBg.Position = UDim2.new(0,20,0,50)
 SliderBg.BackgroundColor3 = Color3.fromRGB(40,40,50)
 SliderBg.BorderSizePixel = 0
 
@@ -466,11 +459,11 @@ local SliderFillCorner = Instance.new("UICorner")
 SliderFillCorner.Parent = SliderFill
 SliderFillCorner.CornerRadius = UDim.new(0,8)
 
--- Slider Button (DIPERBESAR)
+-- Slider Button
 local SliderButton = Instance.new("TextButton")
 SliderButton.Parent = SliderBg
-SliderButton.Size = UDim2.new(0,25,0,25)  -- Dari 20 jadi 25
-SliderButton.Position = UDim2.new(0.5,-12.5,0.5,-12.5)  -- Disesuaikan
+SliderButton.Size = UDim2.new(0,20,0,20)
+SliderButton.Position = UDim2.new(0.5,-10,0.5,-10)
 SliderButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
 SliderButton.Text = ""
 SliderButton.ZIndex = 2
@@ -479,55 +472,55 @@ local SliderButtonCorner = Instance.new("UICorner")
 SliderButtonCorner.Parent = SliderButton
 SliderButtonCorner.CornerRadius = UDim.new(1,0)
 
--- Slider Value Label (DIPERBESAR)
+-- Slider Value Label
 local SliderValue = Instance.new("TextLabel")
 SliderValue.Parent = AutoBuyContent
-SliderValue.Size = UDim2.new(1,-60,0,30)  -- Dari 25 jadi 30
-SliderValue.Position = UDim2.new(0,30,0,135)  -- Dari 20,105 jadi 30,135
+SliderValue.Size = UDim2.new(1,-40,0,25)
+SliderValue.Position = UDim2.new(0,20,0,105)
 SliderValue.BackgroundTransparency = 1
-SliderValue.Text = "Target Amount: 50"
+SliderValue.Text = "Target: 50"
 SliderValue.TextColor3 = Color3.fromRGB(255,255,255)
 SliderValue.TextXAlignment = Enum.TextXAlignment.Left
 SliderValue.Font = Enum.Font.GothamBold
-SliderValue.TextSize = 16  -- Dari 14 jadi 16
+SliderValue.TextSize = 14
 
--- Auto Buy Status (DIPERBESAR)
+-- Auto Buy Status
 local AutoBuyStatus = Instance.new("TextLabel")
 AutoBuyStatus.Parent = AutoBuyContent
-AutoBuyStatus.Size = UDim2.new(1,-30,0,40)  -- Dari 30 jadi 40
-AutoBuyStatus.Position = UDim2.new(0,15,0,180)  -- Dari 140 jadi 180
+AutoBuyStatus.Size = UDim2.new(1,-20,0,30)
+AutoBuyStatus.Position = UDim2.new(0,10,0,140)
 AutoBuyStatus.BackgroundColor3 = Color3.fromRGB(40,40,50)
-AutoBuyStatus.Text = "⏹️ AUTO BUY STOPPED"
+AutoBuyStatus.Text = "⏹️ STOPPED"
 AutoBuyStatus.TextColor3 = Color3.fromRGB(255,100,100)
 AutoBuyStatus.Font = Enum.Font.GothamBold
-AutoBuyStatus.TextSize = 16
+AutoBuyStatus.TextSize = 14
 
 local AutoBuyStatusCorner = Instance.new("UICorner")
 AutoBuyStatusCorner.Parent = AutoBuyStatus
 AutoBuyStatusCorner.CornerRadius = UDim.new(0,8)
 
--- Auto Buy Progress (DIPERBESAR)
+-- Auto Buy Progress
 local AutoBuyProgress = Instance.new("TextLabel")
 AutoBuyProgress.Parent = AutoBuyContent
-AutoBuyProgress.Size = UDim2.new(1,-30,0,30)  -- Dari 25 jadi 30
-AutoBuyProgress.Position = UDim2.new(0,15,0,225)  -- Dari 175 jadi 225
+AutoBuyProgress.Size = UDim2.new(1,-20,0,25)
+AutoBuyProgress.Position = UDim2.new(0,10,0,175)
 AutoBuyProgress.BackgroundTransparency = 1
 AutoBuyProgress.Text = "Progress: 0/50"
 AutoBuyProgress.TextColor3 = Color3.fromRGB(200,200,200)
 AutoBuyProgress.TextXAlignment = Enum.TextXAlignment.Left
 AutoBuyProgress.Font = Enum.Font.Gotham
-AutoBuyProgress.TextSize = 15  -- Dari 13 jadi 15
+AutoBuyProgress.TextSize = 13
 
--- Auto Buy Button (DIPERBESAR)
+-- Auto Buy Button
 local AutoBuyBtn = Instance.new("TextButton")
 AutoBuyBtn.Parent = AutoBuyContent
-AutoBuyBtn.Size = UDim2.new(0.5,-20,0,50)  -- Dari 40 jadi 50
-AutoBuyBtn.Position = UDim2.new(0.25,0,0,270)  -- Dari 210 jadi 270
+AutoBuyBtn.Size = UDim2.new(0.5,-15,0,40)
+AutoBuyBtn.Position = UDim2.new(0.25,0,0,210)
 AutoBuyBtn.BackgroundColor3 = Color3.fromRGB(50,150,50)
-AutoBuyBtn.Text = "💰 START AUTO BUY"
+AutoBuyBtn.Text = "💰 START"
 AutoBuyBtn.TextColor3 = Color3.fromRGB(255,255,255)
 AutoBuyBtn.Font = Enum.Font.GothamBold
-AutoBuyBtn.TextSize = 16
+AutoBuyBtn.TextSize = 14
 
 local AutoBuyBtnCorner = Instance.new("UICorner")
 AutoBuyBtnCorner.Parent = AutoBuyBtn
@@ -538,51 +531,34 @@ local loopRunning = false
 local autoBuyRunning = false
 local targetAmount = 50
 local currentBuyCount = 0
-
--- Tool Variables
 local waterTool = nil
 local sugarTool = nil
 local gelatinTool = nil
 local bagTool = nil
 
--- Function to find tool by name
-function findTool(namePattern)
+-- Simple Functions
+function findTool(name)
     if not player.Character then return nil end
-    
-    -- Cek di tangan dulu
-    local character = player.Character
-    for _, child in pairs(character:GetChildren()) do
-        if child:IsA("Tool") and string.find(string.lower(child.Name), string.lower(namePattern)) then
-            return child
+    for _, tool in pairs(player.Character:GetChildren()) do
+        if tool:IsA("Tool") and string.find(string.lower(tool.Name), name) then
+            return tool
         end
     end
-    
-    -- Cek di backpack
     local backpack = player:FindFirstChild("Backpack")
     if backpack then
-        for _, child in pairs(backpack:GetChildren()) do
-            if child:IsA("Tool") and string.find(string.lower(child.Name), string.lower(namePattern)) then
-                return child
+        for _, tool in pairs(backpack:GetChildren()) do
+            if tool:IsA("Tool") and string.find(string.lower(tool.Name), name) then
+                return tool
             end
         end
     end
-    
     return nil
 end
 
--- Function to equip tool
 function equipTool(tool)
-    if not tool then return false end
-    if not player.Character then return false end
-    
-    -- Kalo tool sudah di tangan
-    if tool.Parent == player.Character then
-        return true
-    end
-    
-    -- Kalo tool di backpack
+    if not tool or not player.Character then return false end
+    if tool.Parent == player.Character then return true end
     if tool.Parent == player:FindFirstChild("Backpack") then
-        -- Coba equip pake humanoid
         local humanoid = player.Character:FindFirstChild("Humanoid")
         if humanoid then
             humanoid:EquipTool(tool)
@@ -590,84 +566,23 @@ function equipTool(tool)
             return tool.Parent == player.Character
         end
     end
-    
     return false
 end
 
--- Function to press E
 function pressE()
     VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
     task.wait(0.1)
     VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
 end
 
--- Function to wait with timer
-function waitWithTimer(seconds, stepName)
-    local startTime = tick()
-    while loopRunning and (tick() - startTime) < seconds do
-        local remaining = seconds - (tick() - startTime)
-        MSLoopTimer.Text = string.format("Timer: %d/%ds - %s", math.floor(seconds - remaining), seconds, stepName)
+function waitWithTimer(sec, step)
+    local start = tick()
+    while loopRunning and (tick() - start) < sec do
+        local remaining = sec - (tick() - start)
+        MSLoopTimer.Text = string.format("Timer: %d/%ds - %s", math.floor(sec - remaining), sec, step)
         task.wait(0.1)
     end
-    MSLoopTimer.Text = string.format("Timer: %d/%ds - %s Complete!", seconds, seconds, stepName)
 end
-
--- Tool Selection Functions
-SelectWaterBtn.MouseButton1Click:Connect(function()
-    waterTool = findTool("water")
-    if waterTool then
-        WaterStatus.Text = "✅ Selected: " .. waterTool.Name
-        WaterStatus.TextColor3 = Color3.fromRGB(100,255,100)
-        SelectWaterBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
-        task.wait(0.3)
-        SelectWaterBtn.BackgroundColor3 = Color3.fromRGB(0,100,200)
-    else
-        WaterStatus.Text = "❌ Tool not found!"
-        WaterStatus.TextColor3 = Color3.fromRGB(255,100,100)
-    end
-end)
-
-SelectSugarBtn.MouseButton1Click:Connect(function()
-    sugarTool = findTool("sugar")
-    if sugarTool then
-        SugarStatus.Text = "✅ Selected: " .. sugarTool.Name
-        SugarStatus.TextColor3 = Color3.fromRGB(100,255,100)
-        SelectSugarBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
-        task.wait(0.3)
-        SelectSugarBtn.BackgroundColor3 = Color3.fromRGB(200,100,0)
-    else
-        SugarStatus.Text = "❌ Tool not found!"
-        SugarStatus.TextColor3 = Color3.fromRGB(255,100,100)
-    end
-end)
-
-SelectGelatinBtn.MouseButton1Click:Connect(function()
-    gelatinTool = findTool("gelatin")
-    if gelatinTool then
-        GelatinStatus.Text = "✅ Selected: " .. gelatinTool.Name
-        GelatinStatus.TextColor3 = Color3.fromRGB(100,255,100)
-        SelectGelatinBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
-        task.wait(0.3)
-        SelectGelatinBtn.BackgroundColor3 = Color3.fromRGB(200,0,200)
-    else
-        GelatinStatus.Text = "❌ Tool not found!"
-        GelatinStatus.TextColor3 = Color3.fromRGB(255,100,100)
-    end
-end)
-
-SelectBagBtn.MouseButton1Click:Connect(function()
-    bagTool = findTool("bag") or findTool("empty")
-    if bagTool then
-        BagStatus.Text = "✅ Selected: " .. bagTool.Name
-        BagStatus.TextColor3 = Color3.fromRGB(100,255,100)
-        SelectBagBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
-        task.wait(0.3)
-        SelectBagBtn.BackgroundColor3 = Color3.fromRGB(100,100,100)
-    else
-        BagStatus.Text = "❌ Tool not found!"
-        BagStatus.TextColor3 = Color3.fromRGB(255,100,100)
-    end
-end)
 
 -- TP Functions
 function TP_MS_BAHAN()
@@ -682,177 +597,137 @@ function TP_RS()
     end
 end
 
--- MAIN LOOP FUNCTION (AUTO EQUIP + PRESS E + COOLDOWN)
+-- Tool Selection
+SelectWaterBtn.MouseButton1Click:Connect(function()
+    waterTool = findTool("water")
+    WaterStatus.Text = waterTool and "✅" or "❌"
+    WaterStatus.TextColor3 = waterTool and Color3.fromRGB(100,255,100) or Color3.fromRGB(255,100,100)
+end)
+
+SelectSugarBtn.MouseButton1Click:Connect(function()
+    sugarTool = findTool("sugar")
+    SugarStatus.Text = sugarTool and "✅" or "❌"
+    SugarStatus.TextColor3 = sugarTool and Color3.fromRGB(100,255,100) or Color3.fromRGB(255,100,100)
+end)
+
+SelectGelatinBtn.MouseButton1Click:Connect(function()
+    gelatinTool = findTool("gelatin")
+    GelatinStatus.Text = gelatinTool and "✅" or "❌"
+    GelatinStatus.TextColor3 = gelatinTool and Color3.fromRGB(100,255,100) or Color3.fromRGB(255,100,100)
+end)
+
+SelectBagBtn.MouseButton1Click:Connect(function()
+    bagTool = findTool("bag") or findTool("empty")
+    BagStatus.Text = bagTool and "✅" or "❌"
+    BagStatus.TextColor3 = bagTool and Color3.fromRGB(100,255,100) or Color3.fromRGB(255,100,100)
+end)
+
+-- Main Loop
 function startMSLoop()
     if loopRunning then return end
-    
-    -- Validasi semua tool sudah dipilih
     if not waterTool or not sugarTool or not gelatinTool or not bagTool then
-        MSLoopStepLabel.Text = "Error: Pilih semua tools dulu!"
+        MSLoopStepLabel.Text = "Pilih semua tools dulu!"
         return
     end
     
     loopRunning = true
-    MSLoopStatus.Text = "▶️ LOOP RUNNING"
+    MSLoopStatus.Text = "▶️ RUNNING"
     MSLoopStatus.TextColor3 = Color3.fromRGB(100,255,100)
     
     while loopRunning do
-        -- STEP 1: WATER TOOL
-        if not loopRunning then break end
-        MSLoopStepLabel.Text = "Step 1: Equip WATER tool..."
+        -- Water
+        MSLoopStepLabel.Text = "Step 1: WATER - 20s"
         if equipTool(waterTool) then
-            MSLoopStepLabel.Text = "Step 1: Pressing E - Cooldown 20s"
             pressE()
             waitWithTimer(20, "WATER")
-        else
-            MSLoopStepLabel.Text = "ERROR: Cannot equip WATER tool!"
-            break
-        end
+        else break end
+        task.wait(0.2)
         
-        task.wait(0.3)
-        if not loopRunning then break end
-        
-        -- STEP 2: SUGAR TOOL
-        MSLoopStepLabel.Text = "Step 2: Equip SUGAR tool..."
+        -- Sugar
+        MSLoopStepLabel.Text = "Step 2: SUGAR - 2s"
         if equipTool(sugarTool) then
-            MSLoopStepLabel.Text = "Step 2: Pressing E - Cooldown 2s"
             pressE()
             waitWithTimer(2, "SUGAR")
-        else
-            MSLoopStepLabel.Text = "ERROR: Cannot equip SUGAR tool!"
-            break
-        end
+        else break end
+        task.wait(0.2)
         
-        task.wait(0.3)
-        if not loopRunning then break end
-        
-        -- STEP 3: GELATIN TOOL
-        MSLoopStepLabel.Text = "Step 3: Equip GELATIN tool..."
+        -- Gelatin
+        MSLoopStepLabel.Text = "Step 3: GELATIN - 45s"
         if equipTool(gelatinTool) then
-            MSLoopStepLabel.Text = "Step 3: Pressing E - Cooldown 45s"
             pressE()
             waitWithTimer(45, "GELATIN")
-        else
-            MSLoopStepLabel.Text = "ERROR: Cannot equip GELATIN tool!"
-            break
-        end
+        else break end
+        task.wait(0.2)
         
-        task.wait(0.3)
-        if not loopRunning then break end
-        
-        -- STEP 4: EMPTY BAG TOOL
-        MSLoopStepLabel.Text = "Step 4: Equip BAG tool..."
+        -- Bag
+        MSLoopStepLabel.Text = "Step 4: BAG - 2s"
         if equipTool(bagTool) then
-            MSLoopStepLabel.Text = "Step 4: Pressing E - Cooldown 2s"
             pressE()
-            waitWithTimer(2, "EMPTY BAG")
-        else
-            MSLoopStepLabel.Text = "ERROR: Cannot equip BAG tool!"
-            break
-        end
+            waitWithTimer(2, "BAG")
+        else break end
+        task.wait(0.2)
         
-        task.wait(0.3)
-        if not loopRunning then break end
-        
-        -- LOOP COMPLETE, RESTART
-        MSLoopStepLabel.Text = "Loop complete! Restarting from WATER..."
+        MSLoopStepLabel.Text = "Loop complete! Restarting..."
         task.wait(1)
     end
     
-    -- Cleanup
     loopRunning = false
-    MSLoopStatus.Text = "⏹️ LOOP STOPPED"
+    MSLoopStatus.Text = "⏹️ STOPPED"
     MSLoopStatus.TextColor3 = Color3.fromRGB(255,100,100)
-    MSLoopStepLabel.Text = "Current Step: Stopped"
+    MSLoopStepLabel.Text = "Stopped"
     MSLoopTimer.Text = "Timer: 0s"
 end
 
--- Auto Buy Function
+-- Auto Buy
 function startAutoBuy()
     if autoBuyRunning then return end
     autoBuyRunning = true
     currentBuyCount = 0
-    AutoBuyStatus.Text = "💰 AUTO BUY RUNNING"
+    AutoBuyStatus.Text = "💰 RUNNING"
     AutoBuyStatus.TextColor3 = Color3.fromRGB(100,255,100)
     
     while autoBuyRunning and currentBuyCount < targetAmount do
-        AutoBuyProgress.Text = string.format("Progress: %d/%d - Buying...", currentBuyCount + 1, targetAmount)
+        AutoBuyProgress.Text = string.format("Progress: %d/%d", currentBuyCount + 1, targetAmount)
         pressE()
-        task.wait(0.3)
-        
         currentBuyCount = currentBuyCount + 1
-        AutoBuyProgress.Text = string.format("Progress: %d/%d - Completed", currentBuyCount, targetAmount)
         SliderFill.Size = UDim2.new(currentBuyCount / targetAmount, 0, 1, 0)
-        
-        task.wait(0.5)
+        task.wait(0.3)
     end
     
     autoBuyRunning = false
-    AutoBuyStatus.Text = "⏹️ AUTO BUY STOPPED"
+    AutoBuyStatus.Text = "⏹️ STOPPED"
     AutoBuyStatus.TextColor3 = Color3.fromRGB(255,100,100)
-    if currentBuyCount >= targetAmount then
-        AutoBuyProgress.Text = string.format("Progress: %d/%d - COMPLETE!", currentBuyCount, targetAmount)
-    end
+    AutoBuyProgress.Text = string.format("Progress: %d/%d", currentBuyCount, targetAmount)
 end
 
 -- Button Connections
 BtnBahan.MouseButton1Click:Connect(TP_MS_BAHAN)
 BtnRS.MouseButton1Click:Connect(TP_RS)
+MSLoopStartBtn.MouseButton1Click:Connect(function() if not loopRunning then task.spawn(startMSLoop) end end)
+MSLoopStopBtn.MouseButton1Click:Connect(function() loopRunning = false end)
+AutoBuyBtn.MouseButton1Click:Connect(function() if not autoBuyRunning then task.spawn(startAutoBuy) else autoBuyRunning = false end end)
 
--- MS Loop Button Connections
-MSLoopStartBtn.MouseButton1Click:Connect(function()
-    if not loopRunning then
-        task.spawn(startMSLoop)
-    end
-end)
-
-MSLoopStopBtn.MouseButton1Click:Connect(function()
-    loopRunning = false
-end)
-
--- Auto Buy Button Connections
-AutoBuyBtn.MouseButton1Click:Connect(function()
-    if not autoBuyRunning then
-        task.spawn(startAutoBuy)
-    else
-        autoBuyRunning = false
-    end
-end)
-
--- Slider Functionality
+-- Slider
 local dragging = false
-
-SliderButton.MouseButton1Down:Connect(function()
-    dragging = true
-end)
-
-UIS.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = false
-    end
-end)
-
-UIS.InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local mousePos = UIS:GetMouseLocation()
-        local sliderPos = SliderBg.AbsolutePosition
-        local sliderSize = SliderBg.AbsoluteSize
-        
-        local relativeX = math.clamp(mousePos.X - sliderPos.X, 0, sliderSize.X)
-        local percent = relativeX / sliderSize.X
-        
-        targetAmount = math.floor(percent * 99) + 1
-        SliderFill.Size = UDim2.new(percent, 0, 1, 0)
-        SliderButton.Position = UDim2.new(percent, -12.5, 0.5, -12.5)  -- Disesuaikan
-        SliderValue.Text = "Target Amount: " .. targetAmount
+SliderButton.MouseButton1Down:Connect(function() dragging = true end)
+UIS.InputEnded:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end end)
+UIS.InputChanged:Connect(function(i)
+    if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then
+        local mouse = UIS:GetMouseLocation()
+        local pos = SliderBg.AbsolutePosition
+        local size = SliderBg.AbsoluteSize
+        local x = math.clamp(mouse.X - pos.X, 0, size.X)
+        local p = x / size.X
+        targetAmount = math.floor(p * 99) + 1
+        SliderFill.Size = UDim2.new(p, 0, 1, 0)
+        SliderButton.Position = UDim2.new(p, -10, 0.5, -10)
+        SliderValue.Text = "Target: " .. targetAmount
     end
 end)
 
 -- Tab Switching
 TPTabBtn.MouseButton1Click:Connect(function()
-    TPContent.Visible = true
-    MSLoopContent.Visible = false
-    AutoBuyContent.Visible = false
+    TPContent.Visible = true; MSLoopContent.Visible = false; AutoBuyContent.Visible = false
     TPTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
     MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
     AutoBuyTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
@@ -862,9 +737,7 @@ TPTabBtn.MouseButton1Click:Connect(function()
 end)
 
 MSLoopTabBtn.MouseButton1Click:Connect(function()
-    TPContent.Visible = false
-    MSLoopContent.Visible = true
-    AutoBuyContent.Visible = false
+    TPContent.Visible = false; MSLoopContent.Visible = true; AutoBuyContent.Visible = false
     TPTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
     MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
     AutoBuyTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
@@ -874,9 +747,7 @@ MSLoopTabBtn.MouseButton1Click:Connect(function()
 end)
 
 AutoBuyTabBtn.MouseButton1Click:Connect(function()
-    TPContent.Visible = false
-    MSLoopContent.Visible = false
-    AutoBuyContent.Visible = true
+    TPContent.Visible = false; MSLoopContent.Visible = false; AutoBuyContent.Visible = true
     TPTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
     MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
     AutoBuyTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
@@ -885,68 +756,39 @@ AutoBuyTabBtn.MouseButton1Click:Connect(function()
     AutoBuyTabBtn.TextColor3 = Color3.fromRGB(255,255,255)
 end)
 
--- Minimize System
+-- Minimize
 local minimized = false
-local openSize = UDim2.new(0,450,0,600)  -- Disesuaikan
-local closedSize = UDim2.new(0,450,0,50)  -- Disesuaikan
+local openSize = UDim2.new(0,400,0,550)
+local closedSize = UDim2.new(0,400,0,40)
 
-local tweenInfo = TweenInfo.new(
-    0.3,
-    Enum.EasingStyle.Quad,
-    Enum.EasingDirection.Out
-)
-
--- Minimize Button Function
 MinBtn.MouseButton1Click:Connect(function()
     minimized = not minimized
-    
     if minimized then
-        TPContent.Visible = false
-        MSLoopContent.Visible = false
-        AutoBuyContent.Visible = false
+        TPContent.Visible = false; MSLoopContent.Visible = false; AutoBuyContent.Visible = false
         TabFrame.Visible = false
         MinBtn.Text = "□"
-        
-        TweenService:Create(Frame, tweenInfo, {
-            Size = closedSize
-        }):Play()
+        TweenService:Create(Frame, TweenInfo.new(0.3), {Size = closedSize}):Play()
     else
-        TweenService:Create(Frame, tweenInfo, {
-            Size = openSize
-        }):Play()
-        
+        TweenService:Create(Frame, TweenInfo.new(0.3), {Size = openSize}):Play()
         task.wait(0.3)
-        TPContent.Visible = true
-        TabFrame.Visible = true
+        TPContent.Visible = true; TabFrame.Visible = true
         MinBtn.Text = "−"
     end
 end)
 
--- Keyboard Minimize (Z key)
-UIS.InputBegan:Connect(function(input, gp)
+UIS.InputBegan:Connect(function(i, gp)
     if gp then return end
-    
-    if input.KeyCode == Enum.KeyCode.Z then
+    if i.KeyCode == Enum.KeyCode.Z then
         minimized = not minimized
-        
         if minimized then
-            TPContent.Visible = false
-            MSLoopContent.Visible = false
-            AutoBuyContent.Visible = false
+            TPContent.Visible = false; MSLoopContent.Visible = false; AutoBuyContent.Visible = false
             TabFrame.Visible = false
             MinBtn.Text = "□"
-            
-            TweenService:Create(Frame, tweenInfo, {
-                Size = closedSize
-            }):Play()
+            TweenService:Create(Frame, TweenInfo.new(0.3), {Size = closedSize}):Play()
         else
-            TweenService:Create(Frame, tweenInfo, {
-                Size = openSize
-            }):Play()
-            
+            TweenService:Create(Frame, TweenInfo.new(0.3), {Size = openSize}):Play()
             task.wait(0.3)
-            TPContent.Visible = true
-            TabFrame.Visible = true
+            TPContent.Visible = true; TabFrame.Visible = true
             MinBtn.Text = "−"
         end
     end
@@ -955,5 +797,4 @@ end)
 -- Initial Animation
 Frame.Size = UDim2.new(0,0,0,0)
 task.wait(0.1)
-TweenService:Create(Frame, tweenInfo, {
-    Size = openSize
+TweenService:Create(Frame, TweenInfo.new(0.3), {Size = openSize}):Play()
