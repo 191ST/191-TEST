@@ -1,0 +1,188 @@
+--[[
+DYRON MODE V1 - SOUTH BRONX OPTIMIZED
+FIX: Tool holding mechanism with context-aware interaction
+]]
+
+local player = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- GUI SETUP (SAME AS BEFORE - truncated for brevity)
+-- [PASTE ULANG BAGIAN GUI SAMPAI SEBELUM FUNCTIONS]
+
+-- ==========================================
+-- FIXED: ADVANCED INTERACTION SYSTEM
+-- ==========================================
+
+-- Function to find and equip the correct tool
+function equipTool(toolNamePattern)
+    local backpack = player.Backpack
+    local character = player.Character
+    
+    -- Check if tool is already in hand
+    if character then
+        for _, tool in ipairs(character:GetChildren()) do
+            if tool:IsA("Tool") and tool.Name:find(toolNamePattern) then
+                return true -- Already equipped
+            end
+        end
+    end
+    
+    -- Find tool in backpack
+    if backpack then
+        for _, tool in ipairs(backpack:GetChildren()) do
+            if tool:IsA("Tool") and tool.Name:find(toolNamePattern) then
+                -- Equip the tool
+                local args = {
+                    [1] = tool
+                }
+                
+                -- Try different remote events (common in SB)
+                pcall(function()
+                    -- Method 1: Character equip
+                    if player.Character then
+                        tool.Parent = player.Character
+                    end
+                    
+                    -- Method 2: Remote event (if exists)
+                    local remote = ReplicatedStorage:FindFirstChild("MainEvent") or 
+                                  ReplicatedStorage:FindFirstChild("Remotes") or
+                                  ReplicatedStorage:FindFirstChild("ToolEvent")
+                    
+                    if remote then
+                        remote:FireServer("EquipTool", tool)
+                    end
+                end)
+                
+                task.wait(0.3) -- Wait for equip to register
+                return true
+            end
+        end
+    end
+    
+    return false -- Tool not found
+end
+
+-- Function to ensure we're at correct position
+function validatePosition(targetPosition, tolerance)
+    if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
+        return false
+    end
+    
+    local hrp = player.Character.HumanoidRootPart
+    local distance = (hrp.Position - targetPosition).Magnitude
+    
+    if distance > tolerance then
+        -- Auto-correct position
+        hrp.CFrame = CFrame.new(targetPosition)
+        task.wait(0.2)
+    end
+    
+    return true
+end
+
+-- ENHANCED: Hold key with tool validation
+function holdKeyWithTool(keyCode, duration, requiredTool, targetPos)
+    MSLoopStepLabel.Text = string.format("PREPARING: %s...", requiredTool or "Unknown")
+    task.wait(0.2)
+    
+    -- Step 1: Equip required tool if specified
+    if requiredTool then
+        local toolEquipped = equipTool(requiredTool)
+        if not toolEquipped then
+            MSLoopStepLabel.Text = string.format("ERROR: %s not found!", requiredTool)
+            return false
+        end
+        MSLoopStepLabel.Text = string.format("EQUIPPED: %s", requiredTool)
+        task.wait(0.3)
+    end
+    
+    -- Step 2: Validate position if specified
+    if targetPos then
+        validatePosition(targetPos, 5)
+    end
+    
+    -- Step 3: Start holding
+    MSLoopStepLabel.Text = string.format("HOLDING: %s", requiredTool or "Action")
+    
+    -- Press key with multiple methods
+    pcall(function()
+        VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+        UIS:SendKeyEvent(true, keyCode, false, game)
+    end)
+    
+    -- Countdown with status
+    local startTime = tick()
+    while loopRunning and (tick() - startTime) < duration do
+        local remaining = duration - math.floor(tick() - startTime)
+        MSLoopTimer.Text = string.format("Timer: %ds | Hold: %s", remaining, requiredTool or "E")
+        
+        -- Optional: Re-validate tool every few seconds
+        if remaining % 5 == 0 and requiredTool then
+            equipTool(requiredTool) -- Ensure tool still equipped
+        end
+        
+        task.wait(0.1)
+    end
+    
+    -- Release key
+    pcall(function()
+        VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+        UIS:SendKeyEvent(false, keyCode, false, game)
+    end)
+    
+    return true
+end
+
+-- FIXED: MS LOOP WITH TOOL HANDLING
+function startMSLoop()
+    if loopRunning then return end
+    loopRunning = true
+    MSLoopStatus.Text = "▶️ LOOP RUNNING"
+    MSLoopStatus.TextColor3 = Color3.fromRGB(100,255,100)
+    
+    -- Define positions for each station (sesuaikan dengan koordinat asli game)
+    local positions = {
+        water = Vector3.new(521.32, 47.79, 617.25),
+        sugar = Vector3.new(521.32, 47.79, 617.25), -- Ganti dengan koordinat sugar station
+        gelatin = Vector3.new(521.32, 47.79, 617.25), -- Ganti dengan koordinat gelatin station
+        empty = Vector3.new(521.32, 47.79, 617.25) -- Ganti dengan koordinat empty bag station
+    }
+    
+    while loopRunning do
+        -- STEP 1: WATER - 20 detik (Tool: Water Container or similar)
+        MSLoopStepLabel.Text = "STEP 1: WATER (Hold E - 20s)"
+        holdKeyWithTool(Enum.KeyCode.E, 20, "Water", positions.water)
+        if not loopRunning then break end
+        task.wait(0.5)
+        
+        -- STEP 2: SUGAR BAG - 1 detik (Tool: Sugar Bag)
+        MSLoopStepLabel.Text = "STEP 2: SUGAR BAG (Hold E - 1s)"
+        holdKeyWithTool(Enum.KeyCode.E, 1, "Sugar", positions.sugar)
+        if not loopRunning then break end
+        task.wait(0.5)
+        
+        -- STEP 3: GELATIN - 45 detik (Tool: Gelatin)
+        MSLoopStepLabel.Text = "STEP 3: GELATIN (Hold E - 45s)"
+        holdKeyWithTool(Enum.KeyCode.E, 45, "Gelatin", positions.gelatin)
+        if not loopRunning then break end
+        task.wait(0.5)
+        
+        -- STEP 4: EMPTY BAG - 1 detik (Tool: Empty Bag)
+        MSLoopStepLabel.Text = "STEP 4: EMPTY BAG (Hold E - 1s)"
+        holdKeyWithTool(Enum.KeyCode.E, 1, "Empty", positions.empty)
+        if not loopRunning then break end
+        
+        MSLoopStepLabel.Text = "LOOP COMPLETE! Restarting..."
+        task.wait(1)
+    end
+    
+    MSLoopStatus.Text = "⏹️ LOOP STOPPED"
+    MSLoopStatus.TextColor3 = Color3.fromRGB(255,100,100)
+    MSLoopStepLabel.Text = "Current Step: Stopped"
+    MSLoopTimer.Text = "Timer: 0s"
+end
+
+-- [SISANYA SAMA SEPERTI SEBELUMNYA - Button connections, dll]
