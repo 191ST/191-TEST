@@ -772,10 +772,3 @@ UIS.InputChanged:Connect(function(input)
         SliderValue.Text = "Target Amount: " .. targetAmount
     end
 end)
-
--- Tab Switching
-TPTabBtn.MouseButton1Click:Connect(function()
-    TPContent.Visible = true
-    MSLoopContent.Visible = false
-    AutoBuyContent.Visible = false
-    TPTab
