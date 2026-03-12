@@ -152,7 +152,7 @@ MSLoopContent.Size = UDim2.new(1,0,1,0)
 MSLoopContent.BackgroundTransparency = 1
 MSLoopContent.Visible = false
 MSLoopContent.ScrollBarThickness = 6
-MSLoopContent.CanvasSize = UDim2.new(0,0,0,350)
+MSLoopContent.CanvasSize = UDim2.new(0,0,0,400)
 
 -- Auto Buy Tab Content
 local AutoBuyContent = Instance.new("ScrollingFrame")
@@ -252,13 +252,13 @@ RSDesc.TextXAlignment = Enum.TextXAlignment.Left
 RSDesc.Font = Enum.Font.Gotham
 RSDesc.TextSize = 12
 
--- MS LOOP CONTENT (SIMPLIFIED)
+-- MS LOOP CONTENT (FIXED - AUTO EQUIP + PRESS E)
 local MSLoopTitle = Instance.new("TextLabel")
 MSLoopTitle.Parent = MSLoopContent
 MSLoopTitle.Size = UDim2.new(1,-20,0,30)
 MSLoopTitle.Position = UDim2.new(0,10,0,10)
 MSLoopTitle.BackgroundTransparency = 1
-MSLoopTitle.Text = "🔄 MATERIAL STORAGE LOOP"
+MSLoopTitle.Text = "🔄 MATERIAL STORAGE LOOP (AUTO EQUIP)"
 MSLoopTitle.TextColor3 = Color3.fromRGB(100,255,100)
 MSLoopTitle.TextXAlignment = Enum.TextXAlignment.Left
 MSLoopTitle.Font = Enum.Font.GothamBold
@@ -300,26 +300,112 @@ MSLoopTimer.TextXAlignment = Enum.TextXAlignment.Left
 MSLoopTimer.Font = Enum.Font.Gotham
 MSLoopTimer.TextSize = 13
 
--- Simple instructions
-local MSLoopInfo = Instance.new("TextLabel")
-MSLoopInfo.Parent = MSLoopContent
-MSLoopInfo.Size = UDim2.new(1,-20,0,60)
-MSLoopInfo.Position = UDim2.new(0,10,0,145)
-MSLoopInfo.BackgroundColor3 = Color3.fromRGB(40,40,50)
-MSLoopInfo.Text = "📌 CARA PAKAI:\n1. Pegang TOOL yang ingin digunakan\n2. Klik START LOOP\n3. Loop akan HOLD E sesuai durasi"
-MSLoopInfo.TextColor3 = Color3.fromRGB(255,255,100)
-MSLoopInfo.Font = Enum.Font.Gotham
-MSLoopInfo.TextSize = 12
-MSLoopInfo.TextWrapped = true
+-- Tool Selection Buttons
+local SelectWaterBtn = Instance.new("TextButton")
+SelectWaterBtn.Parent = MSLoopContent
+SelectWaterBtn.Size = UDim2.new(1,-20,0,35)
+SelectWaterBtn.Position = UDim2.new(0,10,0,145)
+SelectWaterBtn.BackgroundColor3 = Color3.fromRGB(0,100,200)
+SelectWaterBtn.Text = "💧 1. SELECT WATER TOOL"
+SelectWaterBtn.TextColor3 = Color3.fromRGB(255,255,255)
+SelectWaterBtn.Font = Enum.Font.GothamBold
+SelectWaterBtn.TextSize = 13
 
-local MSLoopInfoCorner = Instance.new("UICorner")
-MSLoopInfoCorner.Parent = MSLoopInfo
-MSLoopInfoCorner.CornerRadius = UDim.new(0,6)
+local SelectWaterCorner = Instance.new("UICorner")
+SelectWaterCorner.Parent = SelectWaterBtn
+SelectWaterCorner.CornerRadius = UDim.new(0,6)
+
+local SelectSugarBtn = Instance.new("TextButton")
+SelectSugarBtn.Parent = MSLoopContent
+SelectSugarBtn.Size = UDim2.new(1,-20,0,35)
+SelectSugarBtn.Position = UDim2.new(0,10,0,185)
+SelectSugarBtn.BackgroundColor3 = Color3.fromRGB(200,100,0)
+SelectSugarBtn.Text = "🍬 2. SELECT SUGAR TOOL"
+SelectSugarBtn.TextColor3 = Color3.fromRGB(255,255,255)
+SelectSugarBtn.Font = Enum.Font.GothamBold
+SelectSugarBtn.TextSize = 13
+
+local SelectSugarCorner = Instance.new("UICorner")
+SelectSugarCorner.Parent = SelectSugarBtn
+SelectSugarCorner.CornerRadius = UDim.new(0,6)
+
+local SelectGelatinBtn = Instance.new("TextButton")
+SelectGelatinBtn.Parent = MSLoopContent
+SelectGelatinBtn.Size = UDim2.new(1,-20,0,35)
+SelectGelatinBtn.Position = UDim2.new(0,10,0,225)
+SelectGelatinBtn.BackgroundColor3 = Color3.fromRGB(200,0,200)
+SelectGelatinBtn.Text = "🧪 3. SELECT GELATIN TOOL"
+SelectGelatinBtn.TextColor3 = Color3.fromRGB(255,255,255)
+SelectGelatinBtn.Font = Enum.Font.GothamBold
+SelectGelatinBtn.TextSize = 13
+
+local SelectGelatinCorner = Instance.new("UICorner")
+SelectGelatinCorner.Parent = SelectGelatinBtn
+SelectGelatinCorner.CornerRadius = UDim.new(0,6)
+
+local SelectBagBtn = Instance.new("TextButton")
+SelectBagBtn.Parent = MSLoopContent
+SelectBagBtn.Size = UDim2.new(1,-20,0,35)
+SelectBagBtn.Position = UDim2.new(0,10,0,265)
+SelectBagBtn.BackgroundColor3 = Color3.fromRGB(100,100,100)
+SelectBagBtn.Text = "👜 4. SELECT EMPTY BAG TOOL"
+SelectBagBtn.TextColor3 = Color3.fromRGB(255,255,255)
+SelectBagBtn.Font = Enum.Font.GothamBold
+SelectBagBtn.TextSize = 13
+
+local SelectBagCorner = Instance.new("UICorner")
+SelectBagCorner.Parent = SelectBagBtn
+SelectBagCorner.CornerRadius = UDim.new(0,6)
+
+-- Status Tool Terpilih
+local WaterStatus = Instance.new("TextLabel")
+WaterStatus.Parent = MSLoopContent
+WaterStatus.Size = UDim2.new(1,-40,0,20)
+WaterStatus.Position = UDim2.new(0,20,0,180)
+WaterStatus.BackgroundTransparency = 1
+WaterStatus.Text = "❌ Not selected"
+WaterStatus.TextColor3 = Color3.fromRGB(255,100,100)
+WaterStatus.TextXAlignment = Enum.TextXAlignment.Right
+WaterStatus.Font = Enum.Font.Gotham
+WaterStatus.TextSize = 11
+
+local SugarStatus = Instance.new("TextLabel")
+SugarStatus.Parent = MSLoopContent
+SugarStatus.Size = UDim2.new(1,-40,0,20)
+SugarStatus.Position = UDim2.new(0,20,0,220)
+SugarStatus.BackgroundTransparency = 1
+SugarStatus.Text = "❌ Not selected"
+SugarStatus.TextColor3 = Color3.fromRGB(255,100,100)
+SugarStatus.TextXAlignment = Enum.TextXAlignment.Right
+SugarStatus.Font = Enum.Font.Gotham
+SugarStatus.TextSize = 11
+
+local GelatinStatus = Instance.new("TextLabel")
+GelatinStatus.Parent = MSLoopContent
+GelatinStatus.Size = UDim2.new(1,-40,0,20)
+GelatinStatus.Position = UDim2.new(0,20,0,260)
+GelatinStatus.BackgroundTransparency = 1
+GelatinStatus.Text = "❌ Not selected"
+GelatinStatus.TextColor3 = Color3.fromRGB(255,100,100)
+GelatinStatus.TextXAlignment = Enum.TextXAlignment.Right
+GelatinStatus.Font = Enum.Font.Gotham
+GelatinStatus.TextSize = 11
+
+local BagStatus = Instance.new("TextLabel")
+BagStatus.Parent = MSLoopContent
+BagStatus.Size = UDim2.new(1,-40,0,20)
+BagStatus.Position = UDim2.new(0,20,0,300)
+BagStatus.BackgroundTransparency = 1
+BagStatus.Text = "❌ Not selected"
+BagStatus.TextColor3 = Color3.fromRGB(255,100,100)
+BagStatus.TextXAlignment = Enum.TextXAlignment.Right
+BagStatus.Font = Enum.Font.Gotham
+BagStatus.TextSize = 11
 
 local MSLoopStartBtn = Instance.new("TextButton")
 MSLoopStartBtn.Parent = MSLoopContent
 MSLoopStartBtn.Size = UDim2.new(0.5,-15,0,40)
-MSLoopStartBtn.Position = UDim2.new(0,10,0,215)
+MSLoopStartBtn.Position = UDim2.new(0,10,0,315)
 MSLoopStartBtn.BackgroundColor3 = Color3.fromRGB(50,150,50)
 MSLoopStartBtn.Text = "▶️ START LOOP"
 MSLoopStartBtn.TextColor3 = Color3.fromRGB(255,255,255)
@@ -333,7 +419,7 @@ MSLoopStartCorner.CornerRadius = UDim.new(0,8)
 local MSLoopStopBtn = Instance.new("TextButton")
 MSLoopStopBtn.Parent = MSLoopContent
 MSLoopStopBtn.Size = UDim2.new(0.5,-15,0,40)
-MSLoopStopBtn.Position = UDim2.new(0.5,5,0,215)
+MSLoopStopBtn.Position = UDim2.new(0.5,5,0,315)
 MSLoopStopBtn.BackgroundColor3 = Color3.fromRGB(150,50,50)
 MSLoopStopBtn.Text = "⏹️ STOP LOOP"
 MSLoopStopBtn.TextColor3 = Color3.fromRGB(255,255,255)
@@ -452,6 +538,136 @@ local autoBuyRunning = false
 local targetAmount = 50
 local currentBuyCount = 0
 
+-- Tool Variables
+local waterTool = nil
+local sugarTool = nil
+local gelatinTool = nil
+local bagTool = nil
+
+-- Function to find tool by name
+function findTool(namePattern)
+    if not player.Character then return nil end
+    
+    -- Cek di tangan dulu
+    local character = player.Character
+    for _, child in pairs(character:GetChildren()) do
+        if child:IsA("Tool") and string.find(string.lower(child.Name), string.lower(namePattern)) then
+            return child
+        end
+    end
+    
+    -- Cek di backpack
+    local backpack = player:FindFirstChild("Backpack")
+    if backpack then
+        for _, child in pairs(backpack:GetChildren()) do
+            if child:IsA("Tool") and string.find(string.lower(child.Name), string.lower(namePattern)) then
+                return child
+            end
+        end
+    end
+    
+    return nil
+end
+
+-- Function to equip tool
+function equipTool(tool)
+    if not tool then return false end
+    if not player.Character then return false end
+    
+    -- Kalo tool sudah di tangan
+    if tool.Parent == player.Character then
+        return true
+    end
+    
+    -- Kalo tool di backpack
+    if tool.Parent == player:FindFirstChild("Backpack") then
+        -- Coba equip pake humanoid
+        local humanoid = player.Character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid:EquipTool(tool)
+            task.wait(0.3)
+            return tool.Parent == player.Character
+        end
+    end
+    
+    return false
+end
+
+-- Function to press E
+function pressE()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+    task.wait(0.1)
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+end
+
+-- Function to wait with timer
+function waitWithTimer(seconds, stepName)
+    local startTime = tick()
+    while loopRunning and (tick() - startTime) < seconds do
+        local remaining = seconds - (tick() - startTime)
+        MSLoopTimer.Text = string.format("Timer: %d/%ds - %s", math.floor(seconds - remaining), seconds, stepName)
+        task.wait(0.1)
+    end
+    MSLoopTimer.Text = string.format("Timer: %d/%ds - %s Complete!", seconds, seconds, stepName)
+end
+
+-- Tool Selection Functions
+SelectWaterBtn.MouseButton1Click:Connect(function()
+    waterTool = findTool("water")
+    if waterTool then
+        WaterStatus.Text = "✅ Selected: " .. waterTool.Name
+        WaterStatus.TextColor3 = Color3.fromRGB(100,255,100)
+        SelectWaterBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
+        task.wait(0.3)
+        SelectWaterBtn.BackgroundColor3 = Color3.fromRGB(0,100,200)
+    else
+        WaterStatus.Text = "❌ Tool not found!"
+        WaterStatus.TextColor3 = Color3.fromRGB(255,100,100)
+    end
+end)
+
+SelectSugarBtn.MouseButton1Click:Connect(function()
+    sugarTool = findTool("sugar")
+    if sugarTool then
+        SugarStatus.Text = "✅ Selected: " .. sugarTool.Name
+        SugarStatus.TextColor3 = Color3.fromRGB(100,255,100)
+        SelectSugarBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
+        task.wait(0.3)
+        SelectSugarBtn.BackgroundColor3 = Color3.fromRGB(200,100,0)
+    else
+        SugarStatus.Text = "❌ Tool not found!"
+        SugarStatus.TextColor3 = Color3.fromRGB(255,100,100)
+    end
+end)
+
+SelectGelatinBtn.MouseButton1Click:Connect(function()
+    gelatinTool = findTool("gelatin")
+    if gelatinTool then
+        GelatinStatus.Text = "✅ Selected: " .. gelatinTool.Name
+        GelatinStatus.TextColor3 = Color3.fromRGB(100,255,100)
+        SelectGelatinBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
+        task.wait(0.3)
+        SelectGelatinBtn.BackgroundColor3 = Color3.fromRGB(200,0,200)
+    else
+        GelatinStatus.Text = "❌ Tool not found!"
+        GelatinStatus.TextColor3 = Color3.fromRGB(255,100,100)
+    end
+end)
+
+SelectBagBtn.MouseButton1Click:Connect(function()
+    bagTool = findTool("bag") or findTool("empty")
+    if bagTool then
+        BagStatus.Text = "✅ Selected: " .. bagTool.Name
+        BagStatus.TextColor3 = Color3.fromRGB(100,255,100)
+        SelectBagBtn.BackgroundColor3 = Color3.fromRGB(0,200,0)
+        task.wait(0.3)
+        SelectBagBtn.BackgroundColor3 = Color3.fromRGB(100,100,100)
+    else
+        BagStatus.Text = "❌ Tool not found!"
+        BagStatus.TextColor3 = Color3.fromRGB(255,100,100)
+    end
+end)
+
 -- TP Functions
 function TP_MS_BAHAN()
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -465,77 +681,85 @@ function TP_RS()
     end
 end
 
--- Simple key press function
-function pressKey(keyCode)
-    VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
-    task.wait(0.1)
-    VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
-end
-
--- Hold key function with timer
-function holdKey(keyCode, duration, stepName)
-    -- Press and hold
-    VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
-    
-    -- Update timer during hold
-    local startTime = tick()
-    while loopRunning and (tick() - startTime) < duration do
-        local elapsed = math.floor(tick() - startTime)
-        local remaining = duration - elapsed
-        MSLoopTimer.Text = string.format("Timer: %ds remaining - %s", remaining, stepName)
-        task.wait(0.1)
-    end
-    
-    -- Release key
-    VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
-end
-
--- SIMPLE MS LOOP - YOU HOLD THE TOOL MANUALLY
+-- MAIN LOOP FUNCTION (AUTO EQUIP + PRESS E + COOLDOWN)
 function startMSLoop()
     if loopRunning then return end
+    
+    -- Validasi semua tool sudah dipilih
+    if not waterTool or not sugarTool or not gelatinTool or not bagTool then
+        MSLoopStepLabel.Text = "Error: Pilih semua tools dulu!"
+        return
+    end
     
     loopRunning = true
     MSLoopStatus.Text = "▶️ LOOP RUNNING"
     MSLoopStatus.TextColor3 = Color3.fromRGB(100,255,100)
     
     while loopRunning do
-        -- Step 1: Hold E (Water) - 20 seconds
-        MSLoopStepLabel.Text = "Current Step: WATER (Hold E) - 20 seconds"
-        holdKey(Enum.KeyCode.E, 20, "WATER")
+        -- STEP 1: WATER TOOL
         if not loopRunning then break end
+        MSLoopStepLabel.Text = "Step 1: Equip WATER tool..."
+        if equipTool(waterTool) then
+            MSLoopStepLabel.Text = "Step 1: Pressing E - Cooldown 20s"
+            pressE()
+            waitWithTimer(20, "WATER")
+        else
+            MSLoopStepLabel.Text = "ERROR: Cannot equip WATER tool!"
+            break
+        end
         
         task.wait(0.3)
         if not loopRunning then break end
         
-        -- Step 2: Hold E (Sugar) - 1 second
-        MSLoopStepLabel.Text = "Current Step: SUGAR (Hold E) - 1 second"
-        holdKey(Enum.KeyCode.E, 1, "SUGAR")
-        if not loopRunning then break end
+        -- STEP 2: SUGAR TOOL
+        MSLoopStepLabel.Text = "Step 2: Equip SUGAR tool..."
+        if equipTool(sugarTool) then
+            MSLoopStepLabel.Text = "Step 2: Pressing E - Cooldown 2s"
+            pressE()
+            waitWithTimer(2, "SUGAR")
+        else
+            MSLoopStepLabel.Text = "ERROR: Cannot equip SUGAR tool!"
+            break
+        end
         
         task.wait(0.3)
         if not loopRunning then break end
         
-        -- Step 3: Hold E (Gelatin) - 45 seconds
-        MSLoopStepLabel.Text = "Current Step: GELATIN (Hold E) - 45 seconds"
-        holdKey(Enum.KeyCode.E, 45, "GELATIN")
-        if not loopRunning then break end
+        -- STEP 3: GELATIN TOOL
+        MSLoopStepLabel.Text = "Step 3: Equip GELATIN tool..."
+        if equipTool(gelatinTool) then
+            MSLoopStepLabel.Text = "Step 3: Pressing E - Cooldown 45s"
+            pressE()
+            waitWithTimer(45, "GELATIN")
+        else
+            MSLoopStepLabel.Text = "ERROR: Cannot equip GELATIN tool!"
+            break
+        end
         
         task.wait(0.3)
         if not loopRunning then break end
         
-        -- Step 4: Hold E (Empty Bag) - 1 second
-        MSLoopStepLabel.Text = "Current Step: EMPTY BAG (Hold E) - 1 second"
-        holdKey(Enum.KeyCode.E, 1, "BAG")
-        if not loopRunning then break end
+        -- STEP 4: EMPTY BAG TOOL
+        MSLoopStepLabel.Text = "Step 4: Equip BAG tool..."
+        if equipTool(bagTool) then
+            MSLoopStepLabel.Text = "Step 4: Pressing E - Cooldown 2s"
+            pressE()
+            waitWithTimer(2, "EMPTY BAG")
+        else
+            MSLoopStepLabel.Text = "ERROR: Cannot equip BAG tool!"
+            break
+        end
         
         task.wait(0.3)
         if not loopRunning then break end
         
-        -- Loop complete
-        MSLoopStepLabel.Text = "Current Step: LOOP COMPLETE - Restarting"
+        -- LOOP COMPLETE, RESTART
+        MSLoopStepLabel.Text = "Loop complete! Restarting from WATER..."
         task.wait(1)
     end
     
+    -- Cleanup
+    loopRunning = false
     MSLoopStatus.Text = "⏹️ LOOP STOPPED"
     MSLoopStatus.TextColor3 = Color3.fromRGB(255,100,100)
     MSLoopStepLabel.Text = "Current Step: Stopped"
@@ -551,20 +775,9 @@ function startAutoBuy()
     AutoBuyStatus.TextColor3 = Color3.fromRGB(100,255,100)
     
     while autoBuyRunning and currentBuyCount < targetAmount do
-        -- Buy Water
-        AutoBuyProgress.Text = string.format("Progress: %d/%d - Buying Water...", currentBuyCount, targetAmount)
-        pressKey(Enum.KeyCode.E)
-        task.wait(0.2)
-        
-        -- Buy Sugar
-        AutoBuyProgress.Text = string.format("Progress: %d/%d - Buying Sugar...", currentBuyCount, targetAmount)
-        pressKey(Enum.KeyCode.E)
-        task.wait(0.2)
-        
-        -- Buy Gelatin
-        AutoBuyProgress.Text = string.format("Progress: %d/%d - Buying Gelatin...", currentBuyCount, targetAmount)
-        pressKey(Enum.KeyCode.E)
-        task.wait(0.2)
+        AutoBuyProgress.Text = string.format("Progress: %d/%d - Buying...", currentBuyCount + 1, targetAmount)
+        pressE()
+        task.wait(0.3)
         
         currentBuyCount = currentBuyCount + 1
         AutoBuyProgress.Text = string.format("Progress: %d/%d - Completed", currentBuyCount, targetAmount)
