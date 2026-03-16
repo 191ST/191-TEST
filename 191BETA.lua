@@ -4,22 +4,28 @@ local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
-local remoteEvent = ReplicatedStorage:WaitForChild("FlingSystemEvent")
+local remoteEvent = ReplicatedStorage:WaitForChild("FlingEvent")
 
--- Tunggu character
-repeat task.wait() until player.Character
+-- Tunggu sampai player siap
+repeat task.wait() until player.Character and player:FindFirstChild("PlayerGui")
 
--- GUI
+-- Hapus GUI lama kalau ada
+local oldGui = player.PlayerGui:FindFirstChild("FlingGUI")
+if oldGui then oldGui:Destroy() end
+
+-- Buat GUI baru
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "SuperFlingHub"
+screenGui.Name = "FlingGUI"
 screenGui.ResetOnSpawn = false
-screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.Parent = player.PlayerGui
 
 -- Frame utama
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 300, 0, 180)
-mainFrame.Position = UDim2.new(0, 20, 0.5, -90)
-mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 280, 0, 160)
+mainFrame.Position = UDim2.new(0, 30, 0.5, -80)
+mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+mainFrame.BackgroundTransparency = 0.1
 mainFrame.BorderSizePixel = 0
 mainFrame.Active = true
 mainFrame.Draggable = true
@@ -32,53 +38,61 @@ shadow.Position = UDim2.new(0, -10, 0, -10)
 shadow.BackgroundTransparency = 1
 shadow.Image = "rbxassetid://1316045217"
 shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-shadow.ImageTransparency = 0.7
+shadow.ImageTransparency = 0.5
 shadow.ScaleType = Enum.ScaleType.Slice
 shadow.SliceCenter = Rect.new(10, 10, 118, 118)
 shadow.Parent = mainFrame
 
 -- Corner
 local corner = Instance.new("UICorner")
-corner.CornerRadius = UDim.new(0, 12)
+corner.CornerRadius = UDim.new(0, 8)
 corner.Parent = mainFrame
 
--- Title
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0, 40)
-title.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
-title.Text = "⚡ SUPER FLING ZONE ⚡"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.TextSize = 18
-title.Font = Enum.Font.GothamBold
-title.Parent = mainFrame
+-- Title bar
+local titleBar = Instance.new("Frame")
+titleBar.Size = UDim2.new(1, 0, 0, 35)
+titleBar.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+titleBar.BorderSizePixel = 0
+titleBar.Parent = mainFrame
 
 local titleCorner = Instance.new("UICorner")
-titleCorner.CornerRadius = UDim.new(0, 12)
-titleCorner.Parent = title
+titleCorner.CornerRadius = UDim.new(0, 8)
+titleCorner.Parent = titleBar
+
+local titleText = Instance.new("TextLabel")
+titleText.Size = UDim2.new(1, -40, 1, 0)
+titleText.Position = UDim2.new(0, 10, 0, 0)
+titleText.BackgroundTransparency = 1
+titleText.Text = "⚡ FLING CONTROLLER ⚡"
+titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleText.TextXAlignment = Enum.TextXAlignment.Left
+titleText.Font = Enum.Font.GothamBold
+titleText.TextSize = 16
+titleText.Parent = titleBar
 
 -- Close button
 local closeBtn = Instance.new("TextButton")
-closeBtn.Size = UDim2.new(0, 30, 0, 30)
-closeBtn.Position = UDim2.new(1, -35, 0, 5)
+closeBtn.Size = UDim2.new(0, 25, 0, 25)
+closeBtn.Position = UDim2.new(1, -30, 0.5, -12.5)
 closeBtn.BackgroundColor3 = Color3.fromRGB(255, 70, 70)
 closeBtn.Text = "✕"
 closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeBtn.TextSize = 20
+closeBtn.TextSize = 16
 closeBtn.Font = Enum.Font.GothamBold
-closeBtn.Parent = title
+closeBtn.Parent = titleBar
 
 local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 8)
+closeCorner.CornerRadius = UDim.new(0, 4)
 closeCorner.Parent = closeBtn
 
 closeBtn.MouseButton1Click:Connect(function()
 	screenGui:Destroy()
 end)
 
--- Content
+-- Content frame
 local content = Instance.new("Frame")
-content.Size = UDim2.new(1, -20, 1, -50)
-content.Position = UDim2.new(0, 10, 0, 45)
+content.Size = UDim2.new(1, -20, 1, -45)
+content.Position = UDim2.new(0, 10, 0, 40)
 content.BackgroundTransparency = 1
 content.Parent = mainFrame
 
@@ -86,50 +100,50 @@ content.Parent = mainFrame
 local radiusLabel = Instance.new("TextLabel")
 radiusLabel.Size = UDim2.new(1, 0, 0, 25)
 radiusLabel.BackgroundTransparency = 1
-radiusLabel.Text = "🎯 RADIUS: 50"
-radiusLabel.TextColor3 = Color3.fromRGB(100, 200, 255)
-radiusLabel.TextSize = 16
-radiusLabel.Font = Enum.Font.GothamBold
+radiusLabel.Text = "Radius: 50"
+radiusLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
 radiusLabel.TextXAlignment = Enum.TextXAlignment.Left
+radiusLabel.Font = Enum.Font.Gotham
+radiusLabel.TextSize = 14
 radiusLabel.Parent = content
 
--- Slider bg
+-- Slider background
 local sliderBg = Instance.new("Frame")
-sliderBg.Size = UDim2.new(1, 0, 0, 25)
-sliderBg.Position = UDim2.new(0, 0, 0, 30)
-sliderBg.BackgroundColor3 = Color3.fromRGB(50, 50, 65)
+sliderBg.Size = UDim2.new(1, 0, 0, 20)
+sliderBg.Position = UDim2.new(0, 0, 0, 25)
+sliderBg.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
 sliderBg.BorderSizePixel = 0
 sliderBg.Parent = content
 
 local sliderCorner = Instance.new("UICorner")
-sliderCorner.CornerRadius = UDim.new(0, 15)
+sliderCorner.CornerRadius = UDim.new(0, 10)
 sliderCorner.Parent = sliderBg
 
 -- Slider fill
 local sliderFill = Instance.new("Frame")
 sliderFill.Size = UDim2.new(0.005, 0, 1, 0)
-sliderFill.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+sliderFill.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
 sliderFill.BorderSizePixel = 0
 sliderFill.Parent = sliderBg
 
 local fillCorner = Instance.new("UICorner")
-fillCorner.CornerRadius = UDim.new(0, 15)
+fillCorner.CornerRadius = UDim.new(0, 10)
 fillCorner.Parent = sliderFill
 
 -- Slider button
 local sliderBtn = Instance.new("TextButton")
-sliderBtn.Size = UDim2.new(0, 20, 0, 20)
-sliderBtn.Position = UDim2.new(0.005, -10, 0.5, -10)
+sliderBtn.Size = UDim2.new(0, 16, 0, 16)
+sliderBtn.Position = UDim2.new(0.005, -8, 0.5, -8)
 sliderBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 sliderBtn.Text = ""
 sliderBtn.ZIndex = 2
 sliderBtn.Parent = sliderBg
 
 local btnCorner = Instance.new("UICorner")
-btnCorner.CornerRadius = UDim.new(0, 10)
+btnCorner.CornerRadius = UDim.new(0, 8)
 btnCorner.Parent = sliderBtn
 
--- Current radius display
+-- Variables
 local currentRadius = 50
 local minRadius = 1
 local maxRadius = 10000
@@ -137,18 +151,22 @@ local dragging = false
 
 -- Update function
 local function updateRadius(value)
+	value = math.clamp(value, minRadius, maxRadius)
 	currentRadius = math.floor(value)
-	radiusLabel.Text = "🎯 RADIUS: " .. currentRadius
+	radiusLabel.Text = "Radius: " .. currentRadius
 	
 	local percentage = (value - minRadius) / (maxRadius - minRadius)
 	sliderFill.Size = UDim2.new(percentage, 0, 1, 0)
-	sliderBtn.Position = UDim2.new(percentage, -10, 0.5, -10)
+	sliderBtn.Position = UDim2.new(percentage, -8, 0.5, -8)
 	
 	-- Kirim ke server
-	remoteEvent:FireServer(currentRadius, "updateRadius")
+	remoteEvent:FireServer({
+		type = "updateRadius",
+		radius = currentRadius
+	})
 end
 
--- Slider drag
+-- Slider dragging
 sliderBtn.MouseButton1Down:Connect(function()
 	dragging = true
 end)
@@ -173,17 +191,11 @@ UserInputService.InputChanged:Connect(function(input)
 	end
 end)
 
--- Radius input manual
-local inputFrame = Instance.new("Frame")
-inputFrame.Size = UDim2.new(1, 0, 0, 35)
-inputFrame.Position = UDim2.new(0, 0, 0, 65)
-inputFrame.BackgroundTransparency = 1
-inputFrame.Parent = content
-
+-- Input manual
 local inputBox = Instance.new("TextBox")
-inputBox.Size = UDim2.new(0.6, -5, 1, 0)
-inputBox.Position = UDim2.new(0, 0, 0, 0)
-inputBox.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+inputBox.Size = UDim2.new(0.6, -5, 0, 30)
+inputBox.Position = UDim2.new(0, 0, 0, 55)
+inputBox.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
 inputBox.PlaceholderText = "Radius 1-10000"
 inputBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
 inputBox.Text = "50"
@@ -191,24 +203,24 @@ inputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 inputBox.TextSize = 14
 inputBox.Font = Enum.Font.Gotham
 inputBox.ClearTextOnFocus = false
-inputBox.Parent = inputFrame
+inputBox.Parent = content
 
 local inputCorner = Instance.new("UICorner")
-inputCorner.CornerRadius = UDim.new(0, 8)
+inputCorner.CornerRadius = UDim.new(0, 6)
 inputCorner.Parent = inputBox
 
 local setBtn = Instance.new("TextButton")
-setBtn.Size = UDim2.new(0.4, -5, 1, 0)
-setBtn.Position = UDim2.new(0.6, 5, 0, 0)
-setBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+setBtn.Size = UDim2.new(0.4, -5, 0, 30)
+setBtn.Position = UDim2.new(0.6, 5, 0, 55)
+setBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
 setBtn.Text = "SET"
 setBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 setBtn.TextSize = 14
 setBtn.Font = Enum.Font.GothamBold
-setBtn.Parent = inputFrame
+setBtn.Parent = content
 
 local setCorner = Instance.new("UICorner")
-setCorner.CornerRadius = UDim.new(0, 8)
+setCorner.CornerRadius = UDim.new(0, 6)
 setCorner.Parent = setBtn
 
 setBtn.MouseButton1Click:Connect(function()
@@ -220,32 +232,34 @@ setBtn.MouseButton1Click:Connect(function()
 	end
 end)
 
--- Info panel
-local infoLabel = Instance.new("TextLabel")
-infoLabel.Size = UDim2.new(1, 0, 0, 25)
-infoLabel.Position = UDim2.new(0, 0, 0, 110)
-infoLabel.BackgroundTransparency = 1
-infoLabel.Text = "🔥 KLIK TOOL UNTUK FLING 🔥"
-infoLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
-infoLabel.TextSize = 14
-infoLabel.Font = Enum.Font.GothamBold
-infoLabel.Parent = content
+-- Info text
+local infoText = Instance.new("TextLabel")
+infoText.Size = UDim2.new(1, 0, 0, 30)
+infoText.Position = UDim2.new(0, 0, 0, 95)
+infoText.BackgroundTransparency = 1
+infoText.Text = "Klik tool untuk fling!"
+infoText.TextColor3 = Color3.fromRGB(255, 200, 100)
+infoText.TextSize = 14
+infoText.Font = Enum.Font.GothamBold
+infoText.Parent = content
 
 -- Status
-local statusLabel = Instance.new("TextLabel")
-statusLabel.Size = UDim2.new(1, 0, 0, 20)
-statusLabel.Position = UDim2.new(0, 0, 0, 135)
-statusLabel.BackgroundTransparency = 1
-statusLabel.Text = "🟢 ACTIVE"
-statusLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-statusLabel.TextSize = 14
-statusLabel.Font = Enum.Font.GothamBold
-statusLabel.Parent = content
+local statusText = Instance.new("TextLabel")
+statusText.Size = UDim2.new(1, 0, 0, 25)
+statusText.Position = UDim2.new(0, 0, 0, 125)
+statusText.BackgroundTransparency = 1
+statusText.Text = "🟢 READY"
+statusText.TextColor3 = Color3.fromRGB(0, 255, 0)
+statusText.TextSize = 14
+statusText.Font = Enum.Font.GothamBold
+statusText.Parent = content
 
 -- Initialize
 updateRadius(50)
 
 -- Animasi masuk
-mainFrame.Position = UDim2.new(0, -320, 0.5, -90)
-local tween = TweenService:Create(mainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 20, 0.5, -90)})
+mainFrame.Position = UDim2.new(0, -300, 0.5, -80)
+local tween = TweenService:Create(mainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 30, 0.5, -80)})
 tween:Play()
+
+print("GUI Fling telah dibuat!")
