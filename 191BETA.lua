@@ -1,6 +1,6 @@
 -- 191 FPS ⚡ Hub Extreme Edition
 -- Script Boost FPS 240+ dengan GUI Solid (No Transparan Abu-abu)
--- + Fitur Layar Gepeng ala Pro Player
+-- + Fitur LAYAR GEPENG (STRETCH VERTIKAL) ON/OFF doang ala pro player
 
 -- GUI Library Extreme
 local library = {}
@@ -22,7 +22,7 @@ function library:CreateMain()
     
     -- Auto detect untuk handphone
     local isMobile = game:GetService("UserInputService").TouchEnabled
-    local guiSize = isMobile and UDim2.new(0, 300, 0, 500) or UDim2.new(0, 340, 0, 550)
+    local guiSize = isMobile and UDim2.new(0, 300, 0, 450) or UDim2.new(0, 340, 0, 500)
     
     -- Main Container - SOLID HITAM (No Transparan)
     local mainContainer = Instance.new("Frame")
@@ -109,7 +109,7 @@ function library:CreateMain()
     versionText.Size = UDim2.new(0, 60, 0, 20)
     versionText.Position = UDim2.new(0, 60, 0, 30)
     versionText.BackgroundTransparency = 1
-    versionText.Text = "v4.0"
+    versionText.Text = "v4.1"
     versionText.TextColor3 = Color3.fromRGB(180, 180, 180)
     versionText.TextSize = 12
     versionText.Font = Enum.Font.Gotham
@@ -149,12 +149,12 @@ function library:CreateMain()
     -- Tab 1 Button
     local tab1Btn = Instance.new("TextButton")
     tab1Btn.Name = "Tab1Btn"
-    tab1Btn.Size = UDim2.new(0.33, -5, 1, -10)
+    tab1Btn.Size = UDim2.new(0.5, -5, 1, -10)
     tab1Btn.Position = UDim2.new(0, 5, 0, 5)
     tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
     tab1Btn.Text = "FPS BOOST"
     tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    tab1Btn.TextSize = 14
+    tab1Btn.TextSize = 16
     tab1Btn.Font = Enum.Font.GothamBold
     tab1Btn.BorderSizePixel = 0
     tab1Btn.AutoButtonColor = false
@@ -167,12 +167,12 @@ function library:CreateMain()
     -- Tab 2 Button
     local tab2Btn = Instance.new("TextButton")
     tab2Btn.Name = "Tab2Btn"
-    tab2Btn.Size = UDim2.new(0.33, -5, 1, -10)
-    tab2Btn.Position = UDim2.new(0.33, 5, 0, 5)
+    tab2Btn.Size = UDim2.new(0.5, -5, 1, -10)
+    tab2Btn.Position = UDim2.new(0.5, 5, 0, 5)
     tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Solid
     tab2Btn.Text = "SETTINGS"
     tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    tab2Btn.TextSize = 14
+    tab2Btn.TextSize = 16
     tab2Btn.Font = Enum.Font.GothamBold
     tab2Btn.BorderSizePixel = 0
     tab2Btn.AutoButtonColor = false
@@ -181,24 +181,6 @@ function library:CreateMain()
     local tab2Corner = Instance.new("UICorner")
     tab2Corner.CornerRadius = UDim.new(0, 8)
     tab2Corner.Parent = tab2Btn
-    
-    -- Tab 3 Button (LAYAR GEPENG)
-    local tab3Btn = Instance.new("TextButton")
-    tab3Btn.Name = "Tab3Btn"
-    tab3Btn.Size = UDim2.new(0.34, -5, 1, -10)
-    tab3Btn.Position = UDim2.new(0.66, 5, 0, 5)
-    tab3Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Solid
-    tab3Btn.Text = "LAYAR GEPENG"
-    tab3Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    tab3Btn.TextSize = 12
-    tab3Btn.Font = Enum.Font.GothamBold
-    tab3Btn.BorderSizePixel = 0
-    tab3Btn.AutoButtonColor = false
-    tab3Btn.Parent = tabFrame
-    
-    local tab3Corner = Instance.new("UICorner")
-    tab3Corner.CornerRadius = UDim.new(0, 8)
-    tab3Corner.Parent = tab3Btn
     
     -- Content Frame
     local contentFrame = Instance.new("Frame")
@@ -227,26 +209,14 @@ function library:CreateMain()
     tab2Content.Visible = false
     tab2Content.Parent = contentFrame
     
-    -- Tab 3 Content (LAYAR GEPENG)
-    local tab3Content = Instance.new("Frame")
-    tab3Content.Name = "Tab3Content"
-    tab3Content.Size = UDim2.new(1, 0, 1, 0)
-    tab3Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    tab3Content.BorderSizePixel = 0
-    tab3Content.Visible = false
-    tab3Content.Parent = contentFrame
-    
     -- Tab switching
     tab1Btn.MouseButton1Click:Connect(function()
         tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
         tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
         tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        tab3Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        tab3Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
         tab1Content.Visible = true
         tab2Content.Visible = false
-        tab3Content.Visible = false
     end)
     
     tab2Btn.MouseButton1Click:Connect(function()
@@ -254,23 +224,8 @@ function library:CreateMain()
         tab2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
         tab1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         tab1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        tab3Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        tab3Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
         tab2Content.Visible = true
         tab1Content.Visible = false
-        tab3Content.Visible = false
-    end)
-    
-    tab3Btn.MouseButton1Click:Connect(function()
-        tab3Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-        tab3Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        tab1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        tab1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        tab3Content.Visible = true
-        tab1Content.Visible = false
-        tab2Content.Visible = false
     end)
     
     -- Close button
@@ -290,11 +245,8 @@ function library:CreateMain()
     -- Buat konten untuk Tab 1 (FPS BOOST)
     self:CreateBoostTabExtreme(tab1Content)
     
-    -- Buat konten untuk Tab 2 (SETTINGS)
+    -- Buat konten untuk Tab 2 (SETTINGS) - LAYAR GEPENG ada di sini!
     self:CreateSettingTabExtreme(tab2Content)
-    
-    -- Buat konten untuk Tab 3 (LAYAR GEPENG)
-    self:CreateScreenStretchTab(tab3Content)
     
     -- Buat icon floating
     self:CreateFloatingIconExtreme(screenGui, mainContainer)
@@ -309,7 +261,7 @@ function library:CreateFloatingIconExtreme(parentScreenGui, mainFrame)
     icon.Size = UDim2.new(0, 60, 0, 60)
     icon.Position = UDim2.new(0.9, -30, 0.1, 0)
     icon.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    icon.Text = "💀"
+    icon.Text = "⚡"
     icon.TextColor3 = Color3.fromRGB(255, 215, 0)
     icon.TextScaled = true
     icon.Font = Enum.Font.GothamBold
@@ -545,16 +497,13 @@ function library:CreateBoostTabExtreme(parent)
             -- Matikan anti-aliasing
             renderSettings.AntiAliasingQuality = 0
             
-            -- Kurangi draw distance
-            workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function() end)
-            
             statusLabel.Text = "⚡⚡⚡ Status: EXTREME 240+ FPS ACTIVE ⚡⚡⚡"
             statusFrame.BackgroundColor3 = Color3.fromRGB(50, 20, 0)
         end)
     end)
 end
 
--- Fungsi untuk membuat tab Setting
+-- Fungsi untuk membuat tab Setting (dengan LAYAR GEPENG ON/OFF)
 function library:CreateSettingTabExtreme(parent)
     local scrollingFrame = Instance.new("ScrollingFrame")
     scrollingFrame.Name = "SettingScrolling"
@@ -563,7 +512,7 @@ function library:CreateSettingTabExtreme(parent)
     scrollingFrame.BorderSizePixel = 0
     scrollingFrame.ScrollBarThickness = 4
     scrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
-    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 300)
+    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 350)
     scrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
     scrollingFrame.Parent = parent
     
@@ -606,42 +555,112 @@ function library:CreateSettingTabExtreme(parent)
     fpsDesc.Parent = fpsCard
     
     -- Toggle Button (ON/OFF)
-    local toggleBtn = Instance.new("TextButton")
-    toggleBtn.Name = "ToggleBtn"
-    toggleBtn.Size = UDim2.new(0, 70, 0, 40)
-    toggleBtn.Position = UDim2.new(1, -85, 0, 20)
-    toggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    toggleBtn.Text = "OFF"
-    toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggleBtn.TextSize = 16
-    toggleBtn.Font = Enum.Font.GothamBold
-    toggleBtn.BorderSizePixel = 0
-    toggleBtn.Parent = fpsCard
+    local fpsToggleBtn = Instance.new("TextButton")
+    fpsToggleBtn.Name = "FpsToggleBtn"
+    fpsToggleBtn.Size = UDim2.new(0, 70, 0, 40)
+    fpsToggleBtn.Position = UDim2.new(1, -85, 0, 20)
+    fpsToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    fpsToggleBtn.Text = "OFF"
+    fpsToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    fpsToggleBtn.TextSize = 16
+    fpsToggleBtn.Font = Enum.Font.GothamBold
+    fpsToggleBtn.BorderSizePixel = 0
+    fpsToggleBtn.Parent = fpsCard
     
-    local toggleCorner = Instance.new("UICorner")
-    toggleCorner.CornerRadius = UDim.new(0, 8)
-    toggleCorner.Parent = toggleBtn
+    local fpsToggleCorner = Instance.new("UICorner")
+    fpsToggleCorner.CornerRadius = UDim.new(0, 8)
+    fpsToggleCorner.Parent = fpsToggleBtn
     
     local fpsEnabled = false
     
-    toggleBtn.MouseButton1Click:Connect(function()
+    fpsToggleBtn.MouseButton1Click:Connect(function()
         fpsEnabled = not fpsEnabled
         if fpsEnabled then
-            toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            toggleBtn.Text = "ON"
+            fpsToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+            fpsToggleBtn.Text = "ON"
             self:StartFPSIndicatorExtreme()
         else
-            toggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-            toggleBtn.Text = "OFF"
+            fpsToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+            fpsToggleBtn.Text = "OFF"
             self:StopFPSIndicator()
         end
     end)
     
+    -- LAYAR GEPENG CARD (ON/OFF DOANG)
+    local stretchCard = Instance.new("Frame")
+    stretchCard.Name = "StretchCard"
+    stretchCard.Size = UDim2.new(1, 0, 0, 100)
+    stretchCard.Position = UDim2.new(0, 0, 0, 100)
+    stretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
+    stretchCard.BorderSizePixel = 0
+    stretchCard.Parent = scrollingFrame
+    
+    local stretchCorner = Instance.new("UICorner")
+    stretchCorner.CornerRadius = UDim.new(0, 12)
+    stretchCorner.Parent = stretchCard
+    
+    -- Title
+    local stretchTitle = Instance.new("TextLabel")
+    stretchTitle.Name = "StretchTitle"
+    stretchTitle.Size = UDim2.new(0.7, -20, 0, 30)
+    stretchTitle.Position = UDim2.new(0, 15, 0, 10)
+    stretchTitle.BackgroundTransparency = 1
+    stretchTitle.Text = "🖥️ LAYAR GEPENG (STRETCH)"
+    stretchTitle.TextColor3 = Color3.fromRGB(255, 215, 0)
+    stretchTitle.TextSize = 16
+    stretchTitle.Font = Enum.Font.GothamBold
+    stretchTitle.TextXAlignment = Enum.TextXAlignment.Left
+    stretchTitle.Parent = stretchCard
+    
+    -- Desc (STRETCH VERTIKAL)
+    local stretchDesc = Instance.new("TextLabel")
+    stretchDesc.Name = "StretchDesc"
+    stretchDesc.Size = UDim2.new(0.7, -20, 0, 50)
+    stretchDesc.Position = UDim2.new(0, 15, 0, 40)
+    stretchDesc.BackgroundTransparency = 1
+    stretchDesc.Text = "Mode 4:3 stretched ala pro player! Membuat tampilan GEPENG (vertikal distretch) untuk aim lebih enak."
+    stretchDesc.TextColor3 = Color3.fromRGB(200, 150, 100)
+    stretchDesc.TextSize = 11
+    stretchDesc.Font = Enum.Font.Gotham
+    stretchDesc.TextXAlignment = Enum.TextXAlignment.Left
+    stretchDesc.TextWrapped = true
+    stretchDesc.Parent = stretchCard
+    
+    -- Toggle Button LAYAR GEPENG (ON/OFF)
+    local stretchToggleBtn = Instance.new("TextButton")
+    stretchToggleBtn.Name = "StretchToggleBtn"
+    stretchToggleBtn.Size = UDim2.new(0, 70, 0, 40)
+    stretchToggleBtn.Position = UDim2.new(1, -85, 0, 30)
+    stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    stretchToggleBtn.Text = "OFF"
+    stretchToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    stretchToggleBtn.TextSize = 16
+    stretchToggleBtn.Font = Enum.Font.GothamBold
+    stretchToggleBtn.BorderSizePixel = 0
+    stretchToggleBtn.Parent = stretchCard
+    
+    local stretchToggleCorner = Instance.new("UICorner")
+    stretchToggleCorner.CornerRadius = UDim.new(0, 8)
+    stretchToggleCorner.Parent = stretchToggleBtn
+    
+    -- Status Text
+    local stretchStatus = Instance.new("TextLabel")
+    stretchStatus.Name = "StretchStatus"
+    stretchStatus.Size = UDim2.new(1, -20, 0, 20)
+    stretchStatus.Position = UDim2.new(0, 10, 0, 75)
+    stretchStatus.BackgroundTransparency = 1
+    stretchStatus.Text = "⏸️ Status: Normal (16:9)"
+    stretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
+    stretchStatus.TextSize = 11
+    stretchStatus.Font = Enum.Font.Gotham
+    stretchStatus.TextXAlignment = Enum.TextXAlignment.Left
+    stretchStatus.Parent = stretchCard
+    
     -- Info Card
     local infoCard = Instance.new("Frame")
     infoCard.Name = "InfoCard"
-    infoCard.Size = UDim2.new(1, 0, 0, 80)
-    infoCard.Position = UDim2.new(0, 0, 0, 100)
+    infoCard.Size = UDim2.new(1, 0, 0, 100)
+    infoCard.Position = UDim2.new(0, 0, 0, 220)
     infoCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
     infoCard.BorderSizePixel = 0
     infoCard.Parent = scrollingFrame
@@ -655,383 +674,84 @@ function library:CreateSettingTabExtreme(parent)
     infoLabel.Size = UDim2.new(1, -20, 1, -20)
     infoLabel.Position = UDim2.new(0, 10, 0, 10)
     infoLabel.BackgroundTransparency = 1
-    infoLabel.Text = "⚠️ EXTREME MODE: Hapus SEMUA efek grafis untuk FPS 240+. Cocok untuk device low-end & laptop jadul!"
-    infoLabel.TextColor3 = Color3.fromRGB(255, 200, 0)
-    infoLabel.TextSize = 13
-    infoLabel.Font = Enum.Font.GothamBold
-    infoLabel.TextWrapped = true
-    infoLabel.Parent = infoCard
-    
-    -- Render Settings Card
-    local renderCard = Instance.new("Frame")
-    renderCard.Name = "RenderCard"
-    renderCard.Size = UDim2.new(1, 0, 0, 80)
-    renderCard.Position = UDim2.new(0, 0, 0, 200)
-    renderCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    renderCard.BorderSizePixel = 0
-    renderCard.Parent = scrollingFrame
-    
-    local renderCorner = Instance.new("UICorner")
-    renderCorner.CornerRadius = UDim.new(0, 12)
-    renderCorner.Parent = renderCard
-    
-    local renderTitle = Instance.new("TextLabel")
-    renderTitle.Name = "RenderTitle"
-    renderTitle.Size = UDim2.new(1, -20, 0, 60)
-    renderTitle.Position = UDim2.new(0, 10, 0, 10)
-    renderTitle.BackgroundTransparency = 1
-    renderTitle.Text = "⚙️ Render Settings:\nQuality Level: 1\nMaterial Quality: Low\nAnti-Aliasing: OFF"
-    renderTitle.TextColor3 = Color3.fromRGB(200, 200, 200)
-    renderTitle.TextSize = 12
-    renderTitle.Font = Enum.Font.Gotham
-    renderTitle.TextXAlignment = Enum.TextXAlignment.Left
-    renderTitle.TextWrapped = true
-    renderTitle.Parent = renderCard
-end
-
--- Fungsi untuk membuat tab LAYAR GEPENG
-function library:CreateScreenStretchTab(parent)
-    local scrollingFrame = Instance.new("ScrollingFrame")
-    scrollingFrame.Name = "ScreenStretchScrolling"
-    scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-    scrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    scrollingFrame.BorderSizePixel = 0
-    scrollingFrame.ScrollBarThickness = 4
-    scrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
-    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 400)
-    scrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    scrollingFrame.Parent = parent
-    
-    -- Title LAYAR GEPENG
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Name = "TitleLabel"
-    titleLabel.Size = UDim2.new(1, 0, 0, 40)
-    titleLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    titleLabel.Text = "🖥️ LAYAR GEPENG PRO PLAYER 🖥️"
-    titleLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
-    titleLabel.TextSize = 16
-    titleLabel.Font = Enum.Font.GothamBold
-    titleLabel.Parent = scrollingFrame
-    
-    -- Main Toggle Card
-    local mainCard = Instance.new("Frame")
-    mainCard.Name = "MainCard"
-    mainCard.Size = UDim2.new(1, 0, 0, 120)
-    mainCard.Position = UDim2.new(0, 0, 0, 50)
-    mainCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    mainCard.BorderSizePixel = 0
-    mainCard.Parent = scrollingFrame
-    
-    local cardCorner = Instance.new("UICorner")
-    cardCorner.CornerRadius = UDim.new(0, 12)
-    cardCorner.Parent = mainCard
-    
-    local mainTitle = Instance.new("TextLabel")
-    mainTitle.Name = "MainTitle"
-    mainTitle.Size = UDim2.new(1, -20, 0, 30)
-    mainTitle.Position = UDim2.new(0, 10, 0, 10)
-    mainTitle.BackgroundTransparency = 1
-    mainTitle.Text = "LAYAR GEPENG"
-    mainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    mainTitle.TextSize = 16
-    mainTitle.Font = Enum.Font.GothamBold
-    mainTitle.TextXAlignment = Enum.TextXAlignment.Left
-    mainTitle.Parent = mainCard
-    
-    local mainDesc = Instance.new("TextLabel")
-    mainDesc.Name = "MainDesc"
-    mainDesc.Size = UDim2.new(0.6, -10, 0, 60)
-    mainDesc.Position = UDim2.new(0, 10, 0, 40)
-    mainDesc.BackgroundTransparency = 1
-    mainDesc.Text = "nambahin fps dikit sama fov nya jadi lebih lebar"
-    mainDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
-    mainDesc.TextSize = 12
-    mainDesc.Font = Enum.Font.Gotham
-    mainDesc.TextXAlignment = Enum.TextXAlignment.Left
-    mainDesc.TextWrapped = true
-    mainDesc.Parent = mainCard
-    
-    -- Toggle Button
-    local toggleBtn = Instance.new("TextButton")
-    toggleBtn.Name = "StretchToggleBtn"
-    toggleBtn.Size = UDim2.new(0, 90, 0, 50)
-    toggleBtn.Position = UDim2.new(1, -105, 0, 35)
-    toggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    toggleBtn.Text = "OFF"
-    toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    toggleBtn.TextSize = 18
-    toggleBtn.Font = Enum.Font.GothamBold
-    toggleBtn.BorderSizePixel = 0
-    toggleBtn.Parent = mainCard
-    
-    local toggleCorner = Instance.new("UICorner")
-    toggleCorner.CornerRadius = UDim.new(0, 8)
-    toggleCorner.Parent = toggleBtn
-    
-    -- Stretch Level Card
-    local levelCard = Instance.new("Frame")
-    levelCard.Name = "LevelCard"
-    levelCard.Size = UDim2.new(1, 0, 0, 150)
-    levelCard.Position = UDim2.new(0, 0, 0, 180)
-    levelCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    levelCard.BorderSizePixel = 0
-    levelCard.Parent = scrollingFrame
-    
-    local levelCorner = Instance.new("UICorner")
-    levelCorner.CornerRadius = UDim.new(0, 12)
-    levelCorner.Parent = levelCard
-    
-    local levelTitle = Instance.new("TextLabel")
-    levelTitle.Name = "LevelTitle"
-    levelTitle.Size = UDim2.new(1, -20, 0, 30)
-    levelTitle.Position = UDim2.new(0, 10, 0, 10)
-    levelTitle.BackgroundTransparency = 1
-    levelTitle.Text = "⚡ LEVEL STRETCH ⚡"
-    levelTitle.TextColor3 = Color3.fromRGB(255, 215, 0)
-    levelTitle.TextSize = 16
-    levelTitle.Font = Enum.Font.GothamBold
-    levelTitle.TextXAlignment = Enum.TextXAlignment.Left
-    levelTitle.Parent = levelCard
-    
-    -- Level Buttons
-    local level1Btn = Instance.new("TextButton")
-    level1Btn.Name = "Level1Btn"
-    level1Btn.Size = UDim2.new(0.3, -10, 0, 40)
-    level1Btn.Position = UDim2.new(0.025, 0, 0, 50)
-    level1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    level1Btn.Text = "LOW"
-    level1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    level1Btn.TextSize = 14
-    level1Btn.Font = Enum.Font.GothamBold
-    level1Btn.BorderSizePixel = 0
-    level1Btn.Parent = levelCard
-    
-    local lvl1Corner = Instance.new("UICorner")
-    lvl1Corner.CornerRadius = UDim.new(0, 8)
-    lvl1Corner.Parent = level1Btn
-    
-    local level2Btn = Instance.new("TextButton")
-    level2Btn.Name = "Level2Btn"
-    level2Btn.Size = UDim2.new(0.3, -10, 0, 40)
-    level2Btn.Position = UDim2.new(0.35, 0, 0, 50)
-    level2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    level2Btn.Text = "MEDIUM"
-    level2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    level2Btn.TextSize = 14
-    level2Btn.Font = Enum.Font.GothamBold
-    level2Btn.BorderSizePixel = 0
-    level2Btn.Parent = levelCard
-    
-    local lvl2Corner = Instance.new("UICorner")
-    lvl2Corner.CornerRadius = UDim.new(0, 8)
-    lvl2Corner.Parent = level2Btn
-    
-    local level3Btn = Instance.new("TextButton")
-    level3Btn.Name = "Level3Btn"
-    level3Btn.Size = UDim2.new(0.3, -10, 0, 40)
-    level3Btn.Position = UDim2.new(0.675, 0, 0, 50)
-    level3Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    level3Btn.Text = "EXTREME"
-    level3Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    level3Btn.TextSize = 14
-    level3Btn.Font = Enum.Font.GothamBold
-    level3Btn.BorderSizePixel = 0
-    level3Btn.Parent = levelCard
-    
-    local lvl3Corner = Instance.new("UICorner")
-    lvl3Corner.CornerRadius = UDim.new(0, 8)
-    lvl3Corner.Parent = level3Btn
-    
-    -- Level Description
-    local levelDesc = Instance.new("TextLabel")
-    levelDesc.Name = "LevelDesc"
-    levelDesc.Size = UDim2.new(1, -20, 0, 40)
-    levelDesc.Position = UDim2.new(0, 10, 0, 100)
-    levelDesc.BackgroundTransparency = 1
-    levelDesc.Text = "Pilih level stretch: LOW (16:9), MEDIUM (21:9), EXTREME (32:9)"
-    levelDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
-    levelDesc.TextSize = 12
-    levelDesc.Font = Enum.Font.Gotham
-    levelDesc.TextXAlignment = Enum.TextXAlignment.Left
-    levelDesc.Parent = levelCard
-    
-    -- Current Status
-    local statusCard = Instance.new("Frame")
-    statusCard.Name = "StatusCard"
-    statusCard.Size = UDim2.new(1, 0, 0, 60)
-    statusCard.Position = UDim2.new(0, 0, 0, 340)
-    statusCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    statusCard.BorderSizePixel = 0
-    statusCard.Parent = scrollingFrame
-    
-    local statusCorner = Instance.new("UICorner")
-    statusCorner.CornerRadius = UDim.new(0, 12)
-    statusCorner.Parent = statusCard
-    
-    local statusLabel = Instance.new("TextLabel")
-    statusLabel.Name = "StatusLabel"
-    statusLabel.Size = UDim2.new(1, -20, 1, 0)
-    statusLabel.Position = UDim2.new(0, 10, 0, 0)
-    statusLabel.BackgroundTransparency = 1
-    statusLabel.Text = "⏸️ Status: Layar Normal (OFF)"
-    statusLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
-    statusLabel.TextSize = 14
-    statusLabel.Font = Enum.Font.GothamBold
-    statusLabel.TextXAlignment = Enum.TextXAlignment.Left
-    statusLabel.Parent = statusCard
-    
-    -- Variable untuk menyimpan level stretch
-    local currentStretchLevel = "OFF"
-    local stretchEnabled = false
-    
-    -- Fungsi untuk mengaktifkan stretch
-    local function enableStretch(level)
-        pcall(function()
-            local camera = workspace.CurrentCamera
-            local viewportSize = camera.ViewportSize
-            
-            -- Simpan properti asli camera jika belum disimpan
-            if not originalCameraProperties.FOV then
-                originalCameraProperties.FOV = camera.FieldOfView
-                originalCameraProperties.ViewportSize = viewportSize
-            end
-            
-            -- Set FieldOfView berdasarkan level
-            if level == "LOW" then
-                camera.FieldOfView = 110 -- Stretch ringan (16:9 effect)
-                levelDesc.Text = "LOW ACTIVE: Stretch ringan seperti 16:9"
-            elseif level == "MEDIUM" then
-                camera.FieldOfView = 120 -- Stretch sedang (21:9 ultrawide)
-                levelDesc.Text = "MEDIUM ACTIVE: Stretch sedang seperti 21:9 ultrawide"
-            elseif level == "EXTREME" then
-                camera.FieldOfView = 140 -- Stretch ekstrim (32:9 super ultrawide)
-                levelDesc.Text = "EXTREME ACTIVE: Stretch ekstrim seperti 32:9"
-            end
-            
-            -- Ubah ViewportSize secara manual untuk efek stretch tambahan
-            -- Ini akan membuat tampilan lebih gepeng
-            local newWidth = viewportSize.X * 1.3
-            local newHeight = viewportSize.Y * 0.9
-            camera.ViewportSize = Vector2.new(newWidth, newHeight)
-            
-            stretchEnabled = true
-            currentStretchLevel = level
-            statusLabel.Text = "✅ Status: LAYAR GEPENG " .. level .. " (ON)"
-            statusCard.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
-            toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            toggleBtn.Text = "ON"
-        end)
-    end
-    
-    -- Fungsi untuk menonaktifkan stretch
-    local function disableStretch()
-        pcall(function()
-            local camera = workspace.CurrentCamera
-            
-            -- Kembalikan ke properti asli
-            if originalCameraProperties.FOV then
-                camera.FieldOfView = originalCameraProperties.FOV
-                camera.ViewportSize = originalCameraProperties.ViewportSize
-            else
-                -- Fallback jika tidak ada data tersimpan
-                camera.FieldOfView = 70
-                camera.ViewportSize = Vector2.new(camera.ViewportSize.X / 1.3, camera.ViewportSize.Y / 0.9)
-            end
-            
-            stretchEnabled = false
-            currentStretchLevel = "OFF"
-            levelDesc.Text = "Pilih level stretch: LOW (16:9), MEDIUM (21:9), EXTREME (32:9)"
-            statusLabel.Text = "⏸️ Status: Layar Normal (OFF)"
-            statusCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-            toggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-            toggleBtn.Text = "OFF"
-            
-            -- Reset warna tombol level
-            level1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            level1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-            level2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            level2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-            level3Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            level3Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        end)
-    end
-    
-    -- Toggle Button function
-    toggleBtn.MouseButton1Click:Connect(function()
-        if stretchEnabled then
-            disableStretch()
-        else
-            -- Jika belum aktif, aktifkan dengan level terakhir atau default MEDIUM
-            if currentStretchLevel ~= "OFF" then
-                enableStretch(currentStretchLevel)
-            else
-                enableStretch("MEDIUM")
-                -- Highlight tombol MEDIUM
-                level2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-                level2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-            end
-        end
-    end)
-    
-    -- Level buttons
-    level1Btn.MouseButton1Click:Connect(function()
-        if stretchEnabled then
-            enableStretch("LOW")
-        else
-            currentStretchLevel = "LOW"
-        end
-        -- Visual feedback
-        level1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-        level1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        level2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        level2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        level3Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        level3Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    end)
-    
-    level2Btn.MouseButton1Click:Connect(function()
-        if stretchEnabled then
-            enableStretch("MEDIUM")
-        else
-            currentStretchLevel = "MEDIUM"
-        end
-        -- Visual feedback
-        level2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-        level2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        level1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        level1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        level3Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        level3Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    end)
-    
-    level3Btn.MouseButton1Click:Connect(function()
-        if stretchEnabled then
-            enableStretch("EXTREME")
-        else
-            currentStretchLevel = "EXTREME"
-        end
-        -- Visual feedback
-        level3Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-        level3Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        level1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        level1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        level2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        level2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    end)
-    
-    -- Info tambahan
-    local infoLabel = Instance.new("TextLabel")
-    infoLabel.Name = "InfoLabel"
-    infoLabel.Size = UDim2.new(1, -20, 0, 40)
-    infoLabel.Position = UDim2.new(0, 10, 0, 410)
-    infoLabel.BackgroundTransparency = 1
-    infoLabel.Text = "⚠️ Catatan: Fitur ini mengubah Field of View camera. Beberapa game mungkin mereset sendiri saat teleport."
-    infoLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
-    infoLabel.TextSize = 11
+    infoLabel.Text = "⚡ INFO:\n- FPS Boost: Hapus efek grafis untuk FPS tinggi\n- Layar Gepeng: Ubah resolusi ke 4:3 stretched (800x600) bikin model karakter gepeng, aim lebih gampang"
+    infoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    infoLabel.TextSize = 12
     infoLabel.Font = Enum.Font.Gotham
     infoLabel.TextWrapped = true
     infoLabel.TextXAlignment = Enum.TextXAlignment.Left
-    infoLabel.Parent = scrollingFrame
+    infoLabel.Parent = infoCard
+    
+    -- VARIABEL UNTUK LAYAR GEPENG
+    local stretchActive = false
+    local originalResolution = nil
+    
+    -- FUNGSI AKTIFKAN LAYAR GEPENG (STRETCH VERTIKAL)
+    local function enableScreenStretch()
+        pcall(function()
+            -- Simpan resolusi asli
+            local userInputService = game:GetService("UserInputService")
+            local camera = workspace.CurrentCamera
+            
+            if not originalResolution then
+                originalResolution = {
+                    ViewportSize = camera.ViewportSize,
+                    FieldOfView = camera.FieldOfView
+                }
+            end
+            
+            -- Ubah ke rasio 4:3 STRETCHED (gepeng)
+            -- Caranya: pake resolusi 4:3 tapi display stretch paksa
+            local currentSize = camera.ViewportSize
+            local newWidth = currentSize.X -- Lebar tetap
+            local newHeight = currentSize.X * 0.75 -- Tinggi 4:3 (lebih pendek dari 16:9)
+            
+            -- Set viewport size lebih pendek vertikal
+            camera.ViewportSize = Vector2.new(newWidth, newHeight)
+            
+            -- Set FOV lebih rendah untuk efek gepeng tambahan
+            camera.FieldOfView = 90
+            
+            stretchActive = true
+            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+            stretchToggleBtn.Text = "ON"
+            stretchStatus.Text = "✅ Status: LAYAR GEPENG AKTIF (4:3 stretched)"
+            stretchStatus.TextColor3 = Color3.fromRGB(0, 255, 0)
+            stretchCard.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
+        end)
+    end
+    
+    -- FUNGSI NONAKTIFKAN LAYAR GEPENG
+    local function disableScreenStretch()
+        pcall(function()
+            local camera = workspace.CurrentCamera
+            
+            if originalResolution then
+                camera.ViewportSize = originalResolution.ViewportSize
+                camera.FieldOfView = originalResolution.FieldOfView
+            else
+                -- Fallback ke default
+                camera.ViewportSize = Vector2.new(camera.ViewportSize.X, camera.ViewportSize.X * 0.5625) -- 16:9
+                camera.FieldOfView = 70
+            end
+            
+            stretchActive = false
+            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+            stretchToggleBtn.Text = "OFF"
+            stretchStatus.Text = "⏸️ Status: Normal (16:9)"
+            stretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
+            stretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+        end)
+    end
+    
+    -- Toggle Button LAYAR GEPENG
+    stretchToggleBtn.MouseButton1Click:Connect(function()
+        if stretchActive then
+            disableScreenStretch()
+        else
+            enableScreenStretch()
+        end
+    end)
 end
 
 -- Fungsi FPS Indicator Extreme
@@ -1125,9 +845,9 @@ end
 function library:DisableScreenStretch()
     pcall(function()
         local camera = workspace.CurrentCamera
-        if originalCameraProperties.FOV then
-            camera.FieldOfView = originalCameraProperties.FOV
+        if originalCameraProperties and originalCameraProperties.ViewportSize then
             camera.ViewportSize = originalCameraProperties.ViewportSize
+            camera.FieldOfView = originalCameraProperties.FieldOfView or 70
         end
         screenStretchEnabled = false
     end)
@@ -1147,7 +867,7 @@ local success, err = pcall(function()
     -- Notifikasi sukses
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "⚡ 191 FPS Extreme ⚡",
-        Text = "Mode 240+ FPS + Layar Gepeng siap digunakan!",
+        Text = "Mode 240+ FPS + Layar Gepeng ON/OFF siap!",
         Duration = 3
     })
 end)
