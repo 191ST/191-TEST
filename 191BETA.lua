@@ -1,6 +1,6 @@
 -- 191 FPS ⚡ Hub Extreme Edition
 -- Script Boost FPS 240+ dengan GUI Solid (No Transparan Abu-abu)
--- + Fitur LAYAR GEPENG (STRETCH VERTIKAL) ON/OFF doang ala pro player
+-- + Fitur LAYAR GEPENG (STRETCH VERTIKAL) ON/OFF doang - TOMBOL SUDAH FIX!
 
 -- GUI Library Extreme
 local library = {}
@@ -8,8 +8,6 @@ local gui = {}
 local fpsIndicator = nil
 local fpsRunning = false
 local uiCorner = 12
-local screenStretchEnabled = false
-local originalCameraProperties = {}
 
 -- Fungsi utama membuat GUI Solid (No Transparan Abu-abu)
 function library:CreateMain()
@@ -19,6 +17,7 @@ function library:CreateMain()
     screenGui.ResetOnSpawn = false
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     screenGui.DisplayOrder = 999
+    screenGui.Parent = game:GetService("CoreGui")
     
     -- Auto detect untuk handphone
     local isMobile = game:GetService("UserInputService").TouchEnabled
@@ -48,23 +47,6 @@ function library:CreateMain()
     stroke.Thickness = 2
     stroke.Transparency = 0 -- SOLID
     stroke.Parent = mainContainer
-    
-    -- Gradient Line Atas
-    local topGradient = Instance.new("Frame")
-    topGradient.Name = "TopGradient"
-    topGradient.Size = UDim2.new(1, 0, 0, 3)
-    topGradient.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    topGradient.BorderSizePixel = 0
-    topGradient.Parent = mainContainer
-    
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 215, 0)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 100, 0)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 215, 0))
-    })
-    gradient.Rotation = 90
-    gradient.Parent = topGradient
     
     -- Title Bar
     local titleBar = Instance.new("Frame")
@@ -109,7 +91,7 @@ function library:CreateMain()
     versionText.Size = UDim2.new(0, 60, 0, 20)
     versionText.Position = UDim2.new(0, 60, 0, 30)
     versionText.BackgroundTransparency = 1
-    versionText.Text = "v4.1"
+    versionText.Text = "v4.2"
     versionText.TextColor3 = Color3.fromRGB(180, 180, 180)
     versionText.TextSize = 12
     versionText.Font = Enum.Font.Gotham
@@ -230,15 +212,21 @@ function library:CreateMain()
     
     -- Close button
     closeBtn.MouseButton1Click:Connect(function()
+        -- Matikan layar gepeng jika aktif sebelum close
+        if _G.stretchActive then
+            local camera = workspace.CurrentCamera
+            if _G.originalViewport then
+                camera.ViewportSize = _G.originalViewport
+            end
+            if _G.originalFOV then
+                camera.FieldOfView = _G.originalFOV
+            end
+        end
         screenGui:Destroy()
         if fpsIndicator then
             fpsIndicator:Destroy()
             fpsIndicator = nil
             fpsRunning = false
-        end
-        -- Matikan layar gepeng jika aktif
-        if screenStretchEnabled then
-            library:DisableScreenStretch()
         end
     end)
     
@@ -365,6 +353,23 @@ function library:CreateBoostTabExtreme(parent)
     btnCorner.CornerRadius = UDim.new(0, 8)
     btnCorner.Parent = level1Btn
     
+    level1Btn.MouseButton1Click:Connect(function()
+        pcall(function()
+            -- Hapus elemen grafis level 1
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("Shader") or v:IsA("Texture") or v:IsA("ImageLabel") or v:IsA("ImageButton") or v:IsA("Decal") then
+                    v:Destroy()
+                end
+            end
+        end)
+        -- Kasih notifikasi
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "FPS BOOST",
+            Text = "Level 1 Basic Boost Aktif!",
+            Duration = 2
+        })
+    end)
+    
     -- Level 2 Card (240+ FPS)
     local level2Card = Instance.new("Frame")
     level2Card.Name = "Level2Card"
@@ -404,7 +409,7 @@ function library:CreateBoostTabExtreme(parent)
     level2Desc.Size = UDim2.new(0.7, -20, 0, 50)
     level2Desc.Position = UDim2.new(0, 15, 0, 40)
     level2Desc.BackgroundTransparency = 1
-    level2Desc.Text = "Remove ALL effects: shaders, shadows, textures, images, particles, decals + Low graphics + Render distance cut + Disable anti-aliasing"
+    level2Desc.Text = "Remove ALL effects: shaders, shadows, textures, images, particles, decals + Low graphics"
     level2Desc.TextColor3 = Color3.fromRGB(200, 200, 150)
     level2Desc.TextSize = 11
     level2Desc.Font = Enum.Font.Gotham
@@ -429,46 +434,6 @@ function library:CreateBoostTabExtreme(parent)
     btn2Corner.CornerRadius = UDim.new(0, 8)
     btn2Corner.Parent = level2Btn
     
-    -- Status
-    local statusFrame = Instance.new("Frame")
-    statusFrame.Name = "StatusFrame"
-    statusFrame.Size = UDim2.new(1, 0, 0, 50)
-    statusFrame.Position = UDim2.new(0, 0, 0, 240)
-    statusFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    statusFrame.BorderSizePixel = 0
-    statusFrame.Parent = scrollingFrame
-    
-    local statusCorner = Instance.new("UICorner")
-    statusCorner.CornerRadius = UDim.new(0, 10)
-    statusCorner.Parent = statusFrame
-    
-    local statusLabel = Instance.new("TextLabel")
-    statusLabel.Name = "StatusLabel"
-    statusLabel.Size = UDim2.new(1, -20, 1, 0)
-    statusLabel.Position = UDim2.new(0, 10, 0, 0)
-    statusLabel.BackgroundTransparency = 1
-    statusLabel.Text = "⏳ Status: Ready to boost"
-    statusLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
-    statusLabel.TextSize = 14
-    statusLabel.Font = Enum.Font.GothamBold
-    statusLabel.TextXAlignment = Enum.TextXAlignment.Left
-    statusLabel.Parent = statusFrame
-    
-    -- Level 1 Boost Function
-    level1Btn.MouseButton1Click:Connect(function()
-        pcall(function()
-            -- Hapus elemen grafis level 1
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("Shader") or v:IsA("Texture") or v:IsA("ImageLabel") or v:IsA("ImageButton") or v:IsA("Decal") then
-                    v:Destroy()
-                end
-            end
-            statusLabel.Text = "✅ Status: Level 1 Active (Basic Boost)"
-            statusFrame.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
-        end)
-    end)
-    
-    -- Level 2 Boost Function (240+ FPS)
     level2Btn.MouseButton1Click:Connect(function()
         pcall(function()
             -- Hapus SEMUA elemen grafis yang memberatkan
@@ -496,14 +461,17 @@ function library:CreateBoostTabExtreme(parent)
             
             -- Matikan anti-aliasing
             renderSettings.AntiAliasingQuality = 0
-            
-            statusLabel.Text = "⚡⚡⚡ Status: EXTREME 240+ FPS ACTIVE ⚡⚡⚡"
-            statusFrame.BackgroundColor3 = Color3.fromRGB(50, 20, 0)
         end)
+        
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "⚡ EXTREME BOOST ⚡",
+            Text = "Mode 240+ FPS Aktif! Semua efek dihapus.",
+            Duration = 3
+        })
     end)
 end
 
--- Fungsi untuk membuat tab Setting (dengan LAYAR GEPENG ON/OFF)
+-- Fungsi untuk membuat tab Setting (dengan LAYAR GEPENG ON/OFF yang FIX)
 function library:CreateSettingTabExtreme(parent)
     local scrollingFrame = Instance.new("ScrollingFrame")
     scrollingFrame.Name = "SettingScrolling"
@@ -586,10 +554,10 @@ function library:CreateSettingTabExtreme(parent)
         end
     end)
     
-    -- LAYAR GEPENG CARD (ON/OFF DOANG)
+    -- LAYAR GEPENG CARD (ON/OFF DOANG) - FIX VERSION
     local stretchCard = Instance.new("Frame")
     stretchCard.Name = "StretchCard"
-    stretchCard.Size = UDim2.new(1, 0, 0, 100)
+    stretchCard.Size = UDim2.new(1, 0, 0, 120)
     stretchCard.Position = UDim2.new(0, 0, 0, 100)
     stretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
     stretchCard.BorderSizePixel = 0
@@ -602,10 +570,10 @@ function library:CreateSettingTabExtreme(parent)
     -- Title
     local stretchTitle = Instance.new("TextLabel")
     stretchTitle.Name = "StretchTitle"
-    stretchTitle.Size = UDim2.new(0.7, -20, 0, 30)
-    stretchTitle.Position = UDim2.new(0, 15, 0, 10)
+    stretchTitle.Size = UDim2.new(1, -20, 0, 30)
+    stretchTitle.Position = UDim2.new(0, 10, 0, 10)
     stretchTitle.BackgroundTransparency = 1
-    stretchTitle.Text = "🖥️ LAYAR GEPENG (STRETCH)"
+    stretchTitle.Text = "🖥️ LAYAR GEPENG (STRETCH 4:3)"
     stretchTitle.TextColor3 = Color3.fromRGB(255, 215, 0)
     stretchTitle.TextSize = 16
     stretchTitle.Font = Enum.Font.GothamBold
@@ -615,8 +583,8 @@ function library:CreateSettingTabExtreme(parent)
     -- Desc (STRETCH VERTIKAL)
     local stretchDesc = Instance.new("TextLabel")
     stretchDesc.Name = "StretchDesc"
-    stretchDesc.Size = UDim2.new(0.7, -20, 0, 50)
-    stretchDesc.Position = UDim2.new(0, 15, 0, 40)
+    stretchDesc.Size = UDim2.new(1, -20, 0, 40)
+    stretchDesc.Position = UDim2.new(0, 10, 0, 40)
     stretchDesc.BackgroundTransparency = 1
     stretchDesc.Text = "Mode 4:3 stretched ala pro player! Membuat tampilan GEPENG (vertikal distretch) untuk aim lebih enak."
     stretchDesc.TextColor3 = Color3.fromRGB(200, 150, 100)
@@ -626,11 +594,11 @@ function library:CreateSettingTabExtreme(parent)
     stretchDesc.TextWrapped = true
     stretchDesc.Parent = stretchCard
     
-    -- Toggle Button LAYAR GEPENG (ON/OFF)
+    -- Toggle Button LAYAR GEPENG (ON/OFF) - PASTI BISA DIPENCET!
     local stretchToggleBtn = Instance.new("TextButton")
     stretchToggleBtn.Name = "StretchToggleBtn"
-    stretchToggleBtn.Size = UDim2.new(0, 70, 0, 40)
-    stretchToggleBtn.Position = UDim2.new(1, -85, 0, 30)
+    stretchToggleBtn.Size = UDim2.new(0, 80, 0, 40)
+    stretchToggleBtn.Position = UDim2.new(1, -95, 0, 70)
     stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     stretchToggleBtn.Text = "OFF"
     stretchToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -646,8 +614,8 @@ function library:CreateSettingTabExtreme(parent)
     -- Status Text
     local stretchStatus = Instance.new("TextLabel")
     stretchStatus.Name = "StretchStatus"
-    stretchStatus.Size = UDim2.new(1, -20, 0, 20)
-    stretchStatus.Position = UDim2.new(0, 10, 0, 75)
+    stretchStatus.Size = UDim2.new(0.7, -20, 0, 20)
+    stretchStatus.Position = UDim2.new(0, 10, 0, 85)
     stretchStatus.BackgroundTransparency = 1
     stretchStatus.Text = "⏸️ Status: Normal (16:9)"
     stretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
@@ -656,11 +624,106 @@ function library:CreateSettingTabExtreme(parent)
     stretchStatus.TextXAlignment = Enum.TextXAlignment.Left
     stretchStatus.Parent = stretchCard
     
+    -- VARIABEL GLOBAL UNTUK LAYAR GEPENG
+    _G.stretchActive = false
+    _G.originalViewport = nil
+    _G.originalFOV = nil
+    
+    -- FUNGSI AKTIFKAN LAYAR GEPENG (STRETCH VERTIKAL) - PASTI JALAN!
+    local function enableScreenStretch()
+        local success, err = pcall(function()
+            local camera = workspace.CurrentCamera
+            if not camera then return end
+            
+            -- Simpan resolusi asli (hanya sekali)
+            if not _G.originalViewport then
+                _G.originalViewport = camera.ViewportSize
+                _G.originalFOV = camera.FieldOfView
+            end
+            
+            -- Hitung resolusi 4:3 (lebih pendek vertikal)
+            local currentWidth = camera.ViewportSize.X
+            local newHeight = currentWidth * 0.75 -- Rasio 4:3 (800x600, 1024x768, dll)
+            
+            -- Terapkan STRETCH dengan mengubah ViewportSize dan FOV
+            camera.ViewportSize = Vector2.new(currentWidth, newHeight)
+            camera.FieldOfView = 85 -- FOV lebih rendah untuk efek gepeng maksimal
+            
+            _G.stretchActive = true
+            
+            -- Update UI
+            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+            stretchToggleBtn.Text = "ON"
+            stretchStatus.Text = "✅ Status: LAYAR GEPENG AKTIF (4:3 stretched)"
+            stretchStatus.TextColor3 = Color3.fromRGB(0, 255, 0)
+            stretchCard.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
+            
+            -- Notifikasi
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "LAYAR GEPENG",
+                Text = "Mode 4:3 stretched AKTIF! Model gepeng.",
+                Duration = 2
+            })
+        end)
+        
+        if not success then
+            warn("Error enable stretch: " .. tostring(err))
+        end
+    end
+    
+    -- FUNGSI NONAKTIFKAN LAYAR GEPENG - PASTI JALAN!
+    local function disableScreenStretch()
+        local success, err = pcall(function()
+            local camera = workspace.CurrentCamera
+            if not camera then return end
+            
+            -- Kembalikan ke ukuran asli
+            if _G.originalViewport then
+                camera.ViewportSize = _G.originalViewport
+            end
+            if _G.originalFOV then
+                camera.FieldOfView = _G.originalFOV
+            else
+                camera.FieldOfView = 70 -- Default fallback
+            end
+            
+            _G.stretchActive = false
+            
+            -- Update UI
+            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+            stretchToggleBtn.Text = "OFF"
+            stretchStatus.Text = "⏸️ Status: Normal (16:9)"
+            stretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
+            stretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+            
+            -- Notifikasi
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "LAYAR GEPENG",
+                Text = "Mode normal kembali.",
+                Duration = 1
+            })
+        end)
+        
+        if not success then
+            warn("Error disable stretch: " .. tostring(err))
+        end
+    end
+    
+    -- EVENT CLICK TOMBOL LAYAR GEPENG - PASTI BISA DIPENCET!
+    stretchToggleBtn.MouseButton1Click:Connect(function()
+        print("Tombol layar gepeng dipencet!") -- Debug
+        if _G.stretchActive then
+            disableScreenStretch()
+        else
+            enableScreenStretch()
+        end
+    end)
+    
     -- Info Card
     local infoCard = Instance.new("Frame")
     infoCard.Name = "InfoCard"
     infoCard.Size = UDim2.new(1, 0, 0, 100)
-    infoCard.Position = UDim2.new(0, 0, 0, 220)
+    infoCard.Position = UDim2.new(0, 0, 0, 240)
     infoCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
     infoCard.BorderSizePixel = 0
     infoCard.Parent = scrollingFrame
@@ -674,84 +737,13 @@ function library:CreateSettingTabExtreme(parent)
     infoLabel.Size = UDim2.new(1, -20, 1, -20)
     infoLabel.Position = UDim2.new(0, 10, 0, 10)
     infoLabel.BackgroundTransparency = 1
-    infoLabel.Text = "⚡ INFO:\n- FPS Boost: Hapus efek grafis untuk FPS tinggi\n- Layar Gepeng: Ubah resolusi ke 4:3 stretched (800x600) bikin model karakter gepeng, aim lebih gampang"
+    infoLabel.Text = "⚡ INFO:\n- FPS Boost: Hapus efek grafis untuk FPS tinggi\n- Layar Gepeng: Ubah ke 4:3 stretched, model karakter GEPENG vertikal, aim lebih gampang ala pro player!"
     infoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     infoLabel.TextSize = 12
     infoLabel.Font = Enum.Font.Gotham
     infoLabel.TextWrapped = true
     infoLabel.TextXAlignment = Enum.TextXAlignment.Left
     infoLabel.Parent = infoCard
-    
-    -- VARIABEL UNTUK LAYAR GEPENG
-    local stretchActive = false
-    local originalResolution = nil
-    
-    -- FUNGSI AKTIFKAN LAYAR GEPENG (STRETCH VERTIKAL)
-    local function enableScreenStretch()
-        pcall(function()
-            -- Simpan resolusi asli
-            local userInputService = game:GetService("UserInputService")
-            local camera = workspace.CurrentCamera
-            
-            if not originalResolution then
-                originalResolution = {
-                    ViewportSize = camera.ViewportSize,
-                    FieldOfView = camera.FieldOfView
-                }
-            end
-            
-            -- Ubah ke rasio 4:3 STRETCHED (gepeng)
-            -- Caranya: pake resolusi 4:3 tapi display stretch paksa
-            local currentSize = camera.ViewportSize
-            local newWidth = currentSize.X -- Lebar tetap
-            local newHeight = currentSize.X * 0.75 -- Tinggi 4:3 (lebih pendek dari 16:9)
-            
-            -- Set viewport size lebih pendek vertikal
-            camera.ViewportSize = Vector2.new(newWidth, newHeight)
-            
-            -- Set FOV lebih rendah untuk efek gepeng tambahan
-            camera.FieldOfView = 90
-            
-            stretchActive = true
-            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            stretchToggleBtn.Text = "ON"
-            stretchStatus.Text = "✅ Status: LAYAR GEPENG AKTIF (4:3 stretched)"
-            stretchStatus.TextColor3 = Color3.fromRGB(0, 255, 0)
-            stretchCard.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
-        end)
-    end
-    
-    -- FUNGSI NONAKTIFKAN LAYAR GEPENG
-    local function disableScreenStretch()
-        pcall(function()
-            local camera = workspace.CurrentCamera
-            
-            if originalResolution then
-                camera.ViewportSize = originalResolution.ViewportSize
-                camera.FieldOfView = originalResolution.FieldOfView
-            else
-                -- Fallback ke default
-                camera.ViewportSize = Vector2.new(camera.ViewportSize.X, camera.ViewportSize.X * 0.5625) -- 16:9
-                camera.FieldOfView = 70
-            end
-            
-            stretchActive = false
-            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-            stretchToggleBtn.Text = "OFF"
-            stretchStatus.Text = "⏸️ Status: Normal (16:9)"
-            stretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-            stretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-        end)
-    end
-    
-    -- Toggle Button LAYAR GEPENG
-    stretchToggleBtn.MouseButton1Click:Connect(function()
-        if stretchActive then
-            disableScreenStretch()
-        else
-            enableScreenStretch()
-        end
-    end)
 end
 
 -- Fungsi FPS Indicator Extreme
@@ -811,7 +803,7 @@ function library:StartFPSIndicatorExtreme()
             local currentTime = tick()
             local timePassed = currentTime - lastIteration
             
-            if timePassed >= 0.5 then -- Update lebih cepat
+            if timePassed >= 0.5 then
                 fps = math.floor((frameCount / timePassed) * 2)
                 fpsLabel.Text = "FPS: " .. fps
                 
@@ -841,18 +833,6 @@ function library:StopFPSIndicator()
     fpsRunning = false
 end
 
--- Fungsi untuk menonaktifkan screen stretch (dipanggil saat close)
-function library:DisableScreenStretch()
-    pcall(function()
-        local camera = workspace.CurrentCamera
-        if originalCameraProperties and originalCameraProperties.ViewportSize then
-            camera.ViewportSize = originalCameraProperties.ViewportSize
-            camera.FieldOfView = originalCameraProperties.FieldOfView or 70
-        end
-        screenStretchEnabled = false
-    end)
-end
-
 -- Eksekusi utama
 local success, err = pcall(function()
     -- Bersihkan GUI lama jika ada
@@ -861,13 +841,12 @@ local success, err = pcall(function()
         oldGui:Destroy()
     end
     
-    local mainGui = library:CreateMain()
-    mainGui.Parent = game:GetService("CoreGui")
+    library:CreateMain()
     
     -- Notifikasi sukses
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "⚡ 191 FPS Extreme ⚡",
-        Text = "Mode 240+ FPS + Layar Gepeng ON/OFF siap!",
+        Text = "Mode 240+ FPS + Layar Gepeng ON/OFF READY!",
         Duration = 3
     })
 end)
