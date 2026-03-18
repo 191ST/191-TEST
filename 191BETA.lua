@@ -1,368 +1,278 @@
--- 191 FPS ⚡ Hub Extreme Edition
--- Script Boost FPS 240+ dengan GUI Solid (No Transparan Abu-abu)
--- + Fitur LAYAR GEPENG (STRETCH VERTIKAL) ON/OFF doang - TOMBOL SUDAH FIX!
+-- 191 FPS HUB EXTREME EDITION
+-- FITUR LAYAR GEPENG 4:3 STRETCHED (ON/OFF) - SUDAH FIX 100%
 
--- GUI Library Extreme
-local library = {}
-local gui = {}
-local fpsIndicator = nil
-local fpsRunning = false
-local uiCorner = 12
+-- GUARD biar ga error
+local Success, Error = pcall(function()
 
--- Fungsi utama membuat GUI Solid (No Transparan Abu-abu)
-function library:CreateMain()
-    -- ScreenGui
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "191FPSHub_Extreme"
-    screenGui.ResetOnSpawn = false
-    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    screenGui.DisplayOrder = 999
-    screenGui.Parent = game:GetService("CoreGui")
-    
-    -- Auto detect untuk handphone
-    local isMobile = game:GetService("UserInputService").TouchEnabled
-    local guiSize = isMobile and UDim2.new(0, 300, 0, 450) or UDim2.new(0, 340, 0, 500)
-    
-    -- Main Container - SOLID HITAM (No Transparan)
-    local mainContainer = Instance.new("Frame")
-    mainContainer.Name = "MainContainer"
-    mainContainer.Size = guiSize
-    mainContainer.Position = UDim2.new(0.5, -guiSize.X.Offset/2, 0.5, -guiSize.Y.Offset/2)
-    mainContainer.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam pekat
-    mainContainer.BackgroundTransparency = 0 -- NO TRANSPARAN
-    mainContainer.BorderSizePixel = 0
-    mainContainer.Active = true
-    mainContainer.Draggable = true
-    mainContainer.ClipsDescendants = true
-    mainContainer.Parent = screenGui
-    
-    -- Rounded Corners
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, uiCorner)
-    corner.Parent = mainContainer
-    
-    -- Stroke (Border) Emas
-    local stroke = Instance.new("UIStroke")
-    stroke.Color = Color3.fromRGB(255, 215, 0) -- Emas
-    stroke.Thickness = 2
-    stroke.Transparency = 0 -- SOLID
-    stroke.Parent = mainContainer
-    
-    -- Title Bar
-    local titleBar = Instance.new("Frame")
-    titleBar.Name = "TitleBar"
-    titleBar.Size = UDim2.new(1, 0, 0, 50)
-    titleBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam
-    titleBar.BorderSizePixel = 0
-    titleBar.Parent = mainContainer
-    
-    -- Icon Title
-    local titleIcon = Instance.new("TextLabel")
-    titleIcon.Name = "TitleIcon"
-    titleIcon.Size = UDim2.new(0, 40, 0, 40)
-    titleIcon.Position = UDim2.new(0, 15, 0, 5)
-    titleIcon.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    titleIcon.Text = "⚡"
-    titleIcon.TextColor3 = Color3.fromRGB(255, 215, 0)
-    titleIcon.TextScaled = true
-    titleIcon.Font = Enum.Font.GothamBold
-    titleIcon.Parent = titleBar
-    
-    local iconCorner = Instance.new("UICorner")
-    iconCorner.CornerRadius = UDim.new(0, 8)
-    iconCorner.Parent = titleIcon
-    
-    -- Title Text
-    local titleText = Instance.new("TextLabel")
-    titleText.Name = "TitleText"
-    titleText.Size = UDim2.new(0, 150, 0, 30)
-    titleText.Position = UDim2.new(0, 60, 0, 10)
-    titleText.BackgroundTransparency = 1
-    titleText.Text = "191 FPS"
-    titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    titleText.TextSize = 20
-    titleText.Font = Enum.Font.GothamBold
-    titleText.TextXAlignment = Enum.TextXAlignment.Left
-    titleText.Parent = titleBar
-    
-    -- Version Text
-    local versionText = Instance.new("TextLabel")
-    versionText.Name = "VersionText"
-    versionText.Size = UDim2.new(0, 60, 0, 20)
-    versionText.Position = UDim2.new(0, 60, 0, 30)
-    versionText.BackgroundTransparency = 1
-    versionText.Text = "v4.2"
-    versionText.TextColor3 = Color3.fromRGB(180, 180, 180)
-    versionText.TextSize = 12
-    versionText.Font = Enum.Font.Gotham
-    versionText.TextXAlignment = Enum.TextXAlignment.Left
-    versionText.Parent = titleBar
-    
-    -- Close Button
-    local closeBtn = Instance.new("TextButton")
-    closeBtn.Name = "CloseBtn"
-    closeBtn.Size = UDim2.new(0, 35, 0, 35)
-    closeBtn.Position = UDim2.new(1, -45, 0, 7.5)
-    closeBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    closeBtn.Text = "✕"
-    closeBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
-    closeBtn.TextSize = 20
-    closeBtn.Font = Enum.Font.GothamBold
-    closeBtn.BorderSizePixel = 0
-    closeBtn.Parent = titleBar
-    
-    local closeCorner = Instance.new("UICorner")
-    closeCorner.CornerRadius = UDim.new(0, 8)
-    closeCorner.Parent = closeBtn
-    
-    -- Tab Buttons Frame
-    local tabFrame = Instance.new("Frame")
-    tabFrame.Name = "TabFrame"
-    tabFrame.Size = UDim2.new(1, -30, 0, 45)
-    tabFrame.Position = UDim2.new(0, 15, 0, 50)
-    tabFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    tabFrame.BorderSizePixel = 0
-    tabFrame.Parent = mainContainer
-    
-    local tabCorner = Instance.new("UICorner")
-    tabCorner.CornerRadius = UDim.new(0, 10)
-    tabCorner.Parent = tabFrame
-    
-    -- Tab 1 Button
-    local tab1Btn = Instance.new("TextButton")
-    tab1Btn.Name = "Tab1Btn"
-    tab1Btn.Size = UDim2.new(0.5, -5, 1, -10)
-    tab1Btn.Position = UDim2.new(0, 5, 0, 5)
-    tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    tab1Btn.Text = "FPS BOOST"
-    tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    tab1Btn.TextSize = 16
-    tab1Btn.Font = Enum.Font.GothamBold
-    tab1Btn.BorderSizePixel = 0
-    tab1Btn.AutoButtonColor = false
-    tab1Btn.Parent = tabFrame
-    
-    local tab1Corner = Instance.new("UICorner")
-    tab1Corner.CornerRadius = UDim.new(0, 8)
-    tab1Corner.Parent = tab1Btn
-    
-    -- Tab 2 Button
-    local tab2Btn = Instance.new("TextButton")
-    tab2Btn.Name = "Tab2Btn"
-    tab2Btn.Size = UDim2.new(0.5, -5, 1, -10)
-    tab2Btn.Position = UDim2.new(0.5, 5, 0, 5)
-    tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Solid
-    tab2Btn.Text = "SETTINGS"
-    tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    tab2Btn.TextSize = 16
-    tab2Btn.Font = Enum.Font.GothamBold
-    tab2Btn.BorderSizePixel = 0
-    tab2Btn.AutoButtonColor = false
-    tab2Btn.Parent = tabFrame
-    
-    local tab2Corner = Instance.new("UICorner")
-    tab2Corner.CornerRadius = UDim.new(0, 8)
-    tab2Corner.Parent = tab2Btn
-    
-    -- Content Frame
-    local contentFrame = Instance.new("Frame")
-    contentFrame.Name = "ContentFrame"
-    contentFrame.Size = UDim2.new(1, -30, 1, -150)
-    contentFrame.Position = UDim2.new(0, 15, 0, 105)
-    contentFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    contentFrame.BorderSizePixel = 0
-    contentFrame.Parent = mainContainer
-    
-    -- Tab 1 Content
-    local tab1Content = Instance.new("Frame")
-    tab1Content.Name = "Tab1Content"
-    tab1Content.Size = UDim2.new(1, 0, 1, 0)
-    tab1Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    tab1Content.BorderSizePixel = 0
-    tab1Content.Visible = true
-    tab1Content.Parent = contentFrame
-    
-    -- Tab 2 Content
-    local tab2Content = Instance.new("Frame")
-    tab2Content.Name = "Tab2Content"
-    tab2Content.Size = UDim2.new(1, 0, 1, 0)
-    tab2Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    tab2Content.BorderSizePixel = 0
-    tab2Content.Visible = false
-    tab2Content.Parent = contentFrame
-    
-    -- Tab switching
-    tab1Btn.MouseButton1Click:Connect(function()
-        tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-        tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        tab1Content.Visible = true
-        tab2Content.Visible = false
-    end)
-    
-    tab2Btn.MouseButton1Click:Connect(function()
-        tab2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-        tab2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-        tab1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        tab1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-        tab2Content.Visible = true
-        tab1Content.Visible = false
-    end)
-    
-    -- Close button
-    closeBtn.MouseButton1Click:Connect(function()
-        -- Matikan layar gepeng jika aktif sebelum close
-        if _G.stretchActive then
-            local camera = workspace.CurrentCamera
-            if _G.originalViewport then
-                camera.ViewportSize = _G.originalViewport
-            end
-            if _G.originalFOV then
-                camera.FieldOfView = _G.originalFOV
-            end
+-- Hapus GUI lama
+local OldGUI = game:GetService("CoreGui"):FindFirstChild("191FPSHub_Extreme")
+if OldGUI then OldGUI:Destroy() end
+
+-- Variable Global
+local FPSIndicator = nil
+local FPSRunning = false
+local StretchActive = false
+local OriginalViewport = nil
+local OriginalFOV = nil
+
+-- ScreenGui Utama
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "191FPSHub_Extreme"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = game:GetService("CoreGui")
+
+-- Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 350, 0, 500)
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -250)
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+-- Rounded Corners
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 15)
+MainCorner.Parent = MainFrame
+
+-- Border
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Color3.fromRGB(255, 215, 0)
+MainStroke.Thickness = 2
+MainStroke.Parent = MainFrame
+
+-- Title Bar
+local TitleBar = Instance.new("Frame")
+TitleBar.Name = "TitleBar"
+TitleBar.Size = UDim2.new(1, 0, 0, 50)
+TitleBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TitleBar.BorderSizePixel = 0
+TitleBar.Parent = MainFrame
+
+-- Title Text
+local TitleText = Instance.new("TextLabel")
+TitleText.Size = UDim2.new(1, -50, 1, 0)
+TitleText.Position = UDim2.new(0, 15, 0, 0)
+TitleText.BackgroundTransparency = 1
+TitleText.Text = "⚡ 191 FPS EXTREME ⚡"
+TitleText.TextColor3 = Color3.fromRGB(255, 215, 0)
+TitleText.TextSize = 20
+TitleText.Font = Enum.Font.GothamBold
+TitleText.TextXAlignment = Enum.TextXAlignment.Left
+TitleText.Parent = TitleBar
+
+-- Close Button
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Size = UDim2.new(0, 35, 0, 35)
+CloseBtn.Position = UDim2.new(1, -45, 0, 7.5)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+CloseBtn.Text = "✕"
+CloseBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
+CloseBtn.TextSize = 20
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.BorderSizePixel = 0
+CloseBtn.Parent = TitleBar
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0, 8)
+CloseCorner.Parent = CloseBtn
+
+-- Tab Buttons Frame
+local TabFrame = Instance.new("Frame")
+TabFrame.Name = "TabFrame"
+TabFrame.Size = UDim2.new(1, -20, 0, 45)
+TabFrame.Position = UDim2.new(0, 10, 0, 55)
+TabFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TabFrame.BorderSizePixel = 0
+TabFrame.Parent = MainFrame
+
+local TabCorner = Instance.new("UICorner")
+TabCorner.CornerRadius = UDim.new(0, 10)
+TabCorner.Parent = TabFrame
+
+-- Tab 1 (FPS BOOST)
+local Tab1Btn = Instance.new("TextButton")
+Tab1Btn.Name = "Tab1Btn"
+Tab1Btn.Size = UDim2.new(0.5, -5, 1, -10)
+Tab1Btn.Position = UDim2.new(0, 5, 0, 5)
+Tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
+Tab1Btn.Text = "FPS BOOST"
+Tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+Tab1Btn.TextSize = 16
+Tab1Btn.Font = Enum.Font.GothamBold
+Tab1Btn.BorderSizePixel = 0
+Tab1Btn.Parent = TabFrame
+
+local Tab1Corner = Instance.new("UICorner")
+Tab1Corner.CornerRadius = UDim.new(0, 8)
+Tab1Corner.Parent = Tab1Btn
+
+-- Tab 2 (SETTINGS)
+local Tab2Btn = Instance.new("TextButton")
+Tab2Btn.Name = "Tab2Btn"
+Tab2Btn.Size = UDim2.new(0.5, -5, 1, -10)
+Tab2Btn.Position = UDim2.new(0.5, 5, 0, 5)
+Tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Tab2Btn.Text = "SETTINGS"
+Tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+Tab2Btn.TextSize = 16
+Tab2Btn.Font = Enum.Font.GothamBold
+Tab2Btn.BorderSizePixel = 0
+Tab2Btn.Parent = TabFrame
+
+local Tab2Corner = Instance.new("UICorner")
+Tab2Corner.CornerRadius = UDim.new(0, 8)
+Tab2Corner.Parent = Tab2Btn
+
+-- Content Frame
+local ContentFrame = Instance.new("Frame")
+ContentFrame.Name = "ContentFrame"
+ContentFrame.Size = UDim2.new(1, -20, 1, -120)
+ContentFrame.Position = UDim2.new(0, 10, 0, 110)
+ContentFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ContentFrame.BorderSizePixel = 0
+ContentFrame.Parent = MainFrame
+
+-- Tab 1 Content (FPS BOOST)
+local Tab1Content = Instance.new("ScrollingFrame")
+Tab1Content.Name = "Tab1Content"
+Tab1Content.Size = UDim2.new(1, 0, 1, 0)
+Tab1Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Tab1Content.BorderSizePixel = 0
+Tab1Content.ScrollBarThickness = 5
+Tab1Content.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
+Tab1Content.CanvasSize = UDim2.new(0, 0, 0, 300)
+Tab1Content.Visible = true
+Tab1Content.Parent = ContentFrame
+
+-- Tab 2 Content (SETTINGS)
+local Tab2Content = Instance.new("ScrollingFrame")
+Tab2Content.Name = "Tab2Content"
+Tab2Content.Size = UDim2.new(1, 0, 1, 0)
+Tab2Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Tab2Content.BorderSizePixel = 0
+Tab2Content.ScrollBarThickness = 5
+Tab2Content.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
+Tab2Content.CanvasSize = UDim2.new(0, 0, 0, 400)
+Tab2Content.Visible = false
+Tab2Content.Parent = ContentFrame
+
+-- TAB SWITCHING
+Tab1Btn.MouseButton1Click:Connect(function()
+    Tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
+    Tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    Tab1Content.Visible = true
+    Tab2Content.Visible = false
+end)
+
+Tab2Btn.MouseButton1Click:Connect(function()
+    Tab2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
+    Tab2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Tab1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Tab1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    Tab2Content.Visible = true
+    Tab1Content.Visible = false
+end)
+
+-- CLOSE BUTTON
+CloseBtn.MouseButton1Click:Connect(function()
+    -- Matikan stretch kalo aktif
+    if StretchActive then
+        local Camera = workspace.CurrentCamera
+        if OriginalViewport then
+            Camera.ViewportSize = OriginalViewport
         end
-        screenGui:Destroy()
-        if fpsIndicator then
-            fpsIndicator:Destroy()
-            fpsIndicator = nil
-            fpsRunning = false
+        if OriginalFOV then
+            Camera.FieldOfView = OriginalFOV
         end
-    end)
-    
-    -- Buat konten untuk Tab 1 (FPS BOOST)
-    self:CreateBoostTabExtreme(tab1Content)
-    
-    -- Buat konten untuk Tab 2 (SETTINGS) - LAYAR GEPENG ada di sini!
-    self:CreateSettingTabExtreme(tab2Content)
-    
-    -- Buat icon floating
-    self:CreateFloatingIconExtreme(screenGui, mainContainer)
-    
-    return screenGui
-end
+    end
+    ScreenGui:Destroy()
+    if FPSIndicator then
+        FPSIndicator:Destroy()
+        FPSIndicator = nil
+    end
+end)
 
--- Fungsi untuk membuat icon floating
-function library:CreateFloatingIconExtreme(parentScreenGui, mainFrame)
-    local icon = Instance.new("TextButton")
-    icon.Name = "FloatingIcon"
-    icon.Size = UDim2.new(0, 60, 0, 60)
-    icon.Position = UDim2.new(0.9, -30, 0.1, 0)
-    icon.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    icon.Text = "⚡"
-    icon.TextColor3 = Color3.fromRGB(255, 215, 0)
-    icon.TextScaled = true
-    icon.Font = Enum.Font.GothamBold
-    icon.BorderSizePixel = 0
-    icon.Draggable = true
-    icon.Parent = parentScreenGui
+-- ==================== TAB 1: FPS BOOST ====================
+local function CreateFPSCards()
+    local YPos = 10
     
-    local iconCorner = Instance.new("UICorner")
-    iconCorner.CornerRadius = UDim.new(0, 15)
-    iconCorner.Parent = icon
+    -- Title
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Size = UDim2.new(1, -20, 0, 30)
+    TitleLabel.Position = UDim2.new(0, 10, 0, YPos)
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Text = "⚡ PILIH LEVEL BOOST ⚡"
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
+    TitleLabel.TextSize = 16
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Parent = Tab1Content
     
-    local iconStroke = Instance.new("UIStroke")
-    iconStroke.Color = Color3.fromRGB(255, 215, 0)
-    iconStroke.Thickness = 2
-    iconStroke.Transparency = 0 -- Solid
-    iconStroke.Parent = icon
-    
-    icon.MouseButton1Click:Connect(function()
-        mainFrame.Visible = not mainFrame.Visible
-    end)
-end
-
--- Fungsi untuk membuat tab Boost Extreme (240+ FPS)
-function library:CreateBoostTabExtreme(parent)
-    -- Scrolling Frame
-    local scrollingFrame = Instance.new("ScrollingFrame")
-    scrollingFrame.Name = "BoostScrolling"
-    scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-    scrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    scrollingFrame.BorderSizePixel = 0
-    scrollingFrame.ScrollBarThickness = 4
-    scrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
-    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 350)
-    scrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    scrollingFrame.Parent = parent
-    
-    -- Label Boost Level
-    local levelLabel = Instance.new("TextLabel")
-    levelLabel.Name = "LevelLabel"
-    levelLabel.Size = UDim2.new(1, 0, 0, 30)
-    levelLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    levelLabel.Text = "⚡ PILIH LEVEL BOOST ⚡"
-    levelLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
-    levelLabel.TextSize = 16
-    levelLabel.Font = Enum.Font.GothamBold
-    levelLabel.Parent = scrollingFrame
+    YPos = YPos + 40
     
     -- Level 1 Card
-    local level1Card = Instance.new("Frame")
-    level1Card.Name = "Level1Card"
-    level1Card.Size = UDim2.new(1, 0, 0, 80)
-    level1Card.Position = UDim2.new(0, 0, 0, 40)
-    level1Card.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    level1Card.BorderSizePixel = 0
-    level1Card.Parent = scrollingFrame
+    local Card1 = Instance.new("Frame")
+    Card1.Size = UDim2.new(1, -20, 0, 90)
+    Card1.Position = UDim2.new(0, 10, 0, YPos)
+    Card1.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    Card1.BorderSizePixel = 0
+    Card1.Parent = Tab1Content
     
-    local cardCorner = Instance.new("UICorner")
-    cardCorner.CornerRadius = UDim.new(0, 12)
-    cardCorner.Parent = level1Card
+    local Card1Corner = Instance.new("UICorner")
+    Card1Corner.CornerRadius = UDim.new(0, 12)
+    Card1Corner.Parent = Card1
     
-    -- Level 1 Title
-    local level1Title = Instance.new("TextLabel")
-    level1Title.Name = "Level1Title"
-    level1Title.Size = UDim2.new(1, -20, 0, 30)
-    level1Title.Position = UDim2.new(0, 15, 0, 10)
-    level1Title.BackgroundTransparency = 1
-    level1Title.Text = "LEVEL 1 - BASIC BOOST"
-    level1Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    level1Title.TextSize = 16
-    level1Title.Font = Enum.Font.GothamBold
-    level1Title.TextXAlignment = Enum.TextXAlignment.Left
-    level1Title.Parent = level1Card
+    local Card1Title = Instance.new("TextLabel")
+    Card1Title.Size = UDim2.new(1, -20, 0, 30)
+    Card1Title.Position = UDim2.new(0, 10, 0, 10)
+    Card1Title.BackgroundTransparency = 1
+    Card1Title.Text = "LEVEL 1 - BASIC BOOST"
+    Card1Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Card1Title.TextSize = 16
+    Card1Title.Font = Enum.Font.GothamBold
+    Card1Title.TextXAlignment = Enum.TextXAlignment.Left
+    Card1Title.Parent = Card1
     
-    -- Level 1 Desc
-    local level1Desc = Instance.new("TextLabel")
-    level1Desc.Name = "Level1Desc"
-    level1Desc.Size = UDim2.new(0.7, -20, 0, 30)
-    level1Desc.Position = UDim2.new(0, 15, 0, 40)
-    level1Desc.BackgroundTransparency = 1
-    level1Desc.Text = "Remove shaders, textures, images"
-    level1Desc.TextColor3 = Color3.fromRGB(150, 150, 150)
-    level1Desc.TextSize = 12
-    level1Desc.Font = Enum.Font.Gotham
-    level1Desc.TextXAlignment = Enum.TextXAlignment.Left
-    level1Desc.Parent = level1Card
+    local Card1Desc = Instance.new("TextLabel")
+    Card1Desc.Size = UDim2.new(0.7, -10, 0, 40)
+    Card1Desc.Position = UDim2.new(0, 10, 0, 40)
+    Card1Desc.BackgroundTransparency = 1
+    Card1Desc.Text = "Hapus shaders, textures, dan images"
+    Card1Desc.TextColor3 = Color3.fromRGB(150, 150, 150)
+    Card1Desc.TextSize = 12
+    Card1Desc.Font = Enum.Font.Gotham
+    Card1Desc.TextXAlignment = Enum.TextXAlignment.Left
+    Card1Desc.TextWrapped = true
+    Card1Desc.Parent = Card1
     
-    -- Level 1 Button
-    local level1Btn = Instance.new("TextButton")
-    level1Btn.Name = "Level1Btn"
-    level1Btn.Size = UDim2.new(0, 80, 0, 40)
-    level1Btn.Position = UDim2.new(1, -95, 0, 20)
-    level1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    level1Btn.Text = "BOOST"
-    level1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    level1Btn.TextSize = 14
-    level1Btn.Font = Enum.Font.GothamBold
-    level1Btn.BorderSizePixel = 0
-    level1Btn.Parent = level1Card
+    local Card1Btn = Instance.new("TextButton")
+    Card1Btn.Size = UDim2.new(0, 80, 0, 40)
+    Card1Btn.Position = UDim2.new(1, -95, 0, 25)
+    Card1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
+    Card1Btn.Text = "BOOST"
+    Card1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Card1Btn.TextSize = 14
+    Card1Btn.Font = Enum.Font.GothamBold
+    Card1Btn.BorderSizePixel = 0
+    Card1Btn.Parent = Card1
     
-    local btnCorner = Instance.new("UICorner")
-    btnCorner.CornerRadius = UDim.new(0, 8)
-    btnCorner.Parent = level1Btn
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 8)
+    BtnCorner.Parent = Card1Btn
     
-    level1Btn.MouseButton1Click:Connect(function()
+    Card1Btn.MouseButton1Click:Connect(function()
         pcall(function()
-            -- Hapus elemen grafis level 1
             for _, v in pairs(workspace:GetDescendants()) do
                 if v:IsA("Shader") or v:IsA("Texture") or v:IsA("ImageLabel") or v:IsA("ImageButton") or v:IsA("Decal") then
                     v:Destroy()
                 end
             end
         end)
-        -- Kasih notifikasi
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "FPS BOOST",
             Text = "Level 1 Basic Boost Aktif!",
@@ -370,97 +280,81 @@ function library:CreateBoostTabExtreme(parent)
         })
     end)
     
-    -- Level 2 Card (240+ FPS)
-    local level2Card = Instance.new("Frame")
-    level2Card.Name = "Level2Card"
-    level2Card.Size = UDim2.new(1, 0, 0, 100)
-    level2Card.Position = UDim2.new(0, 0, 0, 130)
-    level2Card.BackgroundColor3 = Color3.fromRGB(30, 20, 0) -- Solid
-    level2Card.BorderSizePixel = 0
-    level2Card.Parent = scrollingFrame
+    YPos = YPos + 100
     
-    local card2Corner = Instance.new("UICorner")
-    card2Corner.CornerRadius = UDim.new(0, 12)
-    card2Corner.Parent = level2Card
+    -- Level 2 Card
+    local Card2 = Instance.new("Frame")
+    Card2.Size = UDim2.new(1, -20, 0, 110)
+    Card2.Position = UDim2.new(0, 10, 0, YPos)
+    Card2.BackgroundColor3 = Color3.fromRGB(30, 20, 0)
+    Card2.BorderSizePixel = 0
+    Card2.Parent = Tab1Content
     
-    -- Level 2 Glow (Stroke emas dobel)
-    local stroke2 = Instance.new("UIStroke")
-    stroke2.Color = Color3.fromRGB(255, 215, 0)
-    stroke2.Thickness = 2
-    stroke2.Transparency = 0
-    stroke2.Parent = level2Card
+    local Card2Corner = Instance.new("UICorner")
+    Card2Corner.CornerRadius = UDim.new(0, 12)
+    Card2Corner.Parent = Card2
     
-    -- Level 2 Title
-    local level2Title = Instance.new("TextLabel")
-    level2Title.Name = "Level2Title"
-    level2Title.Size = UDim2.new(1, -20, 0, 30)
-    level2Title.Position = UDim2.new(0, 15, 0, 10)
-    level2Title.BackgroundTransparency = 1
-    level2Title.Text = "⚡ LEVEL 2 - EXTREME 240+ FPS ⚡"
-    level2Title.TextColor3 = Color3.fromRGB(255, 215, 0)
-    level2Title.TextSize = 16
-    level2Title.Font = Enum.Font.GothamBold
-    level2Title.TextXAlignment = Enum.TextXAlignment.Left
-    level2Title.Parent = level2Card
+    local Card2Stroke = Instance.new("UIStroke")
+    Card2Stroke.Color = Color3.fromRGB(255, 215, 0)
+    Card2Stroke.Thickness = 2
+    Card2Stroke.Parent = Card2
     
-    -- Level 2 Desc
-    local level2Desc = Instance.new("TextLabel")
-    level2Desc.Name = "Level2Desc"
-    level2Desc.Size = UDim2.new(0.7, -20, 0, 50)
-    level2Desc.Position = UDim2.new(0, 15, 0, 40)
-    level2Desc.BackgroundTransparency = 1
-    level2Desc.Text = "Remove ALL effects: shaders, shadows, textures, images, particles, decals + Low graphics"
-    level2Desc.TextColor3 = Color3.fromRGB(200, 200, 150)
-    level2Desc.TextSize = 11
-    level2Desc.Font = Enum.Font.Gotham
-    level2Desc.TextXAlignment = Enum.TextXAlignment.Left
-    level2Desc.TextWrapped = true
-    level2Desc.Parent = level2Card
+    local Card2Title = Instance.new("TextLabel")
+    Card2Title.Size = UDim2.new(1, -20, 0, 30)
+    Card2Title.Position = UDim2.new(0, 10, 0, 10)
+    Card2Title.BackgroundTransparency = 1
+    Card2Title.Text = "⚡ LEVEL 2 - EXTREME 240+ FPS ⚡"
+    Card2Title.TextColor3 = Color3.fromRGB(255, 215, 0)
+    Card2Title.TextSize = 16
+    Card2Title.Font = Enum.Font.GothamBold
+    Card2Title.TextXAlignment = Enum.TextXAlignment.Left
+    Card2Title.Parent = Card2
     
-    -- Level 2 Button
-    local level2Btn = Instance.new("TextButton")
-    level2Btn.Name = "Level2Btn"
-    level2Btn.Size = UDim2.new(0, 80, 0, 40)
-    level2Btn.Position = UDim2.new(1, -95, 0, 30)
-    level2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    level2Btn.Text = "240+"
-    level2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    level2Btn.TextSize = 14
-    level2Btn.Font = Enum.Font.GothamBold
-    level2Btn.BorderSizePixel = 0
-    level2Btn.Parent = level2Card
+    local Card2Desc = Instance.new("TextLabel")
+    Card2Desc.Size = UDim2.new(0.7, -10, 0, 50)
+    Card2Desc.Position = UDim2.new(0, 10, 0, 40)
+    Card2Desc.BackgroundTransparency = 1
+    Card2Desc.Text = "Hapus SEMUA efek: shaders, shadows, particles, decals, bloom, blur + Low graphics + Anti-aliasing OFF"
+    Card2Desc.TextColor3 = Color3.fromRGB(200, 200, 150)
+    Card2Desc.TextSize = 11
+    Card2Desc.Font = Enum.Font.Gotham
+    Card2Desc.TextXAlignment = Enum.TextXAlignment.Left
+    Card2Desc.TextWrapped = true
+    Card2Desc.Parent = Card2
     
-    local btn2Corner = Instance.new("UICorner")
-    btn2Corner.CornerRadius = UDim.new(0, 8)
-    btn2Corner.Parent = level2Btn
+    local Card2Btn = Instance.new("TextButton")
+    Card2Btn.Size = UDim2.new(0, 80, 0, 40)
+    Card2Btn.Position = UDim2.new(1, -95, 0, 35)
+    Card2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
+    Card2Btn.Text = "240+"
+    Card2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Card2Btn.TextSize = 14
+    Card2Btn.Font = Enum.Font.GothamBold
+    Card2Btn.BorderSizePixel = 0
+    Card2Btn.Parent = Card2
     
-    level2Btn.MouseButton1Click:Connect(function()
+    local Btn2Corner = Instance.new("UICorner")
+    Btn2Corner.CornerRadius = UDim.new(0, 8)
+    Btn2Corner.Parent = Card2Btn
+    
+    Card2Btn.MouseButton1Click:Connect(function()
         pcall(function()
-            -- Hapus SEMUA elemen grafis yang memberatkan
             for _, v in pairs(workspace:GetDescendants()) do
                 if v:IsA("Shader") or v:IsA("Texture") or v:IsA("ImageLabel") or v:IsA("ImageButton") or v:IsA("Decal") or v:IsA("Shadow") or v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("SunRaysEffect") or v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Beam") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then
                     v:Destroy()
                 end
             end
             
-            -- Setting grafis ke PALING RENDAH
-            local lighting = game:GetService("Lighting")
-            lighting.Brightness = 1
-            lighting.GlobalShadows = false
-            lighting.FogEnd = 1e10
-            lighting.FogStart = 1e10
-            lighting.Outlines = false
-            lighting.Ambient = Color3.fromRGB(128, 128, 128)
-            lighting.Brightness = 2
+            local Lighting = game:GetService("Lighting")
+            Lighting.Brightness = 1
+            Lighting.GlobalShadows = false
+            Lighting.FogEnd = 1e10
+            Lighting.Outlines = false
             
-            -- Render settings ke minimum
-            local renderSettings = settings():GetService("RenderSettings")
-            renderSettings.QualityLevel = 1
-            renderSettings.MaterialQuality = Enum.MaterialQuality.Low
-            renderSettings.RenderQuality = Enum.RenderQuality.Low
-            
-            -- Matikan anti-aliasing
-            renderSettings.AntiAliasingQuality = 0
+            local RenderSettings = settings():GetService("RenderSettings")
+            RenderSettings.QualityLevel = 1
+            RenderSettings.MaterialQuality = Enum.MaterialQuality.Low
+            RenderSettings.AntiAliasingQuality = 0
         end)
         
         game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -471,391 +365,366 @@ function library:CreateBoostTabExtreme(parent)
     end)
 end
 
--- Fungsi untuk membuat tab Setting (dengan LAYAR GEPENG ON/OFF yang FIX)
-function library:CreateSettingTabExtreme(parent)
-    local scrollingFrame = Instance.new("ScrollingFrame")
-    scrollingFrame.Name = "SettingScrolling"
-    scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-    scrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    scrollingFrame.BorderSizePixel = 0
-    scrollingFrame.ScrollBarThickness = 4
-    scrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
-    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 350)
-    scrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    scrollingFrame.Parent = parent
+-- ==================== TAB 2: SETTINGS (LAYAR GEPENG FIX) ====================
+local function CreateSettingsTab()
+    local YPos = 10
     
-    -- FPS Indicator Card
-    local fpsCard = Instance.new("Frame")
-    fpsCard.Name = "FPSCard"
-    fpsCard.Size = UDim2.new(1, 0, 0, 80)
-    fpsCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    fpsCard.BorderSizePixel = 0
-    fpsCard.Parent = scrollingFrame
+    -- FPS INDICATOR CARD
+    local FPSCard = Instance.new("Frame")
+    FPSCard.Size = UDim2.new(1, -20, 0, 90)
+    FPSCard.Position = UDim2.new(0, 10, 0, YPos)
+    FPSCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    FPSCard.BorderSizePixel = 0
+    FPSCard.Parent = Tab2Content
     
-    local cardCorner = Instance.new("UICorner")
-    cardCorner.CornerRadius = UDim.new(0, 12)
-    cardCorner.Parent = fpsCard
+    local FPSCorner = Instance.new("UICorner")
+    FPSCorner.CornerRadius = UDim.new(0, 12)
+    FPSCorner.Parent = FPSCard
     
-    -- Title
-    local fpsTitle = Instance.new("TextLabel")
-    fpsTitle.Name = "FPSTitle"
-    fpsTitle.Size = UDim2.new(0.7, -20, 0, 30)
-    fpsTitle.Position = UDim2.new(0, 15, 0, 10)
-    fpsTitle.BackgroundTransparency = 1
-    fpsTitle.Text = "FPS INDICATOR"
-    fpsTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    fpsTitle.TextSize = 16
-    fpsTitle.Font = Enum.Font.GothamBold
-    fpsTitle.TextXAlignment = Enum.TextXAlignment.Left
-    fpsTitle.Parent = fpsCard
+    local FPSTitle = Instance.new("TextLabel")
+    FPSTitle.Size = UDim2.new(1, -20, 0, 30)
+    FPSTitle.Position = UDim2.new(0, 10, 0, 10)
+    FPSTitle.BackgroundTransparency = 1
+    FPSTitle.Text = "FPS INDICATOR"
+    FPSTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FPSTitle.TextSize = 16
+    FPSTitle.Font = Enum.Font.GothamBold
+    FPSTitle.TextXAlignment = Enum.TextXAlignment.Left
+    FPSTitle.Parent = FPSCard
     
-    -- Desc
-    local fpsDesc = Instance.new("TextLabel")
-    fpsDesc.Name = "FPSDesc"
-    fpsDesc.Size = UDim2.new(0.7, -20, 0, 30)
-    fpsDesc.Position = UDim2.new(0, 15, 0, 40)
-    fpsDesc.BackgroundTransparency = 1
-    fpsDesc.Text = "Show real-time FPS counter"
-    fpsDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
-    fpsDesc.TextSize = 12
-    fpsDesc.Font = Enum.Font.Gotham
-    fpsDesc.TextXAlignment = Enum.TextXAlignment.Left
-    fpsDesc.Parent = fpsCard
+    local FPSDesc = Instance.new("TextLabel")
+    FPSDesc.Size = UDim2.new(0.7, -10, 0, 30)
+    FPSDesc.Position = UDim2.new(0, 10, 0, 40)
+    FPSDesc.BackgroundTransparency = 1
+    FPSDesc.Text = "Tampilkan FPS real-time"
+    FPSDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
+    FPSDesc.TextSize = 12
+    FPSDesc.Font = Enum.Font.Gotham
+    FPSDesc.TextXAlignment = Enum.TextXAlignment.Left
+    FPSDesc.Parent = FPSCard
     
-    -- Toggle Button (ON/OFF)
-    local fpsToggleBtn = Instance.new("TextButton")
-    fpsToggleBtn.Name = "FpsToggleBtn"
-    fpsToggleBtn.Size = UDim2.new(0, 70, 0, 40)
-    fpsToggleBtn.Position = UDim2.new(1, -85, 0, 20)
-    fpsToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    fpsToggleBtn.Text = "OFF"
-    fpsToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    fpsToggleBtn.TextSize = 16
-    fpsToggleBtn.Font = Enum.Font.GothamBold
-    fpsToggleBtn.BorderSizePixel = 0
-    fpsToggleBtn.Parent = fpsCard
+    local FPSToggle = Instance.new("TextButton")
+    FPSToggle.Size = UDim2.new(0, 70, 0, 40)
+    FPSToggle.Position = UDim2.new(1, -85, 0, 25)
+    FPSToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    FPSToggle.Text = "OFF"
+    FPSToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FPSToggle.TextSize = 16
+    FPSToggle.Font = Enum.Font.GothamBold
+    FPSToggle.BorderSizePixel = 0
+    FPSToggle.Parent = FPSCard
     
-    local fpsToggleCorner = Instance.new("UICorner")
-    fpsToggleCorner.CornerRadius = UDim.new(0, 8)
-    fpsToggleCorner.Parent = fpsToggleBtn
+    local ToggleCorner = Instance.new("UICorner")
+    ToggleCorner.CornerRadius = UDim.new(0, 8)
+    ToggleCorner.Parent = FPSToggle
     
-    local fpsEnabled = false
+    local FPSEnabled = false
     
-    fpsToggleBtn.MouseButton1Click:Connect(function()
-        fpsEnabled = not fpsEnabled
-        if fpsEnabled then
-            fpsToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            fpsToggleBtn.Text = "ON"
-            self:StartFPSIndicatorExtreme()
-        else
-            fpsToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-            fpsToggleBtn.Text = "OFF"
-            self:StopFPSIndicator()
-        end
-    end)
-    
-    -- LAYAR GEPENG CARD (ON/OFF DOANG) - FIX VERSION
-    local stretchCard = Instance.new("Frame")
-    stretchCard.Name = "StretchCard"
-    stretchCard.Size = UDim2.new(1, 0, 0, 120)
-    stretchCard.Position = UDim2.new(0, 0, 0, 100)
-    stretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    stretchCard.BorderSizePixel = 0
-    stretchCard.Parent = scrollingFrame
-    
-    local stretchCorner = Instance.new("UICorner")
-    stretchCorner.CornerRadius = UDim.new(0, 12)
-    stretchCorner.Parent = stretchCard
-    
-    -- Title
-    local stretchTitle = Instance.new("TextLabel")
-    stretchTitle.Name = "StretchTitle"
-    stretchTitle.Size = UDim2.new(1, -20, 0, 30)
-    stretchTitle.Position = UDim2.new(0, 10, 0, 10)
-    stretchTitle.BackgroundTransparency = 1
-    stretchTitle.Text = "🖥️ LAYAR GEPENG (STRETCH 4:3)"
-    stretchTitle.TextColor3 = Color3.fromRGB(255, 215, 0)
-    stretchTitle.TextSize = 16
-    stretchTitle.Font = Enum.Font.GothamBold
-    stretchTitle.TextXAlignment = Enum.TextXAlignment.Left
-    stretchTitle.Parent = stretchCard
-    
-    -- Desc (STRETCH VERTIKAL)
-    local stretchDesc = Instance.new("TextLabel")
-    stretchDesc.Name = "StretchDesc"
-    stretchDesc.Size = UDim2.new(1, -20, 0, 40)
-    stretchDesc.Position = UDim2.new(0, 10, 0, 40)
-    stretchDesc.BackgroundTransparency = 1
-    stretchDesc.Text = "Mode 4:3 stretched ala pro player! Membuat tampilan GEPENG (vertikal distretch) untuk aim lebih enak."
-    stretchDesc.TextColor3 = Color3.fromRGB(200, 150, 100)
-    stretchDesc.TextSize = 11
-    stretchDesc.Font = Enum.Font.Gotham
-    stretchDesc.TextXAlignment = Enum.TextXAlignment.Left
-    stretchDesc.TextWrapped = true
-    stretchDesc.Parent = stretchCard
-    
-    -- Toggle Button LAYAR GEPENG (ON/OFF) - PASTI BISA DIPENCET!
-    local stretchToggleBtn = Instance.new("TextButton")
-    stretchToggleBtn.Name = "StretchToggleBtn"
-    stretchToggleBtn.Size = UDim2.new(0, 80, 0, 40)
-    stretchToggleBtn.Position = UDim2.new(1, -95, 0, 70)
-    stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    stretchToggleBtn.Text = "OFF"
-    stretchToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    stretchToggleBtn.TextSize = 16
-    stretchToggleBtn.Font = Enum.Font.GothamBold
-    stretchToggleBtn.BorderSizePixel = 0
-    stretchToggleBtn.Parent = stretchCard
-    
-    local stretchToggleCorner = Instance.new("UICorner")
-    stretchToggleCorner.CornerRadius = UDim.new(0, 8)
-    stretchToggleCorner.Parent = stretchToggleBtn
-    
-    -- Status Text
-    local stretchStatus = Instance.new("TextLabel")
-    stretchStatus.Name = "StretchStatus"
-    stretchStatus.Size = UDim2.new(0.7, -20, 0, 20)
-    stretchStatus.Position = UDim2.new(0, 10, 0, 85)
-    stretchStatus.BackgroundTransparency = 1
-    stretchStatus.Text = "⏸️ Status: Normal (16:9)"
-    stretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-    stretchStatus.TextSize = 11
-    stretchStatus.Font = Enum.Font.Gotham
-    stretchStatus.TextXAlignment = Enum.TextXAlignment.Left
-    stretchStatus.Parent = stretchCard
-    
-    -- VARIABEL GLOBAL UNTUK LAYAR GEPENG
-    _G.stretchActive = false
-    _G.originalViewport = nil
-    _G.originalFOV = nil
-    
-    -- FUNGSI AKTIFKAN LAYAR GEPENG (STRETCH VERTIKAL) - PASTI JALAN!
-    local function enableScreenStretch()
-        local success, err = pcall(function()
-            local camera = workspace.CurrentCamera
-            if not camera then return end
-            
-            -- Simpan resolusi asli (hanya sekali)
-            if not _G.originalViewport then
-                _G.originalViewport = camera.ViewportSize
-                _G.originalFOV = camera.FieldOfView
-            end
-            
-            -- Hitung resolusi 4:3 (lebih pendek vertikal)
-            local currentWidth = camera.ViewportSize.X
-            local newHeight = currentWidth * 0.75 -- Rasio 4:3 (800x600, 1024x768, dll)
-            
-            -- Terapkan STRETCH dengan mengubah ViewportSize dan FOV
-            camera.ViewportSize = Vector2.new(currentWidth, newHeight)
-            camera.FieldOfView = 85 -- FOV lebih rendah untuk efek gepeng maksimal
-            
-            _G.stretchActive = true
-            
-            -- Update UI
-            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            stretchToggleBtn.Text = "ON"
-            stretchStatus.Text = "✅ Status: LAYAR GEPENG AKTIF (4:3 stretched)"
-            stretchStatus.TextColor3 = Color3.fromRGB(0, 255, 0)
-            stretchCard.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
-            
-            -- Notifikasi
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "LAYAR GEPENG",
-                Text = "Mode 4:3 stretched AKTIF! Model gepeng.",
-                Duration = 2
-            })
-        end)
+    -- Fungsi FPS Indicator
+    local function StartFPSIndicator()
+        if FPSIndicator then FPSIndicator:Destroy() end
         
-        if not success then
-            warn("Error enable stretch: " .. tostring(err))
-        end
-    end
-    
-    -- FUNGSI NONAKTIFKAN LAYAR GEPENG - PASTI JALAN!
-    local function disableScreenStretch()
-        local success, err = pcall(function()
-            local camera = workspace.CurrentCamera
-            if not camera then return end
-            
-            -- Kembalikan ke ukuran asli
-            if _G.originalViewport then
-                camera.ViewportSize = _G.originalViewport
-            end
-            if _G.originalFOV then
-                camera.FieldOfView = _G.originalFOV
-            else
-                camera.FieldOfView = 70 -- Default fallback
-            end
-            
-            _G.stretchActive = false
-            
-            -- Update UI
-            stretchToggleBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-            stretchToggleBtn.Text = "OFF"
-            stretchStatus.Text = "⏸️ Status: Normal (16:9)"
-            stretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-            stretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-            
-            -- Notifikasi
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "LAYAR GEPENG",
-                Text = "Mode normal kembali.",
-                Duration = 1
-            })
-        end)
+        local FPSGui = Instance.new("ScreenGui")
+        FPSGui.Name = "FPSIndicator"
+        FPSGui.ResetOnSpawn = false
+        FPSGui.Parent = game:GetService("CoreGui")
         
-        if not success then
-            warn("Error disable stretch: " .. tostring(err))
-        end
-    end
-    
-    -- EVENT CLICK TOMBOL LAYAR GEPENG - PASTI BISA DIPENCET!
-    stretchToggleBtn.MouseButton1Click:Connect(function()
-        print("Tombol layar gepeng dipencet!") -- Debug
-        if _G.stretchActive then
-            disableScreenStretch()
-        else
-            enableScreenStretch()
-        end
-    end)
-    
-    -- Info Card
-    local infoCard = Instance.new("Frame")
-    infoCard.Name = "InfoCard"
-    infoCard.Size = UDim2.new(1, 0, 0, 100)
-    infoCard.Position = UDim2.new(0, 0, 0, 240)
-    infoCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Solid
-    infoCard.BorderSizePixel = 0
-    infoCard.Parent = scrollingFrame
-    
-    local infoCorner = Instance.new("UICorner")
-    infoCorner.CornerRadius = UDim.new(0, 12)
-    infoCorner.Parent = infoCard
-    
-    local infoLabel = Instance.new("TextLabel")
-    infoLabel.Name = "InfoLabel"
-    infoLabel.Size = UDim2.new(1, -20, 1, -20)
-    infoLabel.Position = UDim2.new(0, 10, 0, 10)
-    infoLabel.BackgroundTransparency = 1
-    infoLabel.Text = "⚡ INFO:\n- FPS Boost: Hapus efek grafis untuk FPS tinggi\n- Layar Gepeng: Ubah ke 4:3 stretched, model karakter GEPENG vertikal, aim lebih gampang ala pro player!"
-    infoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-    infoLabel.TextSize = 12
-    infoLabel.Font = Enum.Font.Gotham
-    infoLabel.TextWrapped = true
-    infoLabel.TextXAlignment = Enum.TextXAlignment.Left
-    infoLabel.Parent = infoCard
-end
-
--- Fungsi FPS Indicator Extreme
-function library:StartFPSIndicatorExtreme()
-    if fpsIndicator then
-        fpsIndicator:Destroy()
-    end
-    
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "FPSIndicator_Extreme"
-    screenGui.ResetOnSpawn = false
-    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    screenGui.DisplayOrder = 1000
-    screenGui.Parent = game:GetService("CoreGui")
-    
-    local frame = Instance.new("Frame")
-    frame.Name = "FPSFrame"
-    frame.Size = UDim2.new(0, 100, 0, 40)
-    frame.Position = UDim2.new(0, 20, 0, 60)
-    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Hitam solid
-    frame.BorderSizePixel = 0
-    frame.Active = true
-    frame.Draggable = true
-    frame.Parent = screenGui
-    
-    local frameCorner = Instance.new("UICorner")
-    frameCorner.CornerRadius = UDim.new(0, 12)
-    frameCorner.Parent = frame
-    
-    local frameStroke = Instance.new("UIStroke")
-    frameStroke.Color = Color3.fromRGB(255, 215, 0)
-    frameStroke.Thickness = 2
-    frameStroke.Transparency = 0
-    frameStroke.Parent = frame
-    
-    local fpsLabel = Instance.new("TextLabel")
-    fpsLabel.Name = "FPSLabel"
-    fpsLabel.Size = UDim2.new(1, -10, 1, 0)
-    fpsLabel.Position = UDim2.new(0, 5, 0, 0)
-    fpsLabel.BackgroundTransparency = 1
-    fpsLabel.Text = "FPS: 60"
-    fpsLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-    fpsLabel.TextSize = 18
-    fpsLabel.Font = Enum.Font.GothamBold
-    fpsLabel.Parent = frame
-    
-    fpsIndicator = screenGui
-    fpsRunning = true
-    
-    local lastIteration = tick()
-    local frameCount = 0
-    local fps = 60
-    
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if fpsRunning and fpsIndicator and fpsIndicator.Parent then
-            frameCount = frameCount + 1
-            local currentTime = tick()
-            local timePassed = currentTime - lastIteration
-            
-            if timePassed >= 0.5 then
-                fps = math.floor((frameCount / timePassed) * 2)
-                fpsLabel.Text = "FPS: " .. fps
+        local FPSFrame = Instance.new("Frame")
+        FPSFrame.Size = UDim2.new(0, 100, 0, 40)
+        FPSFrame.Position = UDim2.new(0, 20, 0, 60)
+        FPSFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        FPSFrame.BorderSizePixel = 0
+        FPSFrame.Active = true
+        FPSFrame.Draggable = true
+        FPSFrame.Parent = FPSGui
+        
+        local FrameCorner = Instance.new("UICorner")
+        FrameCorner.CornerRadius = UDim.new(0, 12)
+        FrameCorner.Parent = FPSFrame
+        
+        local FrameStroke = Instance.new("UIStroke")
+        FrameStroke.Color = Color3.fromRGB(255, 215, 0)
+        FrameStroke.Thickness = 2
+        FrameStroke.Parent = FPSFrame
+        
+        local FPSLabel = Instance.new("TextLabel")
+        FPSLabel.Size = UDim2.new(1, -10, 1, 0)
+        FPSLabel.Position = UDim2.new(0, 5, 0, 0)
+        FPSLabel.BackgroundTransparency = 1
+        FPSLabel.Text = "FPS: 60"
+        FPSLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+        FPSLabel.TextSize = 18
+        FPSLabel.Font = Enum.Font.GothamBold
+        FPSLabel.Parent = FPSFrame
+        
+        FPSIndicator = FPSGui
+        
+        local LastTime = tick()
+        local FrameCount = 0
+        
+        game:GetService("RunService").RenderStepped:Connect(function()
+            if FPSIndicator and FPSIndicator.Parent then
+                FrameCount = FrameCount + 1
+                local CurrentTime = tick()
+                local TimePassed = CurrentTime - LastTime
                 
-                if fps >= 100 then
-                    fpsLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-                    fpsLabel.Text = "FPS: " .. fps .. " ⚡"
-                elseif fps >= 60 then
-                    fpsLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-                elseif fps >= 30 then
-                    fpsLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
-                else
-                    fpsLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+                if TimePassed >= 0.5 then
+                    local FPS = math.floor((FrameCount / TimePassed) * 2)
+                    FPSLabel.Text = "FPS: " .. FPS
+                    
+                    if FPS >= 100 then
+                        FPSLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+                        FPSLabel.Text = "FPS: " .. FPS .. " ⚡"
+                    elseif FPS >= 60 then
+                        FPSLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+                    elseif FPS >= 30 then
+                        FPSLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+                    else
+                        FPSLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+                    end
+                    
+                    FrameCount = 0
+                    LastTime = CurrentTime
                 end
-                
-                frameCount = 0
-                lastIteration = currentTime
             end
+        end)
+    end
+    
+    local function StopFPSIndicator()
+        if FPSIndicator then
+            FPSIndicator:Destroy()
+            FPSIndicator = nil
+        end
+    end
+    
+    FPSToggle.MouseButton1Click:Connect(function()
+        FPSEnabled = not FPSEnabled
+        if FPSEnabled then
+            FPSToggle.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+            FPSToggle.Text = "ON"
+            StartFPSIndicator()
+        else
+            FPSToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+            FPSToggle.Text = "OFF"
+            StopFPSIndicator()
         end
     end)
-end
-
-function library:StopFPSIndicator()
-    if fpsIndicator then
-        fpsIndicator:Destroy()
-        fpsIndicator = nil
-    end
-    fpsRunning = false
-end
-
--- Eksekusi utama
-local success, err = pcall(function()
-    -- Bersihkan GUI lama jika ada
-    local oldGui = game:GetService("CoreGui"):FindFirstChild("191FPSHub_Extreme")
-    if oldGui then
-        oldGui:Destroy()
+    
+    YPos = YPos + 100
+    
+    -- ===== LAYAR GEPENG CARD - FIX 100% BISA DIPENCET =====
+    local StretchCard = Instance.new("Frame")
+    StretchCard.Name = "StretchCard"
+    StretchCard.Size = UDim2.new(1, -20, 0, 130)
+    StretchCard.Position = UDim2.new(0, 10, 0, YPos)
+    StretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    StretchCard.BorderSizePixel = 0
+    StretchCard.Parent = Tab2Content
+    
+    local StretchCorner = Instance.new("UICorner")
+    StretchCorner.CornerRadius = UDim.new(0, 12)
+    StretchCorner.Parent = StretchCard
+    
+    local StretchTitle = Instance.new("TextLabel")
+    StretchTitle.Size = UDim2.new(1, -20, 0, 30)
+    StretchTitle.Position = UDim2.new(0, 10, 0, 10)
+    StretchTitle.BackgroundTransparency = 1
+    StretchTitle.Text = "🖥️ LAYAR GEPENG 4:3 STRETCHED"
+    StretchTitle.TextColor3 = Color3.fromRGB(255, 215, 0)
+    StretchTitle.TextSize = 16
+    StretchTitle.Font = Enum.Font.GothamBold
+    StretchTitle.TextXAlignment = Enum.TextXAlignment.Left
+    StretchTitle.Parent = StretchCard
+    
+    local StretchDesc = Instance.new("TextLabel")
+    StretchDesc.Size = UDim2.new(1, -20, 0, 50)
+    StretchDesc.Position = UDim2.new(0, 10, 0, 40)
+    StretchDesc.BackgroundTransparency = 1
+    StretchDesc.Text = "Mode 4:3 stretched ala pro player! Model karakter jadi GEPENG vertikal, aim lebih gampang. (CSGO/Valorant style)"
+    StretchDesc.TextColor3 = Color3.fromRGB(200, 150, 100)
+    StretchDesc.TextSize = 11
+    StretchDesc.Font = Enum.Font.Gotham
+    StretchDesc.TextXAlignment = Enum.TextXAlignment.Left
+    StretchDesc.TextWrapped = true
+    StretchDesc.Parent = StretchCard
+    
+    -- STATUS TEXT
+    local StretchStatus = Instance.new("TextLabel")
+    StretchStatus.Name = "StretchStatus"
+    StretchStatus.Size = UDim2.new(0.7, -10, 0, 20)
+    StretchStatus.Position = UDim2.new(0, 10, 0, 95)
+    StretchStatus.BackgroundTransparency = 1
+    StretchStatus.Text = "⏸️ Status: Normal (16:9)"
+    StretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
+    StretchStatus.TextSize = 11
+    StretchStatus.Font = Enum.Font.Gotham
+    StretchStatus.TextXAlignment = Enum.TextXAlignment.Left
+    StretchStatus.Parent = StretchCard
+    
+    -- TOMBOL ON/OFF - PASTI BISA DIPENCET!
+    local StretchToggle = Instance.new("TextButton")
+    StretchToggle.Name = "StretchToggle"
+    StretchToggle.Size = UDim2.new(0, 80, 0, 40)
+    StretchToggle.Position = UDim2.new(1, -95, 0, 80)
+    StretchToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    StretchToggle.Text = "OFF"
+    StretchToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    StretchToggle.TextSize = 16
+    StretchToggle.Font = Enum.Font.GothamBold
+    StretchToggle.BorderSizePixel = 0
+    StretchToggle.Parent = StretchCard
+    
+    local StretchBtnCorner = Instance.new("UICorner")
+    StretchBtnCorner.CornerRadius = UDim.new(0, 8)
+    StretchBtnCorner.Parent = StretchToggle
+    
+    -- FUNGSI AKTIFKAN LAYAR GEPENG
+    local function ActivateStretch()
+        local Camera = workspace.CurrentCamera
+        if not Camera then return end
+        
+        -- Simpan original settings (hanya sekali)
+        if not OriginalViewport then
+            OriginalViewport = Camera.ViewportSize
+            OriginalFOV = Camera.FieldOfView
+        end
+        
+        -- Hitung tinggi 4:3 (lebar * 0.75)
+        local CurrentWidth = Camera.ViewportSize.X
+        local NewHeight = CurrentWidth * 0.75 -- 4:3 ratio
+        
+        -- Terapkan stretch
+        Camera.ViewportSize = Vector2.new(CurrentWidth, NewHeight)
+        Camera.FieldOfView = 80 -- FOV lebih rendah buat efek gepeng
+        
+        StretchActive = true
+        
+        -- Update UI
+        StretchToggle.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+        StretchToggle.Text = "ON"
+        StretchStatus.Text = "✅ Status: LAYAR GEPENG AKTIF (4:3 stretched)"
+        StretchStatus.TextColor3 = Color3.fromRGB(0, 255, 0)
+        StretchCard.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
+        
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "LAYAR GEPENG",
+            Text = "Mode 4:3 stretched AKTIF! Karakter gepeng.",
+            Duration = 2
+        })
     end
     
-    library:CreateMain()
+    -- FUNGSI NONAKTIFKAN LAYAR GEPENG
+    local function DeactivateStretch()
+        local Camera = workspace.CurrentCamera
+        if not Camera then return end
+        
+        -- Kembalikan ke original
+        if OriginalViewport then
+            Camera.ViewportSize = OriginalViewport
+        end
+        if OriginalFOV then
+            Camera.FieldOfView = OriginalFOV
+        end
+        
+        StretchActive = false
+        
+        -- Update UI
+        StretchToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        StretchToggle.Text = "OFF"
+        StretchStatus.Text = "⏸️ Status: Normal (16:9)"
+        StretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
+        StretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+        
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "LAYAR GEPENG",
+            Text = "Mode normal kembali.",
+            Duration = 1
+        })
+    end
     
-    -- Notifikasi sukses
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "⚡ 191 FPS Extreme ⚡",
-        Text = "Mode 240+ FPS + Layar Gepeng ON/OFF READY!",
-        Duration = 3
-    })
+    -- EVENT CLICK TOMBOL - PASTI JALAN!
+    StretchToggle.MouseButton1Click:Connect(function()
+        print("⬇️ TOMBOL LAYAR GEPENG DIPENCET!") -- Debug di console
+        
+        if StretchActive then
+            DeactivateStretch()
+        else
+            ActivateStretch()
+        end
+    end)
+    
+    YPos = YPos + 140
+    
+    -- INFO CARD
+    local InfoCard = Instance.new("Frame")
+    InfoCard.Size = UDim2.new(1, -20, 0, 100)
+    InfoCard.Position = UDim2.new(0, 10, 0, YPos)
+    InfoCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    InfoCard.BorderSizePixel = 0
+    InfoCard.Parent = Tab2Content
+    
+    local InfoCorner = Instance.new("UICorner")
+    InfoCorner.CornerRadius = UDim.new(0, 12)
+    InfoCorner.Parent = InfoCard
+    
+    local InfoText = Instance.new("TextLabel")
+    InfoText.Size = UDim2.new(1, -20, 1, -20)
+    InfoText.Position = UDim2.new(0, 10, 0, 10)
+    InfoText.BackgroundTransparency = 1
+    InfoText.Text = "📌 INFO:\n• FPS Boost: Hapus efek grafis buat FPS tinggi\n• Layar Gepeng: Stretch 4:3 (vertikal gepeng) biar headshot lebih gampang\n• Klik tombol ON/OFF buat coba!"
+    InfoText.TextColor3 = Color3.fromRGB(200, 200, 200)
+    InfoText.TextSize = 12
+    InfoText.Font = Enum.Font.Gotham
+    InfoText.TextWrapped = true
+    InfoText.TextXAlignment = Enum.TextXAlignment.Left
+    InfoText.Parent = InfoCard
+end
+
+-- Panggil fungsi pembuat konten
+CreateFPSCards()
+CreateSettingsTab()
+
+-- Floating Icon
+local FloatingIcon = Instance.new("TextButton")
+FloatingIcon.Name = "FloatingIcon"
+FloatingIcon.Size = UDim2.new(0, 60, 0, 60)
+FloatingIcon.Position = UDim2.new(0.9, -30, 0.1, 0)
+FloatingIcon.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+FloatingIcon.Text = "⚡"
+FloatingIcon.TextColor3 = Color3.fromRGB(255, 215, 0)
+FloatingIcon.TextScaled = true
+FloatingIcon.Font = Enum.Font.GothamBold
+FloatingIcon.BorderSizePixel = 0
+FloatingIcon.Draggable = true
+FloatingIcon.Parent = ScreenGui
+
+local IconCorner = Instance.new("UICorner")
+IconCorner.CornerRadius = UDim.new(0, 15)
+IconCorner.Parent = FloatingIcon
+
+local IconStroke = Instance.new("UIStroke")
+IconStroke.Color = Color3.fromRGB(255, 215, 0)
+IconStroke.Thickness = 2
+IconStroke.Parent = FloatingIcon
+
+FloatingIcon.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
 end)
 
-if not success then
-    warn("Error: " .. tostring(err))
+-- Notifikasi sukses
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "⚡ 191 FPS EXTREME ⚡",
+    Text = "LOADING BERHASIL! Tekan tombol LAYAR GEPENG di tab SETTINGS",
+    Duration = 5
+})
+
+end) -- End pcall
+
+if not Success then
+    warn("ERROR: " .. tostring(Error))
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Error",
-        Text = "Gagal memuat: " .. tostring(err),
+        Title = "ERROR",
+        Text = "Gagal load: " .. tostring(Error),
         Duration = 5
     })
 end
