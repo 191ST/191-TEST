@@ -1,730 +1,873 @@
--- 191 FPS HUB EXTREME EDITION
--- FITUR LAYAR GEPENG 4:3 STRETCHED (ON/OFF) - SUDAH FIX 100%
+local player = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local RunService = game:GetService("RunService")
 
--- GUARD biar ga error
-local Success, Error = pcall(function()
+-- Konfigurasi ukuran HP
+local GUI_WIDTH = 320
+local GUI_HEIGHT = 480
+local TAB_HEIGHT = 35
+local TITLE_HEIGHT = 45
+local CONTENT_HEIGHT = GUI_HEIGHT - TITLE_HEIGHT - TAB_HEIGHT
 
--- Hapus GUI lama
-local OldGUI = game:GetService("CoreGui"):FindFirstChild("191FPSHub_Extreme")
-if OldGUI then OldGUI:Destroy() end
-
--- Variable Global
-local FPSIndicator = nil
-local FPSRunning = false
-local StretchActive = false
-local OriginalViewport = nil
-local OriginalFOV = nil
-
--- ScreenGui Utama
+-- GUI
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "191FPSHub_Extreme"
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+ScreenGui.Name = "TP_Hub_191"
 ScreenGui.ResetOnSpawn = false
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.IgnoreGuiInset = true
+
+-- Loading Screen
+local LoadingFrame = Instance.new("Frame")
+LoadingFrame.Parent = ScreenGui
+LoadingFrame.Size = UDim2.new(1,0,1,0)
+LoadingFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
+LoadingFrame.BackgroundTransparency = 0.5
+LoadingFrame.Visible = false
+LoadingFrame.ZIndex = 10
+
+local LoadingMain = Instance.new("Frame")
+LoadingMain.Parent = LoadingFrame
+LoadingMain.Size = UDim2.new(0,280,0,150)
+LoadingMain.Position = UDim2.new(0.5,-140,0.5,-75)
+LoadingMain.BackgroundColor3 = Color3.fromRGB(25,25,35)
+LoadingMain.BackgroundTransparency = 0.1
+LoadingMain.BorderSizePixel = 0
+LoadingMain.ZIndex = 11
+
+local LoadingMainCorner = Instance.new("UICorner")
+LoadingMainCorner.Parent = LoadingMain
+LoadingMainCorner.CornerRadius = UDim.new(0,15)
+
+local LoadingTitle = Instance.new("TextLabel")
+LoadingTitle.Parent = LoadingMain
+LoadingTitle.Size = UDim2.new(1,0,0,40)
+LoadingTitle.Position = UDim2.new(0,0,0,10)
+LoadingTitle.BackgroundTransparency = 1
+LoadingTitle.Text = "191"
+LoadingTitle.TextColor3 = Color3.fromRGB(100,200,255)
+LoadingTitle.Font = Enum.Font.GothamBold
+LoadingTitle.TextSize = 28
+LoadingTitle.ZIndex = 12
+
+local LoadingBarBg = Instance.new("Frame")
+LoadingBarBg.Parent = LoadingMain
+LoadingBarBg.Size = UDim2.new(0.8,0,0,12)
+LoadingBarBg.Position = UDim2.new(0.1,0,0,65)
+LoadingBarBg.BackgroundColor3 = Color3.fromRGB(40,40,50)
+LoadingBarBg.BorderSizePixel = 0
+LoadingBarBg.ZIndex = 12
+
+local LoadingBarBgCorner = Instance.new("UICorner")
+LoadingBarBgCorner.Parent = LoadingBarBg
+LoadingBarBgCorner.CornerRadius = UDim.new(0,6)
+
+local LoadingBar = Instance.new("Frame")
+LoadingBar.Parent = LoadingBarBg
+LoadingBar.Size = UDim2.new(0,0,1,0)
+LoadingBar.BackgroundColor3 = Color3.fromRGB(0,200,255)
+LoadingBar.BorderSizePixel = 0
+LoadingBar.ZIndex = 13
+
+local LoadingBarCorner = Instance.new("UICorner")
+LoadingBarCorner.Parent = LoadingBar
+LoadingBarCorner.CornerRadius = UDim.new(0,6)
+
+local LoadingPercent = Instance.new("TextLabel")
+LoadingPercent.Parent = LoadingMain
+LoadingPercent.Size = UDim2.new(1,0,0,25)
+LoadingPercent.Position = UDim2.new(0,0,0,85)
+LoadingPercent.BackgroundTransparency = 1
+LoadingPercent.Text = "0%"
+LoadingPercent.TextColor3 = Color3.fromRGB(255,255,255)
+LoadingPercent.Font = Enum.Font.GothamBold
+LoadingPercent.TextSize = 16
+LoadingPercent.ZIndex = 12
+
+local LoadingStatus = Instance.new("TextLabel")
+LoadingStatus.Parent = LoadingMain
+LoadingStatus.Size = UDim2.new(1,0,0,25)
+LoadingStatus.Position = UDim2.new(0,0,0,110)
+LoadingStatus.BackgroundTransparency = 1
+LoadingStatus.Text = "MEMPERSIAPKAN..."
+LoadingStatus.TextColor3 = Color3.fromRGB(200,200,200)
+LoadingStatus.Font = Enum.Font.Gotham
+LoadingStatus.TextSize = 11
+LoadingStatus.ZIndex = 12
 
 -- Main Frame
-local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 350, 0, 500)
-MainFrame.Position = UDim2.new(0.5, -175, 0.5, -250)
-MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-MainFrame.BorderSizePixel = 0
-MainFrame.Active = true
-MainFrame.Draggable = true
-MainFrame.Parent = ScreenGui
+local Frame = Instance.new("Frame")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0,GUI_WIDTH,0,GUI_HEIGHT)
+Frame.Position = UDim2.new(0.5,-GUI_WIDTH/2,0.5,-GUI_HEIGHT/2)
+Frame.BackgroundColor3 = Color3.fromRGB(25,25,35)
+Frame.BackgroundTransparency = 0.1
+Frame.BorderSizePixel = 0
+Frame.Active = true
+Frame.Draggable = true
+Frame.ClipsDescendants = true
 
--- Rounded Corners
-local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 15)
-MainCorner.Parent = MainFrame
+local Corner = Instance.new("UICorner")
+Corner.Parent = Frame
+Corner.CornerRadius = UDim.new(0,12)
 
--- Border
-local MainStroke = Instance.new("UIStroke")
-MainStroke.Color = Color3.fromRGB(255, 215, 0)
-MainStroke.Thickness = 2
-MainStroke.Parent = MainFrame
+local Stroke = Instance.new("UIStroke")
+Stroke.Parent = Frame
+Stroke.Color = Color3.fromRGB(45,45,55)
+Stroke.Thickness = 1
 
 -- Title Bar
 local TitleBar = Instance.new("Frame")
-TitleBar.Name = "TitleBar"
-TitleBar.Size = UDim2.new(1, 0, 0, 50)
-TitleBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TitleBar.Parent = Frame
+TitleBar.Size = UDim2.new(1,0,0,TITLE_HEIGHT)
+TitleBar.BackgroundColor3 = Color3.fromRGB(35,35,45)
 TitleBar.BorderSizePixel = 0
-TitleBar.Parent = MainFrame
 
--- Title Text
-local TitleText = Instance.new("TextLabel")
-TitleText.Size = UDim2.new(1, -50, 1, 0)
-TitleText.Position = UDim2.new(0, 15, 0, 0)
-TitleText.BackgroundTransparency = 1
-TitleText.Text = "⚡ 191 FPS EXTREME ⚡"
-TitleText.TextColor3 = Color3.fromRGB(255, 215, 0)
-TitleText.TextSize = 20
-TitleText.Font = Enum.Font.GothamBold
-TitleText.TextXAlignment = Enum.TextXAlignment.Left
-TitleText.Parent = TitleBar
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.Parent = TitleBar
+TitleCorner.CornerRadius = UDim.new(0,12)
 
--- Close Button
+local Title = Instance.new("TextLabel")
+Title.Parent = TitleBar
+Title.Size = UDim2.new(1,-60,0,25)
+Title.Position = UDim2.new(0,8,0,2)
+Title.BackgroundTransparency = 1
+Title.Text = "191 STORE"
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 16
+
+local BillboardText = Instance.new("TextLabel")
+BillboardText.Parent = TitleBar
+BillboardText.Size = UDim2.new(1,-60,0,18)
+BillboardText.Position = UDim2.new(0,8,0,24)
+BillboardText.BackgroundTransparency = 1
+BillboardText.Text = "Discord.gg/h5CWN2sP4y"
+BillboardText.TextColor3 = Color3.fromRGB(100,200,255)
+BillboardText.TextXAlignment = Enum.TextXAlignment.Left
+BillboardText.Font = Enum.Font.Gotham
+BillboardText.TextSize = 9
+BillboardText.TextWrapped = true
+
 local CloseBtn = Instance.new("TextButton")
-CloseBtn.Size = UDim2.new(0, 35, 0, 35)
-CloseBtn.Position = UDim2.new(1, -45, 0, 7.5)
-CloseBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-CloseBtn.Text = "✕"
-CloseBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
-CloseBtn.TextSize = 20
-CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.BorderSizePixel = 0
 CloseBtn.Parent = TitleBar
+CloseBtn.Size = UDim2.new(0,28,0,28)
+CloseBtn.Position = UDim2.new(1,-34,0,8)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(200,50,50)
+CloseBtn.Text = "✕"
+CloseBtn.TextColor3 = Color3.fromRGB(255,255,255)
+CloseBtn.TextSize = 16
+CloseBtn.Font = Enum.Font.GothamBold
 
 local CloseCorner = Instance.new("UICorner")
-CloseCorner.CornerRadius = UDim.new(0, 8)
 CloseCorner.Parent = CloseBtn
+CloseCorner.CornerRadius = UDim.new(0,6)
 
--- Tab Buttons Frame
+local MinBtn = Instance.new("TextButton")
+MinBtn.Parent = TitleBar
+MinBtn.Size = UDim2.new(0,28,0,28)
+MinBtn.Position = UDim2.new(1,-62,0,8)
+MinBtn.BackgroundColor3 = Color3.fromRGB(60,60,70)
+MinBtn.Text = "−"
+MinBtn.TextColor3 = Color3.fromRGB(255,255,255)
+MinBtn.TextSize = 16
+MinBtn.Font = Enum.Font.GothamBold
+
+local MinCorner = Instance.new("UICorner")
+MinCorner.Parent = MinBtn
+MinCorner.CornerRadius = UDim.new(0,6)
+
+-- Billboard changer
+local billboardMessages = {
+    {text = "Discord.gg/h5CWN2sP4y", color = Color3.fromRGB(100,200,255)},
+    {text = "Saran? ke dc ajaa", color = Color3.fromRGB(255,255,100)},
+    {text = "Bug? lapor di dc", color = Color3.fromRGB(255,150,200)}
+}
+local currentBillboard = 1
+
+task.spawn(function()
+    while true do
+        task.wait(60)
+        currentBillboard = (currentBillboard % #billboardMessages) + 1
+        BillboardText.Text = billboardMessages[currentBillboard].text
+        BillboardText.TextColor3 = billboardMessages[currentBillboard].color
+    end
+end)
+
+-- Tab Buttons (4 tab)
 local TabFrame = Instance.new("Frame")
-TabFrame.Name = "TabFrame"
-TabFrame.Size = UDim2.new(1, -20, 0, 45)
-TabFrame.Position = UDim2.new(0, 10, 0, 55)
-TabFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TabFrame.Parent = Frame
+TabFrame.Size = UDim2.new(1,0,0,TAB_HEIGHT)
+TabFrame.Position = UDim2.new(0,0,0,TITLE_HEIGHT)
+TabFrame.BackgroundColor3 = Color3.fromRGB(30,30,40)
 TabFrame.BorderSizePixel = 0
-TabFrame.Parent = MainFrame
 
-local TabCorner = Instance.new("UICorner")
-TabCorner.CornerRadius = UDim.new(0, 10)
-TabCorner.Parent = TabFrame
-
--- Tab 1 (FPS BOOST)
-local Tab1Btn = Instance.new("TextButton")
-Tab1Btn.Name = "Tab1Btn"
-Tab1Btn.Size = UDim2.new(0.5, -5, 1, -10)
-Tab1Btn.Position = UDim2.new(0, 5, 0, 5)
-Tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-Tab1Btn.Text = "FPS BOOST"
-Tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-Tab1Btn.TextSize = 16
-Tab1Btn.Font = Enum.Font.GothamBold
-Tab1Btn.BorderSizePixel = 0
-Tab1Btn.Parent = TabFrame
-
-local Tab1Corner = Instance.new("UICorner")
-Tab1Corner.CornerRadius = UDim.new(0, 8)
-Tab1Corner.Parent = Tab1Btn
-
--- Tab 2 (SETTINGS)
-local Tab2Btn = Instance.new("TextButton")
-Tab2Btn.Name = "Tab2Btn"
-Tab2Btn.Size = UDim2.new(0.5, -5, 1, -10)
-Tab2Btn.Position = UDim2.new(0.5, 5, 0, 5)
-Tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Tab2Btn.Text = "SETTINGS"
-Tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-Tab2Btn.TextSize = 16
-Tab2Btn.Font = Enum.Font.GothamBold
-Tab2Btn.BorderSizePixel = 0
-Tab2Btn.Parent = TabFrame
-
-local Tab2Corner = Instance.new("UICorner")
-Tab2Corner.CornerRadius = UDim.new(0, 8)
-Tab2Corner.Parent = Tab2Btn
-
--- Content Frame
-local ContentFrame = Instance.new("Frame")
-ContentFrame.Name = "ContentFrame"
-ContentFrame.Size = UDim2.new(1, -20, 1, -120)
-ContentFrame.Position = UDim2.new(0, 10, 0, 110)
-ContentFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ContentFrame.BorderSizePixel = 0
-ContentFrame.Parent = MainFrame
-
--- Tab 1 Content (FPS BOOST)
-local Tab1Content = Instance.new("ScrollingFrame")
-Tab1Content.Name = "Tab1Content"
-Tab1Content.Size = UDim2.new(1, 0, 1, 0)
-Tab1Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Tab1Content.BorderSizePixel = 0
-Tab1Content.ScrollBarThickness = 5
-Tab1Content.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
-Tab1Content.CanvasSize = UDim2.new(0, 0, 0, 300)
-Tab1Content.Visible = true
-Tab1Content.Parent = ContentFrame
-
--- Tab 2 Content (SETTINGS)
-local Tab2Content = Instance.new("ScrollingFrame")
-Tab2Content.Name = "Tab2Content"
-Tab2Content.Size = UDim2.new(1, 0, 1, 0)
-Tab2Content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Tab2Content.BorderSizePixel = 0
-Tab2Content.ScrollBarThickness = 5
-Tab2Content.ScrollBarImageColor3 = Color3.fromRGB(255, 215, 0)
-Tab2Content.CanvasSize = UDim2.new(0, 0, 0, 400)
-Tab2Content.Visible = false
-Tab2Content.Parent = ContentFrame
-
--- TAB SWITCHING
-Tab1Btn.MouseButton1Click:Connect(function()
-    Tab1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    Tab1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    Tab2Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    Tab2Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    Tab1Content.Visible = true
-    Tab2Content.Visible = false
-end)
-
-Tab2Btn.MouseButton1Click:Connect(function()
-    Tab2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    Tab2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    Tab1Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    Tab1Btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    Tab2Content.Visible = true
-    Tab1Content.Visible = false
-end)
-
--- CLOSE BUTTON
-CloseBtn.MouseButton1Click:Connect(function()
-    -- Matikan stretch kalo aktif
-    if StretchActive then
-        local Camera = workspace.CurrentCamera
-        if OriginalViewport then
-            Camera.ViewportSize = OriginalViewport
-        end
-        if OriginalFOV then
-            Camera.FieldOfView = OriginalFOV
-        end
-    end
-    ScreenGui:Destroy()
-    if FPSIndicator then
-        FPSIndicator:Destroy()
-        FPSIndicator = nil
-    end
-end)
-
--- ==================== TAB 1: FPS BOOST ====================
-local function CreateFPSCards()
-    local YPos = 10
+local function createTabButton(parent, position, text, color)
+    local btn = Instance.new("TextButton")
+    btn.Parent = parent
+    btn.Size = UDim2.new(0.25,-2,1,-4)
+    btn.Position = UDim2.new(position,2,0,2)
+    btn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(200,200,200)
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 11
+    btn.TextWrapped = true
     
-    -- Title
-    local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Size = UDim2.new(1, -20, 0, 30)
-    TitleLabel.Position = UDim2.new(0, 10, 0, YPos)
-    TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Text = "⚡ PILIH LEVEL BOOST ⚡"
-    TitleLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
-    TitleLabel.TextSize = 16
-    TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.Parent = Tab1Content
+    local corner = Instance.new("UICorner")
+    corner.Parent = btn
+    corner.CornerRadius = UDim.new(0,6)
     
-    YPos = YPos + 40
-    
-    -- Level 1 Card
-    local Card1 = Instance.new("Frame")
-    Card1.Size = UDim2.new(1, -20, 0, 90)
-    Card1.Position = UDim2.new(0, 10, 0, YPos)
-    Card1.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Card1.BorderSizePixel = 0
-    Card1.Parent = Tab1Content
-    
-    local Card1Corner = Instance.new("UICorner")
-    Card1Corner.CornerRadius = UDim.new(0, 12)
-    Card1Corner.Parent = Card1
-    
-    local Card1Title = Instance.new("TextLabel")
-    Card1Title.Size = UDim2.new(1, -20, 0, 30)
-    Card1Title.Position = UDim2.new(0, 10, 0, 10)
-    Card1Title.BackgroundTransparency = 1
-    Card1Title.Text = "LEVEL 1 - BASIC BOOST"
-    Card1Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Card1Title.TextSize = 16
-    Card1Title.Font = Enum.Font.GothamBold
-    Card1Title.TextXAlignment = Enum.TextXAlignment.Left
-    Card1Title.Parent = Card1
-    
-    local Card1Desc = Instance.new("TextLabel")
-    Card1Desc.Size = UDim2.new(0.7, -10, 0, 40)
-    Card1Desc.Position = UDim2.new(0, 10, 0, 40)
-    Card1Desc.BackgroundTransparency = 1
-    Card1Desc.Text = "Hapus shaders, textures, dan images"
-    Card1Desc.TextColor3 = Color3.fromRGB(150, 150, 150)
-    Card1Desc.TextSize = 12
-    Card1Desc.Font = Enum.Font.Gotham
-    Card1Desc.TextXAlignment = Enum.TextXAlignment.Left
-    Card1Desc.TextWrapped = true
-    Card1Desc.Parent = Card1
-    
-    local Card1Btn = Instance.new("TextButton")
-    Card1Btn.Size = UDim2.new(0, 80, 0, 40)
-    Card1Btn.Position = UDim2.new(1, -95, 0, 25)
-    Card1Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    Card1Btn.Text = "BOOST"
-    Card1Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    Card1Btn.TextSize = 14
-    Card1Btn.Font = Enum.Font.GothamBold
-    Card1Btn.BorderSizePixel = 0
-    Card1Btn.Parent = Card1
-    
-    local BtnCorner = Instance.new("UICorner")
-    BtnCorner.CornerRadius = UDim.new(0, 8)
-    BtnCorner.Parent = Card1Btn
-    
-    Card1Btn.MouseButton1Click:Connect(function()
-        pcall(function()
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("Shader") or v:IsA("Texture") or v:IsA("ImageLabel") or v:IsA("ImageButton") or v:IsA("Decal") then
-                    v:Destroy()
-                end
-            end
-        end)
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "FPS BOOST",
-            Text = "Level 1 Basic Boost Aktif!",
-            Duration = 2
-        })
-    end)
-    
-    YPos = YPos + 100
-    
-    -- Level 2 Card
-    local Card2 = Instance.new("Frame")
-    Card2.Size = UDim2.new(1, -20, 0, 110)
-    Card2.Position = UDim2.new(0, 10, 0, YPos)
-    Card2.BackgroundColor3 = Color3.fromRGB(30, 20, 0)
-    Card2.BorderSizePixel = 0
-    Card2.Parent = Tab1Content
-    
-    local Card2Corner = Instance.new("UICorner")
-    Card2Corner.CornerRadius = UDim.new(0, 12)
-    Card2Corner.Parent = Card2
-    
-    local Card2Stroke = Instance.new("UIStroke")
-    Card2Stroke.Color = Color3.fromRGB(255, 215, 0)
-    Card2Stroke.Thickness = 2
-    Card2Stroke.Parent = Card2
-    
-    local Card2Title = Instance.new("TextLabel")
-    Card2Title.Size = UDim2.new(1, -20, 0, 30)
-    Card2Title.Position = UDim2.new(0, 10, 0, 10)
-    Card2Title.BackgroundTransparency = 1
-    Card2Title.Text = "⚡ LEVEL 2 - EXTREME 240+ FPS ⚡"
-    Card2Title.TextColor3 = Color3.fromRGB(255, 215, 0)
-    Card2Title.TextSize = 16
-    Card2Title.Font = Enum.Font.GothamBold
-    Card2Title.TextXAlignment = Enum.TextXAlignment.Left
-    Card2Title.Parent = Card2
-    
-    local Card2Desc = Instance.new("TextLabel")
-    Card2Desc.Size = UDim2.new(0.7, -10, 0, 50)
-    Card2Desc.Position = UDim2.new(0, 10, 0, 40)
-    Card2Desc.BackgroundTransparency = 1
-    Card2Desc.Text = "Hapus SEMUA efek: shaders, shadows, particles, decals, bloom, blur + Low graphics + Anti-aliasing OFF"
-    Card2Desc.TextColor3 = Color3.fromRGB(200, 200, 150)
-    Card2Desc.TextSize = 11
-    Card2Desc.Font = Enum.Font.Gotham
-    Card2Desc.TextXAlignment = Enum.TextXAlignment.Left
-    Card2Desc.TextWrapped = true
-    Card2Desc.Parent = Card2
-    
-    local Card2Btn = Instance.new("TextButton")
-    Card2Btn.Size = UDim2.new(0, 80, 0, 40)
-    Card2Btn.Position = UDim2.new(1, -95, 0, 35)
-    Card2Btn.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-    Card2Btn.Text = "240+"
-    Card2Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
-    Card2Btn.TextSize = 14
-    Card2Btn.Font = Enum.Font.GothamBold
-    Card2Btn.BorderSizePixel = 0
-    Card2Btn.Parent = Card2
-    
-    local Btn2Corner = Instance.new("UICorner")
-    Btn2Corner.CornerRadius = UDim.new(0, 8)
-    Btn2Corner.Parent = Card2Btn
-    
-    Card2Btn.MouseButton1Click:Connect(function()
-        pcall(function()
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("Shader") or v:IsA("Texture") or v:IsA("ImageLabel") or v:IsA("ImageButton") or v:IsA("Decal") or v:IsA("Shadow") or v:IsA("BloomEffect") or v:IsA("BlurEffect") or v:IsA("ColorCorrectionEffect") or v:IsA("SunRaysEffect") or v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Beam") or v:IsA("Smoke") or v:IsA("Fire") or v:IsA("Sparkles") then
-                    v:Destroy()
-                end
-            end
-            
-            local Lighting = game:GetService("Lighting")
-            Lighting.Brightness = 1
-            Lighting.GlobalShadows = false
-            Lighting.FogEnd = 1e10
-            Lighting.Outlines = false
-            
-            local RenderSettings = settings():GetService("RenderSettings")
-            RenderSettings.QualityLevel = 1
-            RenderSettings.MaterialQuality = Enum.MaterialQuality.Low
-            RenderSettings.AntiAliasingQuality = 0
-        end)
-        
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "⚡ EXTREME BOOST ⚡",
-            Text = "Mode 240+ FPS Aktif! Semua efek dihapus.",
-            Duration = 3
-        })
-    end)
+    return btn
 end
 
--- ==================== TAB 2: SETTINGS (LAYAR GEPENG FIX) ====================
-local function CreateSettingsTab()
-    local YPos = 10
+local TPTabBtn = createTabButton(TabFrame, 0, "🚀 TP", Color3.fromRGB(50,50,60))
+local MSLoopTabBtn = createTabButton(TabFrame, 0.25, "🔄 MS", Color3.fromRGB(40,40,50))
+local MSSafetyTabBtn = createTabButton(TabFrame, 0.5, "🛡️ SAFETY", Color3.fromRGB(40,40,50))
+local AutoSellTabBtn = createTabButton(TabFrame, 0.75, "💰 SELL", Color3.fromRGB(40,40,50))
+
+-- Content Container
+local Content = Instance.new("Frame")
+Content.Parent = Frame
+Content.Size = UDim2.new(1,0,1,-(TITLE_HEIGHT + TAB_HEIGHT))
+Content.Position = UDim2.new(0,0,0,TITLE_HEIGHT + TAB_HEIGHT)
+Content.BackgroundColor3 = Color3.fromRGB(25,25,35)
+Content.BorderSizePixel = 0
+Content.BackgroundTransparency = 0.1
+
+local ContentCorner = Instance.new("UICorner")
+ContentCorner.Parent = Content
+ContentCorner.CornerRadius = UDim.new(0,12)
+
+-- TP Tab Content
+local TPContent = Instance.new("ScrollingFrame")
+TPContent.Parent = Content
+TPContent.Size = UDim2.new(1,0,1,0)
+TPContent.BackgroundTransparency = 1
+TPContent.Visible = true
+TPContent.ScrollBarThickness = 4
+TPContent.CanvasSize = UDim2.new(0,0,0,180)
+
+-- MS Loop Tab Content
+local MSLoopContent = Instance.new("ScrollingFrame")
+MSLoopContent.Parent = Content
+MSLoopContent.Size = UDim2.new(1,0,1,0)
+MSLoopContent.BackgroundTransparency = 1
+MSLoopContent.Visible = false
+MSLoopContent.ScrollBarThickness = 4
+MSLoopContent.CanvasSize = UDim2.new(0,0,0,480)
+
+-- MS SAFETY TAB CONTENT
+local MSSafetyContent = Instance.new("ScrollingFrame")
+MSSafetyContent.Parent = Content
+MSSafetyContent.Size = UDim2.new(1,0,1,0)
+MSSafetyContent.BackgroundTransparency = 1
+MSSafetyContent.Visible = false
+MSSafetyContent.ScrollBarThickness = 4
+MSSafetyContent.CanvasSize = UDim2.new(0,0,0,360)
+
+-- AUTO SELL TAB CONTENT
+local AutoSellContent = Instance.new("ScrollingFrame")
+AutoSellContent.Parent = Content
+AutoSellContent.Size = UDim2.new(1,0,1,0)
+AutoSellContent.BackgroundTransparency = 1
+AutoSellContent.Visible = false
+AutoSellContent.ScrollBarThickness = 4
+AutoSellContent.CanvasSize = UDim2.new(0,0,0,220)
+
+-- TP Buttons
+local function createTPButton(parent, position, icon, title, desc, color)
+    local btn = Instance.new("TextButton")
+    btn.Parent = parent
+    btn.Size = UDim2.new(1,-16,0,60)
+    btn.Position = UDim2.new(0,8,0,position)
+    btn.BackgroundColor3 = color or Color3.fromRGB(50,50,70)
+    btn.Text = ""
+    btn.BorderSizePixel = 0
     
-    -- FPS INDICATOR CARD
-    local FPSCard = Instance.new("Frame")
-    FPSCard.Size = UDim2.new(1, -20, 0, 90)
-    FPSCard.Position = UDim2.new(0, 10, 0, YPos)
-    FPSCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    FPSCard.BorderSizePixel = 0
-    FPSCard.Parent = Tab2Content
+    local corner = Instance.new("UICorner")
+    corner.Parent = btn
+    corner.CornerRadius = UDim.new(0,8)
     
-    local FPSCorner = Instance.new("UICorner")
-    FPSCorner.CornerRadius = UDim.new(0, 12)
-    FPSCorner.Parent = FPSCard
+    local iconLabel = Instance.new("TextLabel")
+    iconLabel.Parent = btn
+    iconLabel.Size = UDim2.new(0,40,1,0)
+    iconLabel.Position = UDim2.new(0,8,0,0)
+    iconLabel.BackgroundTransparency = 1
+    iconLabel.Text = icon
+    iconLabel.TextSize = 26
+    iconLabel.Font = Enum.Font.GothamBold
+    iconLabel.TextColor3 = Color3.fromRGB(255,255,255)
     
-    local FPSTitle = Instance.new("TextLabel")
-    FPSTitle.Size = UDim2.new(1, -20, 0, 30)
-    FPSTitle.Position = UDim2.new(0, 10, 0, 10)
-    FPSTitle.BackgroundTransparency = 1
-    FPSTitle.Text = "FPS INDICATOR"
-    FPSTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    FPSTitle.TextSize = 16
-    FPSTitle.Font = Enum.Font.GothamBold
-    FPSTitle.TextXAlignment = Enum.TextXAlignment.Left
-    FPSTitle.Parent = FPSCard
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Parent = btn
+    titleLabel.Size = UDim2.new(1,-56,0,25)
+    titleLabel.Position = UDim2.new(0,48,0,8)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title
+    titleLabel.TextColor3 = Color3.fromRGB(255,255,255)
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 14
     
-    local FPSDesc = Instance.new("TextLabel")
-    FPSDesc.Size = UDim2.new(0.7, -10, 0, 30)
-    FPSDesc.Position = UDim2.new(0, 10, 0, 40)
-    FPSDesc.BackgroundTransparency = 1
-    FPSDesc.Text = "Tampilkan FPS real-time"
-    FPSDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
-    FPSDesc.TextSize = 12
-    FPSDesc.Font = Enum.Font.Gotham
-    FPSDesc.TextXAlignment = Enum.TextXAlignment.Left
-    FPSDesc.Parent = FPSCard
+    local descLabel = Instance.new("TextLabel")
+    descLabel.Parent = btn
+    descLabel.Size = UDim2.new(1,-56,0,20)
+    descLabel.Position = UDim2.new(0,48,0,33)
+    descLabel.BackgroundTransparency = 1
+    descLabel.Text = desc
+    descLabel.TextColor3 = Color3.fromRGB(180,180,180)
+    descLabel.TextXAlignment = Enum.TextXAlignment.Left
+    descLabel.Font = Enum.Font.Gotham
+    descLabel.TextSize = 10
     
-    local FPSToggle = Instance.new("TextButton")
-    FPSToggle.Size = UDim2.new(0, 70, 0, 40)
-    FPSToggle.Position = UDim2.new(1, -85, 0, 25)
-    FPSToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    FPSToggle.Text = "OFF"
-    FPSToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    FPSToggle.TextSize = 16
-    FPSToggle.Font = Enum.Font.GothamBold
-    FPSToggle.BorderSizePixel = 0
-    FPSToggle.Parent = FPSCard
+    return btn
+end
+
+local BtnBahan = createTPButton(TPContent, 10, "⚒️", "TP MS BAHAN", "Material Storage", Color3.fromRGB(50,50,70))
+local BtnRS = createTPButton(TPContent, 80, "🏥", "TP RS", "Hospital", Color3.fromRGB(70,50,50))
+
+-- MS LOOP CONTENT
+local MSLoopTitle = Instance.new("TextLabel")
+MSLoopTitle.Parent = MSLoopContent
+MSLoopTitle.Size = UDim2.new(1,-16,0,25)
+MSLoopTitle.Position = UDim2.new(0,8,0,5)
+MSLoopTitle.BackgroundTransparency = 1
+MSLoopTitle.Text = "🔄 MS LOOP (AUTO TOOLS)"
+MSLoopTitle.TextColor3 = Color3.fromRGB(100,255,100)
+MSLoopTitle.TextXAlignment = Enum.TextXAlignment.Left
+MSLoopTitle.Font = Enum.Font.GothamBold
+MSLoopTitle.TextSize = 12
+
+local MSLoopStatus = Instance.new("TextLabel")
+MSLoopStatus.Parent = MSLoopContent
+MSLoopStatus.Size = UDim2.new(1,-16,0,32)
+MSLoopStatus.Position = UDim2.new(0,8,0,35)
+MSLoopStatus.BackgroundColor3 = Color3.fromRGB(40,40,50)
+MSLoopStatus.Text = "⏹️ LOOP STOPPED"
+MSLoopStatus.TextColor3 = Color3.fromRGB(255,100,100)
+MSLoopStatus.Font = Enum.Font.GothamBold
+MSLoopStatus.TextSize = 12
+
+local MSLoopStatusCorner = Instance.new("UICorner")
+MSLoopStatusCorner.Parent = MSLoopStatus
+MSLoopStatusCorner.CornerRadius = UDim.new(0,6)
+
+-- INDICATOR BELI TOOLS
+local BuyIndicatorFrame = Instance.new("Frame")
+BuyIndicatorFrame.Parent = MSLoopContent
+BuyIndicatorFrame.Size = UDim2.new(1,-16,0,130)
+BuyIndicatorFrame.Position = UDim2.new(0,8,0,75)
+BuyIndicatorFrame.BackgroundColor3 = Color3.fromRGB(35,35,45)
+BuyIndicatorFrame.BorderSizePixel = 0
+
+local BuyIndicatorCorner = Instance.new("UICorner")
+BuyIndicatorCorner.Parent = BuyIndicatorFrame
+BuyIndicatorCorner.CornerRadius = UDim.new(0,8)
+
+local BuyIndicatorTitle = Instance.new("TextLabel")
+BuyIndicatorTitle.Parent = BuyIndicatorFrame
+BuyIndicatorTitle.Size = UDim2.new(1,-12,0,20)
+BuyIndicatorTitle.Position = UDim2.new(0,6,0,5)
+BuyIndicatorTitle.BackgroundTransparency = 1
+BuyIndicatorTitle.Text = "🛒 INDIKATOR"
+BuyIndicatorTitle.TextColor3 = Color3.fromRGB(255,255,100)
+BuyIndicatorTitle.TextXAlignment = Enum.TextXAlignment.Left
+BuyIndicatorTitle.Font = Enum.Font.GothamBold
+BuyIndicatorTitle.TextSize = 11
+
+local BisaMasak = Instance.new("TextLabel")
+BisaMasak.Parent = BuyIndicatorFrame
+BisaMasak.Size = UDim2.new(1,-12,0,22)
+BisaMasak.Position = UDim2.new(0,6,0,28)
+BisaMasak.BackgroundTransparency = 1
+BisaMasak.Text = "🍳 BISA MASAK: 0"
+BisaMasak.TextColor3 = Color3.fromRGB(255,255,255)
+BisaMasak.TextXAlignment = Enum.TextXAlignment.Left
+BisaMasak.Font = Enum.Font.GothamBold
+BisaMasak.TextSize = 13
+
+local WaterIndicator = Instance.new("TextLabel")
+WaterIndicator.Parent = BuyIndicatorFrame
+WaterIndicator.Size = UDim2.new(1,-12,0,20)
+WaterIndicator.Position = UDim2.new(0,6,0,52)
+WaterIndicator.BackgroundTransparency = 1
+WaterIndicator.Text = "💧 WATER: 0"
+WaterIndicator.TextColor3 = Color3.fromRGB(255,255,255)
+WaterIndicator.TextXAlignment = Enum.TextXAlignment.Left
+WaterIndicator.Font = Enum.Font.GothamBold
+WaterIndicator.TextSize = 11
+
+local SugarIndicator = Instance.new("TextLabel")
+SugarIndicator.Parent = BuyIndicatorFrame
+SugarIndicator.Size = UDim2.new(1,-12,0,20)
+SugarIndicator.Position = UDim2.new(0,6,0,74)
+SugarIndicator.BackgroundTransparency = 1
+SugarIndicator.Text = "🍚 SUGAR: 0"
+SugarIndicator.TextColor3 = Color3.fromRGB(255,255,255)
+SugarIndicator.TextXAlignment = Enum.TextXAlignment.Left
+SugarIndicator.Font = Enum.Font.GothamBold
+SugarIndicator.TextSize = 11
+
+local GelatinIndicator = Instance.new("TextLabel")
+GelatinIndicator.Parent = BuyIndicatorFrame
+GelatinIndicator.Size = UDim2.new(1,-12,0,20)
+GelatinIndicator.Position = UDim2.new(0,6,0,96)
+GelatinIndicator.BackgroundTransparency = 1
+GelatinIndicator.Text = "🧪 GELATIN: 0"
+GelatinIndicator.TextColor3 = Color3.fromRGB(255,255,255)
+GelatinIndicator.TextXAlignment = Enum.TextXAlignment.Left
+GelatinIndicator.Font = Enum.Font.GothamBold
+GelatinIndicator.TextSize = 11
+
+local MSLoopStepLabel = Instance.new("TextLabel")
+MSLoopStepLabel.Parent = MSLoopContent
+MSLoopStepLabel.Size = UDim2.new(1,-16,0,20)
+MSLoopStepLabel.Position = UDim2.new(0,8,0,210)
+MSLoopStepLabel.BackgroundTransparency = 1
+MSLoopStepLabel.Text = "Step: Waiting..."
+MSLoopStepLabel.TextColor3 = Color3.fromRGB(200,200,200)
+MSLoopStepLabel.TextXAlignment = Enum.TextXAlignment.Left
+MSLoopStepLabel.Font = Enum.Font.Gotham
+MSLoopStepLabel.TextSize = 10
+
+local MSLoopTimer = Instance.new("TextLabel")
+MSLoopTimer.Parent = MSLoopContent
+MSLoopTimer.Size = UDim2.new(1,-16,0,20)
+MSLoopTimer.Position = UDim2.new(0,8,0,232)
+MSLoopTimer.BackgroundTransparency = 1
+MSLoopTimer.Text = "Timer: 0s"
+MSLoopTimer.TextColor3 = Color3.fromRGB(200,200,200)
+MSLoopTimer.TextXAlignment = Enum.TextXAlignment.Left
+MSLoopTimer.Font = Enum.Font.Gotham
+MSLoopTimer.TextSize = 10
+
+local ToolStatus = Instance.new("TextLabel")
+ToolStatus.Parent = MSLoopContent
+ToolStatus.Size = UDim2.new(1,-16,0,20)
+ToolStatus.Position = UDim2.new(0,8,0,254)
+ToolStatus.BackgroundTransparency = 1
+ToolStatus.Text = "Tool: -"
+ToolStatus.TextColor3 = Color3.fromRGB(200,200,200)
+ToolStatus.TextXAlignment = Enum.TextXAlignment.Left
+ToolStatus.Font = Enum.Font.GothamBold
+ToolStatus.TextSize = 10
+
+local MSLoopStartBtn = Instance.new("TextButton")
+MSLoopStartBtn.Parent = MSLoopContent
+MSLoopStartBtn.Size = UDim2.new(0.5,-8,0,36)
+MSLoopStartBtn.Position = UDim2.new(0,8,0,280)
+MSLoopStartBtn.BackgroundColor3 = Color3.fromRGB(50,150,50)
+MSLoopStartBtn.Text = "▶️ START"
+MSLoopStartBtn.TextColor3 = Color3.fromRGB(255,255,255)
+MSLoopStartBtn.Font = Enum.Font.GothamBold
+MSLoopStartBtn.TextSize = 12
+
+local MSLoopStartCorner = Instance.new("UICorner")
+MSLoopStartCorner.Parent = MSLoopStartBtn
+MSLoopStartCorner.CornerRadius = UDim.new(0,6)
+
+local MSLoopStopBtn = Instance.new("TextButton")
+MSLoopStopBtn.Parent = MSLoopContent
+MSLoopStopBtn.Size = UDim2.new(0.5,-8,0,36)
+MSLoopStopBtn.Position = UDim2.new(0.5,4,0,280)
+MSLoopStopBtn.BackgroundColor3 = Color3.fromRGB(150,50,50)
+MSLoopStopBtn.Text = "⏹️ STOP"
+MSLoopStopBtn.TextColor3 = Color3.fromRGB(255,255,255)
+MSLoopStopBtn.Font = Enum.Font.GothamBold
+MSLoopStopBtn.TextSize = 12
+
+local MSLoopStopCorner = Instance.new("UICorner")
+MSLoopStopCorner.Parent = MSLoopStopBtn
+MSLoopStopCorner.CornerRadius = UDim.new(0,6)
+
+local RefreshBtn = Instance.new("TextButton")
+RefreshBtn.Parent = MSLoopContent
+RefreshBtn.Size = UDim2.new(1,-16,0,28)
+RefreshBtn.Position = UDim2.new(0,8,0,322)
+RefreshBtn.BackgroundColor3 = Color3.fromRGB(60,60,80)
+RefreshBtn.Text = "🔄 REFRESH"
+RefreshBtn.TextColor3 = Color3.fromRGB(200,200,255)
+RefreshBtn.Font = Enum.Font.GothamBold
+RefreshBtn.TextSize = 11
+
+local RefreshBtnCorner = Instance.new("UICorner")
+RefreshBtnCorner.Parent = RefreshBtn
+RefreshBtnCorner.CornerRadius = UDim.new(0,6)
+
+-- MS SAFETY CONTENT
+local MSSafetyTitle = Instance.new("TextLabel")
+MSSafetyTitle.Parent = MSSafetyContent
+MSSafetyTitle.Size = UDim2.new(1,-16,0,28)
+MSSafetyTitle.Position = UDim2.new(0,8,0,5)
+MSSafetyTitle.BackgroundTransparency = 1
+MSSafetyTitle.Text = "🛡️ MS SAFETY"
+MSSafetyTitle.TextColor3 = Color3.fromRGB(100,200,255)
+MSSafetyTitle.TextXAlignment = Enum.TextXAlignment.Left
+MSSafetyTitle.Font = Enum.Font.GothamBold
+MSSafetyTitle.TextSize = 14
+
+local function createBlinkButton(parent, yPos, icon, title, desc, color)
+    local frame = Instance.new("Frame")
+    frame.Parent = parent
+    frame.Size = UDim2.new(1,-16,0,55)
+    frame.Position = UDim2.new(0,8,0,yPos)
+    frame.BackgroundColor3 = Color3.fromRGB(35,35,45)
+    frame.BorderSizePixel = 0
     
-    local ToggleCorner = Instance.new("UICorner")
-    ToggleCorner.CornerRadius = UDim.new(0, 8)
-    ToggleCorner.Parent = FPSToggle
+    local corner = Instance.new("UICorner")
+    corner.Parent = frame
+    corner.CornerRadius = UDim.new(0,8)
     
-    local FPSEnabled = false
+    local iconLabel = Instance.new("TextLabel")
+    iconLabel.Parent = frame
+    iconLabel.Size = UDim2.new(0,40,1,0)
+    iconLabel.Position = UDim2.new(0,8,0,0)
+    iconLabel.BackgroundTransparency = 1
+    iconLabel.Text = icon
+    iconLabel.TextSize = 28
+    iconLabel.Font = Enum.Font.GothamBold
+    iconLabel.TextColor3 = Color3.fromRGB(255,255,255)
     
-    -- Fungsi FPS Indicator
-    local function StartFPSIndicator()
-        if FPSIndicator then FPSIndicator:Destroy() end
-        
-        local FPSGui = Instance.new("ScreenGui")
-        FPSGui.Name = "FPSIndicator"
-        FPSGui.ResetOnSpawn = false
-        FPSGui.Parent = game:GetService("CoreGui")
-        
-        local FPSFrame = Instance.new("Frame")
-        FPSFrame.Size = UDim2.new(0, 100, 0, 40)
-        FPSFrame.Position = UDim2.new(0, 20, 0, 60)
-        FPSFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        FPSFrame.BorderSizePixel = 0
-        FPSFrame.Active = true
-        FPSFrame.Draggable = true
-        FPSFrame.Parent = FPSGui
-        
-        local FrameCorner = Instance.new("UICorner")
-        FrameCorner.CornerRadius = UDim.new(0, 12)
-        FrameCorner.Parent = FPSFrame
-        
-        local FrameStroke = Instance.new("UIStroke")
-        FrameStroke.Color = Color3.fromRGB(255, 215, 0)
-        FrameStroke.Thickness = 2
-        FrameStroke.Parent = FPSFrame
-        
-        local FPSLabel = Instance.new("TextLabel")
-        FPSLabel.Size = UDim2.new(1, -10, 1, 0)
-        FPSLabel.Position = UDim2.new(0, 5, 0, 0)
-        FPSLabel.BackgroundTransparency = 1
-        FPSLabel.Text = "FPS: 60"
-        FPSLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-        FPSLabel.TextSize = 18
-        FPSLabel.Font = Enum.Font.GothamBold
-        FPSLabel.Parent = FPSFrame
-        
-        FPSIndicator = FPSGui
-        
-        local LastTime = tick()
-        local FrameCount = 0
-        
-        game:GetService("RunService").RenderStepped:Connect(function()
-            if FPSIndicator and FPSIndicator.Parent then
-                FrameCount = FrameCount + 1
-                local CurrentTime = tick()
-                local TimePassed = CurrentTime - LastTime
-                
-                if TimePassed >= 0.5 then
-                    local FPS = math.floor((FrameCount / TimePassed) * 2)
-                    FPSLabel.Text = "FPS: " .. FPS
-                    
-                    if FPS >= 100 then
-                        FPSLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-                        FPSLabel.Text = "FPS: " .. FPS .. " ⚡"
-                    elseif FPS >= 60 then
-                        FPSLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-                    elseif FPS >= 30 then
-                        FPSLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
-                    else
-                        FPSLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-                    end
-                    
-                    FrameCount = 0
-                    LastTime = CurrentTime
-                end
-            end
-        end)
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1,-100,0,22)
+    titleLabel.Position = UDim2.new(0,48,0,8)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title
+    titleLabel.TextColor3 = Color3.fromRGB(255,255,255)
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 12
+    
+    local descLabel = Instance.new("TextLabel")
+    descLabel.Parent = frame
+    descLabel.Size = UDim2.new(1,-100,0,18)
+    descLabel.Position = UDim2.new(0,48,0,30)
+    descLabel.BackgroundTransparency = 1
+    descLabel.Text = desc
+    descLabel.TextColor3 = Color3.fromRGB(180,180,180)
+    descLabel.TextXAlignment = Enum.TextXAlignment.Left
+    descLabel.Font = Enum.Font.Gotham
+    descLabel.TextSize = 9
+    
+    local btn = Instance.new("TextButton")
+    btn.Parent = frame
+    btn.Size = UDim2.new(0,32,0,32)
+    btn.Position = UDim2.new(1,-40,0.5,-16)
+    btn.BackgroundColor3 = color
+    btn.Text = "▶️"
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
+    btn.TextSize = 14
+    btn.Font = Enum.Font.GothamBold
+    
+    local btnCorner = Instance.new("UICorner")
+    btnCorner.Parent = btn
+    btnCorner.CornerRadius = UDim.new(0,6)
+    
+    return frame, btn
+end
+
+local blinkAtasFrame, BlinkAtasBtn = createBlinkButton(MSSafetyContent, 40, "⬆️", "BLINK KE ATAS", "Naik 2 studs", Color3.fromRGB(150,100,200))
+local blinkDownFrame, BlinkDownBtn = createBlinkButton(MSSafetyContent, 100, "⬇️", "BLINK KE BAWAH", "Turun 4 studs", Color3.fromRGB(0,150,200))
+local blinkMajuFrame, BlinkMajuBtn = createBlinkButton(MSSafetyContent, 160, "➡️", "BLINK MAJU", "Maju 5 studs", Color3.fromRGB(0,200,100))
+local blinkMundurFrame, BlinkMundurBtn = createBlinkButton(MSSafetyContent, 220, "⬅️", "BLINK MUNDUR", "Mundur 5 studs", Color3.fromRGB(200,100,0))
+
+local BlinkStatus = Instance.new("TextLabel")
+BlinkStatus.Parent = MSSafetyContent
+BlinkStatus.Size = UDim2.new(1,-16,0,28)
+BlinkStatus.Position = UDim2.new(0,8,0,285)
+BlinkStatus.BackgroundColor3 = Color3.fromRGB(40,40,50)
+BlinkStatus.Text = "klik aja ngab"
+BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
+BlinkStatus.Font = Enum.Font.GothamBold
+BlinkStatus.TextSize = 10
+
+local BlinkStatusCorner = Instance.new("UICorner")
+BlinkStatusCorner.Parent = BlinkStatus
+BlinkStatusCorner.CornerRadius = UDim.new(0,6)
+
+-- AUTO SELL CONTENT
+local AutoSellTitle = Instance.new("TextLabel")
+AutoSellTitle.Parent = AutoSellContent
+AutoSellTitle.Size = UDim2.new(1,-16,0,28)
+AutoSellTitle.Position = UDim2.new(0,8,0,8)
+AutoSellTitle.BackgroundTransparency = 1
+AutoSellTitle.Text = "💰 AUTO SELL"
+AutoSellTitle.TextColor3 = Color3.fromRGB(100,255,100)
+AutoSellTitle.TextXAlignment = Enum.TextXAlignment.Left
+AutoSellTitle.Font = Enum.Font.GothamBold
+AutoSellTitle.TextSize = 16
+
+local AutoSellDesc = Instance.new("TextLabel")
+AutoSellDesc.Parent = AutoSellContent
+AutoSellDesc.Size = UDim2.new(1,-16,0,20)
+AutoSellDesc.Position = UDim2.new(0,8,0,38)
+AutoSellDesc.BackgroundTransparency = 1
+AutoSellDesc.Text = "Auto Sell Marshmallow"
+AutoSellDesc.TextColor3 = Color3.fromRGB(200,200,200)
+AutoSellDesc.TextXAlignment = Enum.TextXAlignment.Left
+AutoSellDesc.Font = Enum.Font.Gotham
+AutoSellDesc.TextSize = 10
+
+local AutoSellStatusFrame = Instance.new("Frame")
+AutoSellStatusFrame.Parent = AutoSellContent
+AutoSellStatusFrame.Size = UDim2.new(1,-16,0,85)
+AutoSellStatusFrame.Position = UDim2.new(0,8,0,65)
+AutoSellStatusFrame.BackgroundColor3 = Color3.fromRGB(35,35,45)
+AutoSellStatusFrame.BorderSizePixel = 0
+
+local AutoSellStatusCorner = Instance.new("UICorner")
+AutoSellStatusCorner.Parent = AutoSellStatusFrame
+AutoSellStatusCorner.CornerRadius = UDim.new(0,8)
+
+local AutoSellIcon = Instance.new("TextLabel")
+AutoSellIcon.Parent = AutoSellStatusFrame
+AutoSellIcon.Size = UDim2.new(0,45,1,0)
+AutoSellIcon.Position = UDim2.new(0,8,0,0)
+AutoSellIcon.BackgroundTransparency = 1
+AutoSellIcon.Text = "💰"
+AutoSellIcon.TextSize = 40
+AutoSellIcon.Font = Enum.Font.GothamBold
+AutoSellIcon.TextColor3 = Color3.fromRGB(255,255,100)
+
+local AutoSellStatusTitle = Instance.new("TextLabel")
+AutoSellStatusTitle.Parent = AutoSellStatusFrame
+AutoSellStatusTitle.Size = UDim2.new(1,-70,0,22)
+AutoSellStatusTitle.Position = UDim2.new(0,55,0,8)
+AutoSellStatusTitle.BackgroundTransparency = 1
+AutoSellStatusTitle.Text = "STATUS"
+AutoSellStatusTitle.TextColor3 = Color3.fromRGB(255,255,255)
+AutoSellStatusTitle.TextXAlignment = Enum.TextXAlignment.Left
+AutoSellStatusTitle.Font = Enum.Font.GothamBold
+AutoSellStatusTitle.TextSize = 12
+
+local AutoSellStatus = Instance.new("TextLabel")
+AutoSellStatus.Parent = AutoSellStatusFrame
+AutoSellStatus.Size = UDim2.new(1,-70,0,22)
+AutoSellStatus.Position = UDim2.new(0,55,0,30)
+AutoSellStatus.BackgroundTransparency = 1
+AutoSellStatus.Text = "⏹️ STOPPED"
+AutoSellStatus.TextColor3 = Color3.fromRGB(255,100,100)
+AutoSellStatus.TextXAlignment = Enum.TextXAlignment.Left
+AutoSellStatus.Font = Enum.Font.GothamBold
+AutoSellStatus.TextSize = 12
+
+local AutoSellCounter = Instance.new("TextLabel")
+AutoSellCounter.Parent = AutoSellStatusFrame
+AutoSellCounter.Size = UDim2.new(1,-70,0,18)
+AutoSellCounter.Position = UDim2.new(0,55,0,52)
+AutoSellCounter.BackgroundTransparency = 1
+AutoSellCounter.Text = "Terjual: 0"
+AutoSellCounter.TextColor3 = Color3.fromRGB(100,255,255)
+AutoSellCounter.TextXAlignment = Enum.TextXAlignment.Left
+AutoSellCounter.Font = Enum.Font.GothamBold
+AutoSellCounter.TextSize = 10
+
+local AutoSellInfo = Instance.new("TextLabel")
+AutoSellInfo.Parent = AutoSellStatusFrame
+AutoSellInfo.Size = UDim2.new(1,-70,0,15)
+AutoSellInfo.Position = UDim2.new(0,55,0,70)
+AutoSellInfo.BackgroundTransparency = 1
+AutoSellInfo.Text = "Tools: 0"
+AutoSellInfo.TextColor3 = Color3.fromRGB(200,200,200)
+AutoSellInfo.TextXAlignment = Enum.TextXAlignment.Left
+AutoSellInfo.Font = Enum.Font.Gotham
+AutoSellInfo.TextSize = 9
+
+local AutoSellButtonFrame = Instance.new("Frame")
+AutoSellButtonFrame.Parent = AutoSellContent
+AutoSellButtonFrame.Size = UDim2.new(1,-16,0,45)
+AutoSellButtonFrame.Position = UDim2.new(0,8,0,158)
+AutoSellButtonFrame.BackgroundColor3 = Color3.fromRGB(35,35,45)
+AutoSellButtonFrame.BorderSizePixel = 0
+
+local AutoSellButtonCorner = Instance.new("UICorner")
+AutoSellButtonCorner.Parent = AutoSellButtonFrame
+AutoSellButtonCorner.CornerRadius = UDim.new(0,8)
+
+local AutoSellStartBtn = Instance.new("TextButton")
+AutoSellStartBtn.Parent = AutoSellButtonFrame
+AutoSellStartBtn.Size = UDim2.new(0.5,-8,0,32)
+AutoSellStartBtn.Position = UDim2.new(0,6,0,6)
+AutoSellStartBtn.BackgroundColor3 = Color3.fromRGB(50,150,50)
+AutoSellStartBtn.Text = "▶️ START"
+AutoSellStartBtn.TextColor3 = Color3.fromRGB(255,255,255)
+AutoSellStartBtn.Font = Enum.Font.GothamBold
+AutoSellStartBtn.TextSize = 12
+
+local AutoSellStartCorner = Instance.new("UICorner")
+AutoSellStartCorner.Parent = AutoSellStartBtn
+AutoSellStartCorner.CornerRadius = UDim.new(0,6)
+
+local AutoSellStopBtn = Instance.new("TextButton")
+AutoSellStopBtn.Parent = AutoSellButtonFrame
+AutoSellStopBtn.Size = UDim2.new(0.5,-8,0,32)
+AutoSellStopBtn.Position = UDim2.new(0.5,2,0,6)
+AutoSellStopBtn.BackgroundColor3 = Color3.fromRGB(150,50,50)
+AutoSellStopBtn.Text = "⏹️ STOP"
+AutoSellStopBtn.TextColor3 = Color3.fromRGB(255,255,255)
+AutoSellStopBtn.Font = Enum.Font.GothamBold
+AutoSellStopBtn.TextSize = 12
+
+local AutoSellStopCorner = Instance.new("UICorner")
+AutoSellStopCorner.Parent = AutoSellStopBtn
+AutoSellStopCorner.CornerRadius = UDim.new(0,6)
+
+-- [Semua fungsi tetap sama seperti sebelumnya]
+-- (Function countTools, updateBuyIndicators, getSellTools, countSellTools, 
+--  startAutoSell, stopAutoSell, findTool, equipTool, pressE,
+--  blinkAtas, blinkDown, blinkMaju, blinkMundur, startMSLoop,
+--  smoothTeleport, TP_MS_BAHAN, TP_RS, closeGUI tetap sama)
+
+-- Variables
+local loopRunning = false
+local autoSellRunning = false
+local autoSellCount = 0
+
+local SELL_TOOLS = {
+    "Small Marshmallow Bag",
+    "Medium Marshmallow Bag", 
+    "Large Marshmallow Bag"
+}
+
+-- [Sisanya fungsi-fungsi tetap sama, hanya disesuaikan ukuran GUI]
+
+-- BUTTON CONNECTIONS (sama seperti sebelumnya)
+CloseBtn.MouseButton1Click:Connect(closeGUI)
+BtnBahan.MouseButton1Click:Connect(TP_MS_BAHAN)
+BtnRS.MouseButton1Click:Connect(TP_RS)
+
+MSLoopStartBtn.MouseButton1Click:Connect(function()
+    if not loopRunning then
+        task.spawn(startMSLoop)
+    end
+end)
+
+MSLoopStopBtn.MouseButton1Click:Connect(function()
+    loopRunning = false
+end)
+
+RefreshBtn.MouseButton1Click:Connect(updateBuyIndicators)
+
+BlinkAtasBtn.MouseButton1Click:Connect(blinkAtas)
+BlinkDownBtn.MouseButton1Click:Connect(blinkDown)
+BlinkMajuBtn.MouseButton1Click:Connect(blinkMaju)
+BlinkMundurBtn.MouseButton1Click:Connect(blinkMundur)
+
+AutoSellStartBtn.MouseButton1Click:Connect(function()
+    if not autoSellRunning then
+        startAutoSell()
+    end
+end)
+
+AutoSellStopBtn.MouseButton1Click:Connect(function()
+    stopAutoSell()
+end)
+
+-- Tab Switching
+local function switchTab(activeTab)
+    TPContent.Visible = false
+    MSLoopContent.Visible = false
+    MSSafetyContent.Visible = false
+    AutoSellContent.Visible = false
+    
+    local btns = {TPTabBtn, MSLoopTabBtn, MSSafetyTabBtn, AutoSellTabBtn}
+    for _, btn in ipairs(btns) do
+        btn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+        btn.TextColor3 = Color3.fromRGB(200,200,200)
     end
     
-    local function StopFPSIndicator()
-        if FPSIndicator then
-            FPSIndicator:Destroy()
-            FPSIndicator = nil
-        end
+    activeTab.btn.BackgroundColor3 = Color3.fromRGB(50,50,60)
+    activeTab.btn.TextColor3 = Color3.fromRGB(255,255,255)
+    activeTab.content.Visible = true
+end
+
+TPTabBtn.MouseButton1Click:Connect(function()
+    switchTab({btn = TPTabBtn, content = TPContent})
+end)
+
+MSLoopTabBtn.MouseButton1Click:Connect(function()
+    switchTab({btn = MSLoopTabBtn, content = MSLoopContent})
+    updateBuyIndicators()
+end)
+
+MSSafetyTabBtn.MouseButton1Click:Connect(function()
+    switchTab({btn = MSSafetyTabBtn, content = MSSafetyContent})
+end)
+
+AutoSellTabBtn.MouseButton1Click:Connect(function()
+    switchTab({btn = AutoSellTabBtn, content = AutoSellContent})
+    AutoSellInfo.Text = "Tools: " .. countSellTools()
+end)
+
+-- Minimize
+local minimized = false
+local openSize = UDim2.new(0,GUI_WIDTH,0,GUI_HEIGHT)
+local closedSize = UDim2.new(0,GUI_WIDTH,0,TITLE_HEIGHT + 4)
+local tweenInfo = TweenInfo.new(0.3)
+
+MinBtn.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    if minimized then
+        TPContent.Visible = false
+        MSLoopContent.Visible = false
+        MSSafetyContent.Visible = false
+        AutoSellContent.Visible = false
+        TabFrame.Visible = false
+        MinBtn.Text = "□"
+        TweenService:Create(Frame, tweenInfo, {Size = closedSize}):Play()
+    else
+        TweenService:Create(Frame, tweenInfo, {Size = openSize}):Play()
+        task.wait(0.3)
+        TPContent.Visible = true
+        TabFrame.Visible = true
+        MinBtn.Text = "−"
     end
-    
-    FPSToggle.MouseButton1Click:Connect(function()
-        FPSEnabled = not FPSEnabled
-        if FPSEnabled then
-            FPSToggle.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            FPSToggle.Text = "ON"
-            StartFPSIndicator()
+end)
+
+UIS.InputBegan:Connect(function(input, gp)
+    if gp then return end
+    if input.KeyCode == Enum.KeyCode.Z then
+        minimized = not minimized
+        if minimized then
+            TPContent.Visible = false
+            MSLoopContent.Visible = false
+            MSSafetyContent.Visible = false
+            AutoSellContent.Visible = false
+            TabFrame.Visible = false
+            MinBtn.Text = "□"
+            TweenService:Create(Frame, tweenInfo, {Size = closedSize}):Play()
         else
-            FPSToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-            FPSToggle.Text = "OFF"
-            StopFPSIndicator()
+            TweenService:Create(Frame, tweenInfo, {Size = openSize}):Play()
+            task.wait(0.3)
+            TPContent.Visible = true
+            TabFrame.Visible = true
+            MinBtn.Text = "−"
         end
-    end)
-    
-    YPos = YPos + 100
-    
-    -- ===== LAYAR GEPENG CARD - FIX 100% BISA DIPENCET =====
-    local StretchCard = Instance.new("Frame")
-    StretchCard.Name = "StretchCard"
-    StretchCard.Size = UDim2.new(1, -20, 0, 130)
-    StretchCard.Position = UDim2.new(0, 10, 0, YPos)
-    StretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    StretchCard.BorderSizePixel = 0
-    StretchCard.Parent = Tab2Content
-    
-    local StretchCorner = Instance.new("UICorner")
-    StretchCorner.CornerRadius = UDim.new(0, 12)
-    StretchCorner.Parent = StretchCard
-    
-    local StretchTitle = Instance.new("TextLabel")
-    StretchTitle.Size = UDim2.new(1, -20, 0, 30)
-    StretchTitle.Position = UDim2.new(0, 10, 0, 10)
-    StretchTitle.BackgroundTransparency = 1
-    StretchTitle.Text = "🖥️ LAYAR GEPENG 4:3 STRETCHED"
-    StretchTitle.TextColor3 = Color3.fromRGB(255, 215, 0)
-    StretchTitle.TextSize = 16
-    StretchTitle.Font = Enum.Font.GothamBold
-    StretchTitle.TextXAlignment = Enum.TextXAlignment.Left
-    StretchTitle.Parent = StretchCard
-    
-    local StretchDesc = Instance.new("TextLabel")
-    StretchDesc.Size = UDim2.new(1, -20, 0, 50)
-    StretchDesc.Position = UDim2.new(0, 10, 0, 40)
-    StretchDesc.BackgroundTransparency = 1
-    StretchDesc.Text = "Mode 4:3 stretched ala pro player! Model karakter jadi GEPENG vertikal, aim lebih gampang. (CSGO/Valorant style)"
-    StretchDesc.TextColor3 = Color3.fromRGB(200, 150, 100)
-    StretchDesc.TextSize = 11
-    StretchDesc.Font = Enum.Font.Gotham
-    StretchDesc.TextXAlignment = Enum.TextXAlignment.Left
-    StretchDesc.TextWrapped = true
-    StretchDesc.Parent = StretchCard
-    
-    -- STATUS TEXT
-    local StretchStatus = Instance.new("TextLabel")
-    StretchStatus.Name = "StretchStatus"
-    StretchStatus.Size = UDim2.new(0.7, -10, 0, 20)
-    StretchStatus.Position = UDim2.new(0, 10, 0, 95)
-    StretchStatus.BackgroundTransparency = 1
-    StretchStatus.Text = "⏸️ Status: Normal (16:9)"
-    StretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-    StretchStatus.TextSize = 11
-    StretchStatus.Font = Enum.Font.Gotham
-    StretchStatus.TextXAlignment = Enum.TextXAlignment.Left
-    StretchStatus.Parent = StretchCard
-    
-    -- TOMBOL ON/OFF - PASTI BISA DIPENCET!
-    local StretchToggle = Instance.new("TextButton")
-    StretchToggle.Name = "StretchToggle"
-    StretchToggle.Size = UDim2.new(0, 80, 0, 40)
-    StretchToggle.Position = UDim2.new(1, -95, 0, 80)
-    StretchToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    StretchToggle.Text = "OFF"
-    StretchToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-    StretchToggle.TextSize = 16
-    StretchToggle.Font = Enum.Font.GothamBold
-    StretchToggle.BorderSizePixel = 0
-    StretchToggle.Parent = StretchCard
-    
-    local StretchBtnCorner = Instance.new("UICorner")
-    StretchBtnCorner.CornerRadius = UDim.new(0, 8)
-    StretchBtnCorner.Parent = StretchToggle
-    
-    -- FUNGSI AKTIFKAN LAYAR GEPENG
-    local function ActivateStretch()
-        local Camera = workspace.CurrentCamera
-        if not Camera then return end
-        
-        -- Simpan original settings (hanya sekali)
-        if not OriginalViewport then
-            OriginalViewport = Camera.ViewportSize
-            OriginalFOV = Camera.FieldOfView
-        end
-        
-        -- Hitung tinggi 4:3 (lebar * 0.75)
-        local CurrentWidth = Camera.ViewportSize.X
-        local NewHeight = CurrentWidth * 0.75 -- 4:3 ratio
-        
-        -- Terapkan stretch
-        Camera.ViewportSize = Vector2.new(CurrentWidth, NewHeight)
-        Camera.FieldOfView = 80 -- FOV lebih rendah buat efek gepeng
-        
-        StretchActive = true
-        
-        -- Update UI
-        StretchToggle.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-        StretchToggle.Text = "ON"
-        StretchStatus.Text = "✅ Status: LAYAR GEPENG AKTIF (4:3 stretched)"
-        StretchStatus.TextColor3 = Color3.fromRGB(0, 255, 0)
-        StretchCard.BackgroundColor3 = Color3.fromRGB(0, 30, 0)
-        
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "LAYAR GEPENG",
-            Text = "Mode 4:3 stretched AKTIF! Karakter gepeng.",
-            Duration = 2
-        })
     end
-    
-    -- FUNGSI NONAKTIFKAN LAYAR GEPENG
-    local function DeactivateStretch()
-        local Camera = workspace.CurrentCamera
-        if not Camera then return end
-        
-        -- Kembalikan ke original
-        if OriginalViewport then
-            Camera.ViewportSize = OriginalViewport
-        end
-        if OriginalFOV then
-            Camera.FieldOfView = OriginalFOV
-        end
-        
-        StretchActive = false
-        
-        -- Update UI
-        StretchToggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-        StretchToggle.Text = "OFF"
-        StretchStatus.Text = "⏸️ Status: Normal (16:9)"
-        StretchStatus.TextColor3 = Color3.fromRGB(150, 150, 150)
-        StretchCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-        
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "LAYAR GEPENG",
-            Text = "Mode normal kembali.",
-            Duration = 1
-        })
-    end
-    
-    -- EVENT CLICK TOMBOL - PASTI JALAN!
-    StretchToggle.MouseButton1Click:Connect(function()
-        print("⬇️ TOMBOL LAYAR GEPENG DIPENCET!") -- Debug di console
-        
-        if StretchActive then
-            DeactivateStretch()
-        else
-            ActivateStretch()
-        end
-    end)
-    
-    YPos = YPos + 140
-    
-    -- INFO CARD
-    local InfoCard = Instance.new("Frame")
-    InfoCard.Size = UDim2.new(1, -20, 0, 100)
-    InfoCard.Position = UDim2.new(0, 10, 0, YPos)
-    InfoCard.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    InfoCard.BorderSizePixel = 0
-    InfoCard.Parent = Tab2Content
-    
-    local InfoCorner = Instance.new("UICorner")
-    InfoCorner.CornerRadius = UDim.new(0, 12)
-    InfoCorner.Parent = InfoCard
-    
-    local InfoText = Instance.new("TextLabel")
-    InfoText.Size = UDim2.new(1, -20, 1, -20)
-    InfoText.Position = UDim2.new(0, 10, 0, 10)
-    InfoText.BackgroundTransparency = 1
-    InfoText.Text = "📌 INFO:\n• FPS Boost: Hapus efek grafis buat FPS tinggi\n• Layar Gepeng: Stretch 4:3 (vertikal gepeng) biar headshot lebih gampang\n• Klik tombol ON/OFF buat coba!"
-    InfoText.TextColor3 = Color3.fromRGB(200, 200, 200)
-    InfoText.TextSize = 12
-    InfoText.Font = Enum.Font.Gotham
-    InfoText.TextWrapped = true
-    InfoText.TextXAlignment = Enum.TextXAlignment.Left
-    InfoText.Parent = InfoCard
-end
-
--- Panggil fungsi pembuat konten
-CreateFPSCards()
-CreateSettingsTab()
-
--- Floating Icon
-local FloatingIcon = Instance.new("TextButton")
-FloatingIcon.Name = "FloatingIcon"
-FloatingIcon.Size = UDim2.new(0, 60, 0, 60)
-FloatingIcon.Position = UDim2.new(0.9, -30, 0.1, 0)
-FloatingIcon.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-FloatingIcon.Text = "⚡"
-FloatingIcon.TextColor3 = Color3.fromRGB(255, 215, 0)
-FloatingIcon.TextScaled = true
-FloatingIcon.Font = Enum.Font.GothamBold
-FloatingIcon.BorderSizePixel = 0
-FloatingIcon.Draggable = true
-FloatingIcon.Parent = ScreenGui
-
-local IconCorner = Instance.new("UICorner")
-IconCorner.CornerRadius = UDim.new(0, 15)
-IconCorner.Parent = FloatingIcon
-
-local IconStroke = Instance.new("UIStroke")
-IconStroke.Color = Color3.fromRGB(255, 215, 0)
-IconStroke.Thickness = 2
-IconStroke.Parent = FloatingIcon
-
-FloatingIcon.MouseButton1Click:Connect(function()
-    MainFrame.Visible = not MainFrame.Visible
 end)
 
--- Notifikasi sukses
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "⚡ 191 FPS EXTREME ⚡",
-    Text = "LOADING BERHASIL! Tekan tombol LAYAR GEPENG di tab SETTINGS",
-    Duration = 5
-})
+-- Initial Animation
+Frame.Size = UDim2.new(0,0,0,0)
+task.wait(0.1)
+TweenService:Create(Frame, tweenInfo, {Size = openSize}):Play()
 
-end) -- End pcall
+-- Initial update
+task.wait(1)
+updateBuyIndicators()
 
-if not Success then
-    warn("ERROR: " .. tostring(Error))
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "ERROR",
-        Text = "Gagal load: " .. tostring(Error),
-        Duration = 5
-    })
-end
+-- Auto refresh every 2 seconds
+task.spawn(function()
+    while true do
+        task.wait(2)
+        if MSLoopContent.Visible then
+            updateBuyIndicators()
+        end
+        if AutoSellContent.Visible then
+            AutoSellInfo.Text = "Tools: " .. countSellTools()
+        end
+    end
+end)
