@@ -2,13 +2,13 @@ local player = game.Players.LocalPlayer
 local UIS = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
+local RunService = game:GetService("RunService")
 
 -- Konfigurasi ukuran HP
 local GUI_WIDTH = 320
 local GUI_HEIGHT = 480
 local TAB_HEIGHT = 35
 local TITLE_HEIGHT = 45
-local CONTENT_HEIGHT = GUI_HEIGHT - TITLE_HEIGHT - TAB_HEIGHT
 
 -- GUI
 local ScreenGui = Instance.new("ScreenGui")
@@ -304,7 +304,7 @@ AutoSellContent.Visible = false
 AutoSellContent.ScrollBarThickness = 4
 AutoSellContent.CanvasSize = UDim2.new(0,0,0,220)
 
--- ========== TP BUTTONS ==========
+-- TP BUTTONS
 local BtnBahan = Instance.new("TextButton")
 BtnBahan.Parent = TPContent
 BtnBahan.Size = UDim2.new(1,-16,0,60)
@@ -389,7 +389,7 @@ RSDesc.TextXAlignment = Enum.TextXAlignment.Left
 RSDesc.Font = Enum.Font.Gotham
 RSDesc.TextSize = 10
 
--- ========== MS LOOP CONTENT ==========
+-- MS LOOP CONTENT (sama persis seperti original, hanya resize posisi)
 local MSLoopTitle = Instance.new("TextLabel")
 MSLoopTitle.Parent = MSLoopContent
 MSLoopTitle.Size = UDim2.new(1,-16,0,25)
@@ -552,23 +552,34 @@ local RefreshBtnCorner = Instance.new("UICorner")
 RefreshBtnCorner.Parent = RefreshBtn
 RefreshBtnCorner.CornerRadius = UDim.new(0,6)
 
--- ========== MS SAFETY CONTENT ==========
+-- MS SAFETY CONTENT (sama persis seperti original)
 local MSSafetyTitle = Instance.new("TextLabel")
 MSSafetyTitle.Parent = MSSafetyContent
 MSSafetyTitle.Size = UDim2.new(1,-16,0,28)
 MSSafetyTitle.Position = UDim2.new(0,8,0,5)
 MSSafetyTitle.BackgroundTransparency = 1
-MSSafetyTitle.Text = "🛡️ MS SAFETY"
+MSSafetyTitle.Text = "🛡️ MS SAFETY DARI RK"
 MSSafetyTitle.TextColor3 = Color3.fromRGB(100,200,255)
 MSSafetyTitle.TextXAlignment = Enum.TextXAlignment.Left
 MSSafetyTitle.Font = Enum.Font.GothamBold
 MSSafetyTitle.TextSize = 14
 
+local MSSafetyDesc = Instance.new("TextLabel")
+MSSafetyDesc.Parent = MSSafetyContent
+MSSafetyDesc.Size = UDim2.new(1,-16,0,25)
+MSSafetyDesc.Position = UDim2.new(0,8,0,35)
+MSSafetyDesc.BackgroundTransparency = 1
+MSSafetyDesc.Text = "Blink Masuk Meja & Naik Turun"
+MSSafetyDesc.TextColor3 = Color3.fromRGB(200,200,200)
+MSSafetyDesc.TextXAlignment = Enum.TextXAlignment.Left
+MSSafetyDesc.Font = Enum.Font.Gotham
+MSSafetyDesc.TextSize = 10
+
 -- Blink Atas
 local BlinkAtasFrame = Instance.new("Frame")
 BlinkAtasFrame.Parent = MSSafetyContent
-BlinkAtasFrame.Size = UDim2.new(1,-16,0,55)
-BlinkAtasFrame.Position = UDim2.new(0,8,0,40)
+BlinkAtasFrame.Size = UDim2.new(1,-16,0,60)
+BlinkAtasFrame.Position = UDim2.new(0,8,0,65)
 BlinkAtasFrame.BackgroundColor3 = Color3.fromRGB(35,35,45)
 BlinkAtasFrame.BorderSizePixel = 0
 local BlinkAtasCorner = Instance.new("UICorner")
@@ -581,7 +592,7 @@ BlinkAtasIcon.Size = UDim2.new(0,40,1,0)
 BlinkAtasIcon.Position = UDim2.new(0,8,0,0)
 BlinkAtasIcon.BackgroundTransparency = 1
 BlinkAtasIcon.Text = "⬆️"
-BlinkAtasIcon.TextSize = 28
+BlinkAtasIcon.TextSize = 30
 BlinkAtasIcon.Font = Enum.Font.GothamBold
 
 local BlinkAtasTitle = Instance.new("TextLabel")
@@ -598,9 +609,9 @@ BlinkAtasTitle.TextSize = 12
 local BlinkAtasDesc = Instance.new("TextLabel")
 BlinkAtasDesc.Parent = BlinkAtasFrame
 BlinkAtasDesc.Size = UDim2.new(1,-100,0,18)
-BlinkAtasDesc.Position = UDim2.new(0,48,0,30)
+BlinkAtasDesc.Position = UDim2.new(0,48,0,32)
 BlinkAtasDesc.BackgroundTransparency = 1
-BlinkAtasDesc.Text = "Naik 2 studs"
+BlinkAtasDesc.Text = "kusuka turun naik"
 BlinkAtasDesc.TextColor3 = Color3.fromRGB(180,180,180)
 BlinkAtasDesc.TextXAlignment = Enum.TextXAlignment.Left
 BlinkAtasDesc.Font = Enum.Font.Gotham
@@ -622,8 +633,8 @@ BlinkAtasBtnCorner.CornerRadius = UDim.new(0,6)
 -- Blink Bawah
 local BlinkDownFrame = Instance.new("Frame")
 BlinkDownFrame.Parent = MSSafetyContent
-BlinkDownFrame.Size = UDim2.new(1,-16,0,55)
-BlinkDownFrame.Position = UDim2.new(0,8,0,100)
+BlinkDownFrame.Size = UDim2.new(1,-16,0,60)
+BlinkDownFrame.Position = UDim2.new(0,8,0,130)
 BlinkDownFrame.BackgroundColor3 = Color3.fromRGB(35,35,45)
 BlinkDownFrame.BorderSizePixel = 0
 local BlinkDownCorner = Instance.new("UICorner")
@@ -636,7 +647,7 @@ BlinkDownIcon.Size = UDim2.new(0,40,1,0)
 BlinkDownIcon.Position = UDim2.new(0,8,0,0)
 BlinkDownIcon.BackgroundTransparency = 1
 BlinkDownIcon.Text = "⬇️"
-BlinkDownIcon.TextSize = 28
+BlinkDownIcon.TextSize = 30
 BlinkDownIcon.Font = Enum.Font.GothamBold
 
 local BlinkDownTitle = Instance.new("TextLabel")
@@ -653,9 +664,9 @@ BlinkDownTitle.TextSize = 12
 local BlinkDownDesc = Instance.new("TextLabel")
 BlinkDownDesc.Parent = BlinkDownFrame
 BlinkDownDesc.Size = UDim2.new(1,-100,0,18)
-BlinkDownDesc.Position = UDim2.new(0,48,0,30)
+BlinkDownDesc.Position = UDim2.new(0,48,0,32)
 BlinkDownDesc.BackgroundTransparency = 1
-BlinkDownDesc.Text = "Turun 4 studs"
+BlinkDownDesc.Text = "Turun kiahh"
 BlinkDownDesc.TextColor3 = Color3.fromRGB(180,180,180)
 BlinkDownDesc.TextXAlignment = Enum.TextXAlignment.Left
 BlinkDownDesc.Font = Enum.Font.Gotham
@@ -677,8 +688,8 @@ BlinkDownBtnCorner.CornerRadius = UDim.new(0,6)
 -- Blink Maju
 local BlinkMajuFrame = Instance.new("Frame")
 BlinkMajuFrame.Parent = MSSafetyContent
-BlinkMajuFrame.Size = UDim2.new(1,-16,0,55)
-BlinkMajuFrame.Position = UDim2.new(0,8,0,160)
+BlinkMajuFrame.Size = UDim2.new(1,-16,0,60)
+BlinkMajuFrame.Position = UDim2.new(0,8,0,195)
 BlinkMajuFrame.BackgroundColor3 = Color3.fromRGB(35,35,45)
 BlinkMajuFrame.BorderSizePixel = 0
 local BlinkMajuCorner = Instance.new("UICorner")
@@ -690,8 +701,8 @@ BlinkMajuIcon.Parent = BlinkMajuFrame
 BlinkMajuIcon.Size = UDim2.new(0,40,1,0)
 BlinkMajuIcon.Position = UDim2.new(0,8,0,0)
 BlinkMajuIcon.BackgroundTransparency = 1
-BlinkMajuIcon.Text = "➡️"
-BlinkMajuIcon.TextSize = 28
+BlinkMajuIcon.Text = "⬆️"
+BlinkMajuIcon.TextSize = 30
 BlinkMajuIcon.Font = Enum.Font.GothamBold
 
 local BlinkMajuTitle = Instance.new("TextLabel")
@@ -708,9 +719,9 @@ BlinkMajuTitle.TextSize = 12
 local BlinkMajuDesc = Instance.new("TextLabel")
 BlinkMajuDesc.Parent = BlinkMajuFrame
 BlinkMajuDesc.Size = UDim2.new(1,-100,0,18)
-BlinkMajuDesc.Position = UDim2.new(0,48,0,30)
+BlinkMajuDesc.Position = UDim2.new(0,48,0,32)
 BlinkMajuDesc.BackgroundTransparency = 1
-BlinkMajuDesc.Text = "Maju 5 studs"
+BlinkMajuDesc.Text = "Maju kenok sikok"
 BlinkMajuDesc.TextColor3 = Color3.fromRGB(180,180,180)
 BlinkMajuDesc.TextXAlignment = Enum.TextXAlignment.Left
 BlinkMajuDesc.Font = Enum.Font.Gotham
@@ -732,8 +743,8 @@ BlinkMajuBtnCorner.CornerRadius = UDim.new(0,6)
 -- Blink Mundur
 local BlinkMundurFrame = Instance.new("Frame")
 BlinkMundurFrame.Parent = MSSafetyContent
-BlinkMundurFrame.Size = UDim2.new(1,-16,0,55)
-BlinkMundurFrame.Position = UDim2.new(0,8,0,220)
+BlinkMundurFrame.Size = UDim2.new(1,-16,0,60)
+BlinkMundurFrame.Position = UDim2.new(0,8,0,260)
 BlinkMundurFrame.BackgroundColor3 = Color3.fromRGB(35,35,45)
 BlinkMundurFrame.BorderSizePixel = 0
 local BlinkMundurCorner = Instance.new("UICorner")
@@ -745,8 +756,8 @@ BlinkMundurIcon.Parent = BlinkMundurFrame
 BlinkMundurIcon.Size = UDim2.new(0,40,1,0)
 BlinkMundurIcon.Position = UDim2.new(0,8,0,0)
 BlinkMundurIcon.BackgroundTransparency = 1
-BlinkMundurIcon.Text = "⬅️"
-BlinkMundurIcon.TextSize = 28
+BlinkMundurIcon.Text = "⬇️"
+BlinkMundurIcon.TextSize = 30
 BlinkMundurIcon.Font = Enum.Font.GothamBold
 
 local BlinkMundurTitle = Instance.new("TextLabel")
@@ -763,9 +774,9 @@ BlinkMundurTitle.TextSize = 12
 local BlinkMundurDesc = Instance.new("TextLabel")
 BlinkMundurDesc.Parent = BlinkMundurFrame
 BlinkMundurDesc.Size = UDim2.new(1,-100,0,18)
-BlinkMundurDesc.Position = UDim2.new(0,48,0,30)
+BlinkMundurDesc.Position = UDim2.new(0,48,0,32)
 BlinkMundurDesc.BackgroundTransparency = 1
-BlinkMundurDesc.Text = "Mundur 5 studs"
+BlinkMundurDesc.Text = "Mundur kita kampangg"
 BlinkMundurDesc.TextColor3 = Color3.fromRGB(180,180,180)
 BlinkMundurDesc.TextXAlignment = Enum.TextXAlignment.Left
 BlinkMundurDesc.Font = Enum.Font.Gotham
@@ -787,9 +798,9 @@ BlinkMundurBtnCorner.CornerRadius = UDim.new(0,6)
 local BlinkStatus = Instance.new("TextLabel")
 BlinkStatus.Parent = MSSafetyContent
 BlinkStatus.Size = UDim2.new(1,-16,0,28)
-BlinkStatus.Position = UDim2.new(0,8,0,285)
+BlinkStatus.Position = UDim2.new(0,8,0,330)
 BlinkStatus.BackgroundColor3 = Color3.fromRGB(40,40,50)
-BlinkStatus.Text = "klik aja ngab"
+BlinkStatus.Text = "klik aja ngab fitur nya"
 BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
 BlinkStatus.Font = Enum.Font.GothamBold
 BlinkStatus.TextSize = 10
@@ -797,7 +808,7 @@ local BlinkStatusCorner = Instance.new("UICorner")
 BlinkStatusCorner.Parent = BlinkStatus
 BlinkStatusCorner.CornerRadius = UDim.new(0,6)
 
--- ========== AUTO SELL CONTENT ==========
+-- AUTO SELL CONTENT (sama persis seperti original)
 local AutoSellTitle = Instance.new("TextLabel")
 AutoSellTitle.Parent = AutoSellContent
 AutoSellTitle.Size = UDim2.new(1,-16,0,28)
@@ -814,7 +825,7 @@ AutoSellDesc.Parent = AutoSellContent
 AutoSellDesc.Size = UDim2.new(1,-16,0,20)
 AutoSellDesc.Position = UDim2.new(0,8,0,38)
 AutoSellDesc.BackgroundTransparency = 1
-AutoSellDesc.Text = "Auto Sell Marshmallow"
+AutoSellDesc.Text = "Auto Sell UPD*"
 AutoSellDesc.TextColor3 = Color3.fromRGB(200,200,200)
 AutoSellDesc.TextXAlignment = Enum.TextXAlignment.Left
 AutoSellDesc.Font = Enum.Font.Gotham
@@ -920,7 +931,7 @@ local AutoSellStopCorner = Instance.new("UICorner")
 AutoSellStopCorner.Parent = AutoSellStopBtn
 AutoSellStopCorner.CornerRadius = UDim.new(0,6)
 
--- ========== FUNCTIONS ==========
+-- ========== FUNCTIONS (SAMA PERSIS SEPERTI ORIGINAL) ==========
 local function countTools(toolName)
     local count = 0
     if not player.Character then return count end
@@ -1173,12 +1184,12 @@ local function startMSLoop()
             local waterTool = findTool("water")
             if waterTool and equipTool(waterTool) then
                 ToolStatus.Text = "Tool: WATER"
-                MSLoopStepLabel.Text = "Step 1: WATER"
+                MSLoopStepLabel.Text = "Step 1: WATER - 20 seconds"
                 pressE()
                 local startTime = tick()
                 while loopRunning and (tick() - startTime) < 20 do
                     local remaining = 20 - (tick() - startTime)
-                    MSLoopTimer.Text = string.format("Timer: %d/20s", math.floor(20 - remaining))
+                    MSLoopTimer.Text = string.format("Timer: %d/20s - WATER", math.floor(20 - remaining))
                     task.wait(0.1)
                 end
             else
@@ -1189,10 +1200,11 @@ local function startMSLoop()
             updateBuyIndicators()
             
             if loopRunning then
-                MSLoopStepLabel.Text = "Jeda 3 detik..."
+                MSLoopStepLabel.Text = "Jeda 3 detik setelah WATER..."
                 local jedaStart = tick()
                 while loopRunning and (tick() - jedaStart) < 3 do
-                    MSLoopTimer.Text = string.format("Jeda: %d/3s", math.floor(3 - (tick() - jedaStart)))
+                    local remaining = 3 - (tick() - jedaStart)
+                    MSLoopTimer.Text = string.format("Jeda: %d/3s", math.floor(3 - remaining))
                     task.wait(0.1)
                 end
             end
@@ -1204,11 +1216,12 @@ local function startMSLoop()
             local sugarTool = findTool("sugar")
             if sugarTool and equipTool(sugarTool) then
                 ToolStatus.Text = "Tool: SUGAR"
-                MSLoopStepLabel.Text = "Step 2: SUGAR"
+                MSLoopStepLabel.Text = "Step 2: SUGAR - 2 seconds"
                 pressE()
                 local startTime = tick()
                 while loopRunning and (tick() - startTime) < 2 do
-                    MSLoopTimer.Text = string.format("Timer: %d/2s", math.floor(2 - (tick() - startTime)))
+                    local remaining = 2 - (tick() - startTime)
+                    MSLoopTimer.Text = string.format("Timer: %d/2s - SUGAR", math.floor(2 - remaining))
                     task.wait(0.1)
                 end
             else
@@ -1224,11 +1237,12 @@ local function startMSLoop()
             local gelatinTool = findTool("gelatin")
             if gelatinTool and equipTool(gelatinTool) then
                 ToolStatus.Text = "Tool: GELATIN"
-                MSLoopStepLabel.Text = "Step 3: GELATIN"
+                MSLoopStepLabel.Text = "Step 3: GELATIN - 45 seconds"
                 pressE()
                 local startTime = tick()
                 while loopRunning and (tick() - startTime) < 45 do
-                    MSLoopTimer.Text = string.format("Timer: %d/45s", math.floor(45 - (tick() - startTime)))
+                    local remaining = 45 - (tick() - startTime)
+                    MSLoopTimer.Text = string.format("Timer: %d/45s - GELATIN", math.floor(45 - remaining))
                     task.wait(0.1)
                 end
             else
@@ -1239,10 +1253,11 @@ local function startMSLoop()
             updateBuyIndicators()
             
             if loopRunning then
-                MSLoopStepLabel.Text = "Jeda 3 detik..."
+                MSLoopStepLabel.Text = "Jeda 3 detik setelah GELATIN..."
                 local jedaStart = tick()
                 while loopRunning and (tick() - jedaStart) < 3 do
-                    MSLoopTimer.Text = string.format("Jeda: %d/3s", math.floor(3 - (tick() - jedaStart)))
+                    local remaining = 3 - (tick() - jedaStart)
+                    MSLoopTimer.Text = string.format("Jeda: %d/3s", math.floor(3 - remaining))
                     task.wait(0.1)
                 end
             end
@@ -1254,11 +1269,12 @@ local function startMSLoop()
             local emptyTool = findTool("empty") or findTool("bag")
             if emptyTool and equipTool(emptyTool) then
                 ToolStatus.Text = "Tool: EMPTY BAG"
-                MSLoopStepLabel.Text = "Step 4: HASIL"
+                MSLoopStepLabel.Text = "Step 4: EMPTY BAG - 2 seconds (HASIL)"
                 pressE()
                 local startTime = tick()
                 while loopRunning and (tick() - startTime) < 2 do
-                    MSLoopTimer.Text = string.format("Timer: %d/2s", math.floor(2 - (tick() - startTime)))
+                    local remaining = 2 - (tick() - startTime)
+                    MSLoopTimer.Text = string.format("Timer: %d/2s - HASIL", math.floor(2 - remaining))
                     task.wait(0.1)
                 end
             else
@@ -1272,7 +1288,7 @@ local function startMSLoop()
             updateBuyIndicators()
             
             if loopRunning then
-                MSLoopStepLabel.Text = "Loop complete! Restarting..."
+                MSLoopStepLabel.Text = "Loop complete! Restarting from WATER..."
                 task.wait(1)
             end
         end
@@ -1287,110 +1303,84 @@ local function startMSLoop()
     end)
 end
 
-local function blinkAtas()
+-- SMOOTH TP FUNCTION (ORIGINAL DENGAN BODYGYRO DAN LOCK WHEELS)
+function smoothTeleport(targetCFrame, duration)
     local character = player.Character
-    if not character then 
-        BlinkStatus.Text = "❌ Character tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
+    if not character then
+        warn("Character not found!")
+        return
     end
     
     local hrp = character:FindFirstChild("HumanoidRootPart")
-    if not hrp then 
-        BlinkStatus.Text = "❌ HumanoidRootPart tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
+    if not hrp then
+        warn("HumanoidRootPart not found!")
+        return
     end
     
-    BlinkStatus.Text = "⬆️ Blink ke atas 2 studs..."
-    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
-    
-    hrp.CFrame = hrp.CFrame * CFrame.new(0, 2, 0)
-    
-    BlinkStatus.Text = "✅ Sudah naik 2 studs!"
-    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
-end
-
-local function blinkDown()
-    local character = player.Character
-    if not character then 
-        BlinkStatus.Text = "❌ Character tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
+    local function lockAllWheels()
+        local vehicle = character:FindFirstChildOfClass("VehicleSeat")
+        if vehicle and vehicle:FindFirstChild("Wheels") then
+            for _, wheel in pairs(vehicle.Wheels:GetChildren()) do
+                if wheel:IsA("Part") or wheel:IsA("MeshPart") then
+                    wheel.Anchored = true
+                end
+            end
+        end
+        
+        for _, child in pairs(character:GetDescendants()) do
+            if child:IsA("Part") or child:IsA("MeshPart") or child:IsA("CylinderPart") or child:IsA("WedgePart") then
+                if string.find(string.lower(child.Name), "wheel") or 
+                   string.find(string.lower(child.Name), "roda") or
+                   string.find(string.lower(child.Name), "ban") or
+                   string.find(string.lower(child.Name), "tire") then
+                    child.Anchored = true
+                    child.CanCollide = false
+                end
+            end
+        end
     end
     
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    if not hrp then 
-        BlinkStatus.Text = "❌ HumanoidRootPart tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
+    local function unlockAllWheels()
+        local vehicle = character:FindFirstChildOfClass("VehicleSeat")
+        if vehicle and vehicle:FindFirstChild("Wheels") then
+            for _, wheel in pairs(vehicle.Wheels:GetChildren()) do
+                if wheel:IsA("Part") or wheel:IsA("MeshPart") then
+                    wheel.Anchored = false
+                end
+            end
+        end
+        
+        for _, child in pairs(character:GetDescendants()) do
+            if child:IsA("Part") or child:IsA("MeshPart") or child:IsA("CylinderPart") or child:IsA("WedgePart") then
+                if string.find(string.lower(child.Name), "wheel") or 
+                   string.find(string.lower(child.Name), "roda") or
+                   string.find(string.lower(child.Name), "ban") or
+                   string.find(string.lower(child.Name), "tire") then
+                    child.Anchored = false
+                end
+            end
+        end
     end
     
-    BlinkStatus.Text = "⬇️ Blink ke bawah 4 studs..."
-    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
+    local bp = Instance.new("BodyPosition")
+    bp.MaxForce = Vector3.new(1e9, 1e9, 1e9)
+    bp.P = 1e5
+    bp.D = 1e3
+    bp.Parent = hrp
     
-    hrp.CFrame = hrp.CFrame * CFrame.new(0, -4, 0)
+    local bg = Instance.new("BodyGyro")
+    bg.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
+    bg.P = 1e5
+    bg.D = 1e3
+    bg.Parent = hrp
     
-    BlinkStatus.Text = "✅ Sudah turun 4 studs!"
-    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
-end
-
-local function blinkMaju()
-    local character = player.Character
-    if not character then 
-        BlinkStatus.Text = "❌ Character tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
+    lockAllWheels()
+    
+    for _, child in pairs(character:GetDescendants()) do
+        if child:IsA("BasePart") then
+            child.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+        end
     end
-    
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    if not hrp then 
-        BlinkStatus.Text = "❌ HumanoidRootPart tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
-    end
-    
-    BlinkStatus.Text = "➡️ Blink maju 5 studs..."
-    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
-    
-    local lookVector = hrp.CFrame.LookVector
-    hrp.CFrame = hrp.CFrame + (lookVector * 5)
-    
-    BlinkStatus.Text = "✅ Sudah maju 5 studs!"
-    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
-end
-
-local function blinkMundur()
-    local character = player.Character
-    if not character then 
-        BlinkStatus.Text = "❌ Character tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
-    end
-    
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    if not hrp then 
-        BlinkStatus.Text = "❌ HumanoidRootPart tidak ditemukan!"
-        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
-        return 
-    end
-    
-    BlinkStatus.Text = "⬅️ Blink mundur 5 studs..."
-    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
-    
-    local lookVector = hrp.CFrame.LookVector
-    hrp.CFrame = hrp.CFrame - (lookVector * 5)
-    
-    BlinkStatus.Text = "✅ Sudah mundur 5 studs!"
-    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
-end
-
-local function smoothTeleport(targetCFrame, duration)
-    local character = player.Character
-    if not character then return end
-    
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    if not hrp then return end
     
     LoadingFrame.Visible = true
     LoadingBar.Size = UDim2.new(0,0,1,0)
@@ -1407,60 +1397,186 @@ local function smoothTeleport(targetCFrame, duration)
     local descendSteps = totalSteps - riseSteps - travelSteps
     local stepTime = duration / totalSteps
     
-    LoadingStatus.Text = "FASE 1: NAIK..."
+    LoadingStatus.Text = "FASE 1: NAIK 65 STUDS KE ATAS..."
     
     for i = 1, riseSteps do
         if not hrp or not hrp.Parent then break end
         local alpha = i / riseSteps
-        hrp.CFrame = startCF:Lerp(upCF, alpha)
+        local currentCF = startCF:Lerp(upCF, alpha)
+        bp.Position = currentCF.Position
+        bg.CFrame = currentCF
         local percent = math.floor((i / totalSteps) * 100)
         LoadingBar.Size = UDim2.new(percent/100,0,1,0)
         LoadingPercent.Text = percent .. "%"
+        LoadingStatus.Text = string.format("NAIK: %d/65 studs", math.floor(alpha * 65))
         task.wait(stepTime)
     end
     
-    LoadingStatus.Text = "FASE 2: BERGERAK..."
+    LoadingStatus.Text = "FASE 2: BERGERAK HORIZONTAL..."
     
     for i = 1, travelSteps do
         if not hrp or not hrp.Parent then break end
         local alpha = i / travelSteps
-        hrp.CFrame = upCF:Lerp(horizontalCF, alpha)
+        local currentCF = upCF:Lerp(horizontalCF, alpha)
+        bp.Position = currentCF.Position
+        bg.CFrame = currentCF
         local stepIndex = riseSteps + i
         local percent = math.floor((stepIndex / totalSteps) * 100)
         LoadingBar.Size = UDim2.new(percent/100,0,1,0)
         LoadingPercent.Text = percent .. "%"
+        local distance = (currentCF.Position - upCF.Position).Magnitude
+        local totalDistance = (horizontalCF.Position - upCF.Position).Magnitude
+        LoadingStatus.Text = string.format("JALAN: %.1f/%.1f studs", distance, totalDistance)
         task.wait(stepTime)
     end
     
-    LoadingStatus.Text = "FASE 3: TURUN..."
+    LoadingStatus.Text = "FASE 3: TURUN DARI 65 STUDS KE WAYPOINT..."
     
     for i = 1, descendSteps do
         if not hrp or not hrp.Parent then break end
         local alpha = i / descendSteps
-        hrp.CFrame = horizontalCF:Lerp(targetCFrame, alpha)
+        local currentCF = horizontalCF:Lerp(targetCFrame, alpha)
+        bp.Position = currentCF.Position
+        bg.CFrame = currentCF
         local stepIndex = riseSteps + travelSteps + i
         local percent = math.floor((stepIndex / totalSteps) * 100)
         LoadingBar.Size = UDim2.new(percent/100,0,1,0)
         LoadingPercent.Text = percent .. "%"
+        LoadingStatus.Text = string.format("TURUN: %d/65 studs", math.floor((1 - alpha) * 65))
         task.wait(stepTime)
     end
     
-    hrp.CFrame = targetCFrame
+    bp.Position = targetCFrame.Position
+    bg.CFrame = targetCFrame
     
     LoadingBar.Size = UDim2.new(1,0,1,0)
     LoadingPercent.Text = "100%"
     LoadingStatus.Text = "TELEPORT SELESAI!"
     task.wait(0.5)
     
+    bp:Destroy()
+    bg:Destroy()
+    unlockAllWheels()
+    
+    for _, child in pairs(character:GetDescendants()) do
+        if child:IsA("BasePart") then
+            child.CustomPhysicalProperties = nil
+        end
+    end
+    
     LoadingFrame.Visible = false
 end
 
-local function TP_MS_BAHAN()
+-- TP Functions
+function TP_MS_BAHAN()
     smoothTeleport(CFrame.new(521.32,47.79,617.25), 10)
 end
 
-local function TP_RS()
+function TP_RS()
     smoothTeleport(CFrame.new(1065.19,28.47,420.76), 10)
+end
+
+-- Blink Functions
+local function blinkAtas()
+    local character = player.Character
+    if not character then 
+        BlinkStatus.Text = "❌ ERROR: Character tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then 
+        BlinkStatus.Text = "❌ ERROR: HumanoidRootPart tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    BlinkStatus.Text = "⬆️ Blink ke atas 2 studs..."
+    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
+    
+    local blinkDistance = 2
+    hrp.CFrame = hrp.CFrame * CFrame.new(0, blinkDistance, 0)
+    
+    BlinkStatus.Text = "✅ Sudah naik 2 studs! kusuka turun naik"
+    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
+end
+
+local function blinkDown()
+    local character = player.Character
+    if not character then 
+        BlinkStatus.Text = "❌ ERROR: Character tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then 
+        BlinkStatus.Text = "❌ ERROR: HumanoidRootPart tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    BlinkStatus.Text = "⬇️ Blink ke bawah 4 studs..."
+    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
+    
+    local blinkDistance = 4
+    hrp.CFrame = hrp.CFrame * CFrame.new(0, -blinkDistance, 0)
+    
+    BlinkStatus.Text = "✅ Sudah pindah 4 studs ke bawah!"
+    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
+end
+
+local function blinkMaju()
+    local character = player.Character
+    if not character then 
+        BlinkStatus.Text = "❌ ERROR: Character tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then 
+        BlinkStatus.Text = "❌ ERROR: HumanoidRootPart tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    BlinkStatus.Text = "⬆️ Blink maju 5 studs..."
+    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
+    
+    local blinkDistance = 5
+    local lookVector = hrp.CFrame.LookVector
+    hrp.CFrame = hrp.CFrame + (lookVector * blinkDistance)
+    
+    BlinkStatus.Text = "✅ Sudah maju 5 studs!"
+    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
+end
+
+local function blinkMundur()
+    local character = player.Character
+    if not character then 
+        BlinkStatus.Text = "❌ ERROR: Character tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then 
+        BlinkStatus.Text = "❌ ERROR: HumanoidRootPart tidak ditemukan!"
+        BlinkStatus.TextColor3 = Color3.fromRGB(255,100,100)
+        return 
+    end
+    
+    BlinkStatus.Text = "⬇️ Blink mundur 5 studs..."
+    BlinkStatus.TextColor3 = Color3.fromRGB(255,255,0)
+    
+    local blinkDistance = 5
+    local lookVector = hrp.CFrame.LookVector
+    hrp.CFrame = hrp.CFrame - (lookVector * blinkDistance)
+    
+    BlinkStatus.Text = "✅ Sudah mundur 5 studs!"
+    BlinkStatus.TextColor3 = Color3.fromRGB(100,255,100)
 end
 
 local function closeGUI()
@@ -1506,43 +1622,77 @@ AutoSellStopBtn.MouseButton1Click:Connect(function()
 end)
 
 -- Tab Switching
-local function switchTab(activeTab)
-    TPContent.Visible = false
+TPTabBtn.MouseButton1Click:Connect(function()
+    TPContent.Visible = true
     MSLoopContent.Visible = false
     MSSafetyContent.Visible = false
     AutoSellContent.Visible = false
     
-    TPTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    TPTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
     MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
     MSSafetyTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
     AutoSellTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
     
-    TPTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    TPTabBtn.TextColor3 = Color3.fromRGB(255,255,255)
     MSLoopTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
     MSSafetyTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
     AutoSellTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
-    
-    activeTab.btn.BackgroundColor3 = Color3.fromRGB(50,50,60)
-    activeTab.btn.TextColor3 = Color3.fromRGB(255,255,255)
-    activeTab.content.Visible = true
-end
-
-TPTabBtn.MouseButton1Click:Connect(function()
-    switchTab({btn = TPTabBtn, content = TPContent})
 end)
 
 MSLoopTabBtn.MouseButton1Click:Connect(function()
-    switchTab({btn = MSLoopTabBtn, content = MSLoopContent})
+    TPContent.Visible = false
+    MSLoopContent.Visible = true
+    MSSafetyContent.Visible = false
+    AutoSellContent.Visible = false
+    
+    TPTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
+    MSSafetyTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    AutoSellTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    
+    TPTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    MSLoopTabBtn.TextColor3 = Color3.fromRGB(255,255,255)
+    MSSafetyTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    AutoSellTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    
     updateBuyIndicators()
 end)
 
 MSSafetyTabBtn.MouseButton1Click:Connect(function()
-    switchTab({btn = MSSafetyTabBtn, content = MSSafetyContent})
+    TPContent.Visible = false
+    MSLoopContent.Visible = false
+    MSSafetyContent.Visible = true
+    AutoSellContent.Visible = false
+    
+    TPTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    MSSafetyTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
+    AutoSellTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    
+    TPTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    MSLoopTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    MSSafetyTabBtn.TextColor3 = Color3.fromRGB(255,255,255)
+    AutoSellTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
 end)
 
 AutoSellTabBtn.MouseButton1Click:Connect(function()
-    switchTab({btn = AutoSellTabBtn, content = AutoSellContent})
-    AutoSellInfo.Text = "Tools: " .. countSellTools()
+    TPContent.Visible = false
+    MSLoopContent.Visible = false
+    MSSafetyContent.Visible = false
+    AutoSellContent.Visible = true
+    
+    TPTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    MSLoopTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    MSSafetyTabBtn.BackgroundColor3 = Color3.fromRGB(40,40,50)
+    AutoSellTabBtn.BackgroundColor3 = Color3.fromRGB(50,50,60)
+    
+    TPTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    MSLoopTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    MSSafetyTabBtn.TextColor3 = Color3.fromRGB(200,200,200)
+    AutoSellTabBtn.TextColor3 = Color3.fromRGB(255,255,255)
+    
+    local total = countSellTools()
+    AutoSellInfo.Text = "Tools: " .. total
 end)
 
 -- Minimize
@@ -1601,15 +1751,12 @@ TweenService:Create(Frame, tweenInfo, {Size = openSize}):Play()
 task.wait(1)
 updateBuyIndicators()
 
--- Auto refresh every 2 seconds
+-- Auto refresh
 task.spawn(function()
     while true do
         task.wait(2)
         if MSLoopContent.Visible then
             updateBuyIndicators()
-        end
-        if AutoSellContent.Visible then
-            AutoSellInfo.Text = "Tools: " .. countSellTools()
         end
     end
 end)
