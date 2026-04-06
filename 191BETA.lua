@@ -273,63 +273,7 @@ local LOCATIONS = {
 -- ========== SAFE ZONE COORDINATE ==========
 local SAFE_ZONE_CFRAME = CFrame.new(537.71, 4.59, -537.09) * CFrame.Angles(-1.20, -1.56, -1.20)
 
--- ========== TP FUNCTION (ANCHOR/UNANCHOR) ==========
-local function moveVehicle(vehicle, targetPos)
-    local anchor = vehicle.PrimaryPart or vehicle:FindFirstChildOfClass("VehicleSeat") or vehicle:FindFirstChildOfClass("BasePart")
-    if not anchor then return end
-    
-    local spawnPos = targetPos + Vector3.new(0,0.5,0)
-    local newCF = CFrame.new(spawnPos, spawnPos + Vector3.new(0,0,1))
-    
-    for _,p in ipairs(vehicle:GetDescendants()) do
-        if p:IsA("BasePart") then
-            pcall(function()
-                p.AssemblyLinearVelocity = Vector3.zero
-                p.AssemblyAngularVelocity = Vector3.zero
-                p.Anchored = true
-            end)
-        end
-    end
-    task.wait(0.05)
-    
-    if vehicle.PrimaryPart then
-        vehicle:SetPrimaryPartCFrame(newCF)
-    else
-        anchor.CFrame = newCF
-    end
-    task.wait(0.05)
-    
-    for _,p in ipairs(vehicle:GetDescendants()) do
-        if p:IsA("BasePart") then
-            pcall(function()
-                p.Anchored = false
-                p.AssemblyLinearVelocity = Vector3.zero
-                p.AssemblyAngularVelocity = Vector3.zero
-            end)
-        end
-    end
-end
-
-local function stepTeleport(targetPos)
-    local character = player.Character
-    local hum = character and character:FindFirstChildOfClass("Humanoid")
-    if not character or not hum then return end
-    
-    local seatPart = hum.SeatPart
-    if seatPart then
-        local vehicle = seatPart:FindFirstAncestorOfClass("Model")
-        if vehicle then
-            moveVehicle(vehicle, targetPos)
-        end
-    else
-        local hrp = character:FindFirstChild("HumanoidRootPart")
-        if hrp then
-            hrp.CFrame = CFrame.new(targetPos)
-        end
-    end
-end
-
--- ========== TELEPORT TO SAFE ZONE ==========
+-- ========== TELEPORT TO SAFE ZONE (DENGAN ANCHOR/UNANCHOR + ROTASI) ==========
 local function teleportToSafeZone()
     local character = player.Character
     local hum = character and character:FindFirstChildOfClass("Humanoid")
@@ -339,7 +283,37 @@ local function teleportToSafeZone()
     if seatPart then
         local vehicle = seatPart:FindFirstAncestorOfClass("Model")
         if vehicle then
-            moveVehicle(vehicle, SAFE_ZONE_CFRAME.Position)
+            -- Untuk vehicle, kita perlu move ke safe zone dengan rotasi yang benar
+            local anchor = vehicle.PrimaryPart or vehicle:FindFirstChildOfClass("VehicleSeat") or vehicle:FindFirstChildOfClass("BasePart")
+            if anchor then
+                for _,p in ipairs(vehicle:GetDescendants()) do
+                    if p:IsA("BasePart") then
+                        pcall(function()
+                            p.AssemblyLinearVelocity = Vector3.zero
+                            p.AssemblyAngularVelocity = Vector3.zero
+                            p.Anchored = true
+                        end)
+                    end
+                end
+                task.wait(0.05)
+                
+                if vehicle.PrimaryPart then
+                    vehicle:SetPrimaryPartCFrame(SAFE_ZONE_CFRAME)
+                else
+                    anchor.CFrame = SAFE_ZONE_CFRAME
+                end
+                task.wait(0.05)
+                
+                for _,p in ipairs(vehicle:GetDescendants()) do
+                    if p:IsA("BasePart") then
+                        pcall(function()
+                            p.Anchored = false
+                            p.AssemblyLinearVelocity = Vector3.zero
+                            p.AssemblyAngularVelocity = Vector3.zero
+                        end)
+                    end
+                end
+            end
             return true
         end
     else
@@ -355,7 +329,7 @@ local function teleportToSafeZone()
     return false
 end
 
-local function teleportToPosition(targetCFrame)
+local function teleportToOriginalCFrame(targetCFrame)
     local character = player.Character
     local hum = character and character:FindFirstChildOfClass("Humanoid")
     if not character or not hum then return false end
@@ -364,7 +338,36 @@ local function teleportToPosition(targetCFrame)
     if seatPart then
         local vehicle = seatPart:FindFirstAncestorOfClass("Model")
         if vehicle then
-            moveVehicle(vehicle, targetCFrame.Position)
+            local anchor = vehicle.PrimaryPart or vehicle:FindFirstChildOfClass("VehicleSeat") or vehicle:FindFirstChildOfClass("BasePart")
+            if anchor then
+                for _,p in ipairs(vehicle:GetDescendants()) do
+                    if p:IsA("BasePart") then
+                        pcall(function()
+                            p.AssemblyLinearVelocity = Vector3.zero
+                            p.AssemblyAngularVelocity = Vector3.zero
+                            p.Anchored = true
+                        end)
+                    end
+                end
+                task.wait(0.05)
+                
+                if vehicle.PrimaryPart then
+                    vehicle:SetPrimaryPartCFrame(targetCFrame)
+                else
+                    anchor.CFrame = targetCFrame
+                end
+                task.wait(0.05)
+                
+                for _,p in ipairs(vehicle:GetDescendants()) do
+                    if p:IsA("BasePart") then
+                        pcall(function()
+                            p.Anchored = false
+                            p.AssemblyLinearVelocity = Vector3.zero
+                            p.AssemblyAngularVelocity = Vector3.zero
+                        end)
+                    end
+                end
+            end
             return true
         end
     else
@@ -383,7 +386,7 @@ end
 -- ========== HP MONITORING & AUTO SAFE TELEPORT ==========
 local hpMonitoringActive = false
 local isInSafeZone = false
-local originalPosition = nil
+local originalCFrame = nil  -- Sekarang simpan CFrame lengkap (posisi + rotasi)
 local safeZoneTimerThread = nil
 local currentHumanoid = nil
 local lastHealthPercent = 100
@@ -392,7 +395,7 @@ local function onCharacterAdded(character)
     currentHumanoid = character:WaitForChild("Humanoid")
     lastHealthPercent = (currentHumanoid.Health / currentHumanoid.MaxHealth) * 100
     isInSafeZone = false
-    originalPosition = nil
+    originalCFrame = nil
     if safeZoneTimerThread then
         task.cancel(safeZoneTimerThread)
         safeZoneTimerThread = nil
@@ -408,16 +411,16 @@ local function saveOriginalPosition()
     local character = player.Character
     local hrp = character and character:FindFirstChild("HumanoidRootPart")
     if hrp then
-        originalPosition = hrp.CFrame
+        originalCFrame = hrp.CFrame  -- Simpan CFrame lengkap dengan rotasi
         return true
     end
     return false
 end
 
 local function teleportBackToOriginal()
-    if originalPosition then
-        teleportToPosition(originalPosition)
-        originalPosition = nil
+    if originalCFrame then
+        teleportToOriginalCFrame(originalCFrame)
+        originalCFrame = nil
     end
     isInSafeZone = false
 end
@@ -454,9 +457,12 @@ local function checkHealthAndTeleport()
         local percentDropped = lastHealthPercent - currentPercent
         
         if percentDropped >= 1 and not isInSafeZone then
+            -- Simpan posisi original LENGKAP dengan rotasi
             saveOriginalPosition()
+            -- Teleport ke safe zone
             if teleportToSafeZone() then
                 isInSafeZone = true
+                -- Mulai timer 8 detik
                 startSafeZoneTimer()
             end
         end
@@ -469,7 +475,7 @@ local function startHPMonitoring()
     if hpMonitoringActive then return end
     hpMonitoringActive = true
     isInSafeZone = false
-    originalPosition = nil
+    originalCFrame = nil
     
     if currentHumanoid then
         lastHealthPercent = (currentHumanoid.Health / currentHumanoid.MaxHealth) * 100
@@ -503,7 +509,7 @@ local function stopHPMonitoring()
     end
     
     isInSafeZone = false
-    originalPosition = nil
+    originalCFrame = nil
 end
 
 -- Buat semua button TP
