@@ -273,6 +273,62 @@ local LOCATIONS = {
 -- ========== SAFE ZONE COORDINATE ==========
 local SAFE_ZONE_CFRAME = CFrame.new(537.71, 4.59, -537.09) * CFrame.Angles(-1.20, -1.56, -1.20)
 
+-- ========== TP FUNCTION (ANCHOR/UNANCHOR) ==========
+local function moveVehicle(vehicle, targetPos)
+    local anchor = vehicle.PrimaryPart or vehicle:FindFirstChildOfClass("VehicleSeat") or vehicle:FindFirstChildOfClass("BasePart")
+    if not anchor then return end
+    
+    local spawnPos = targetPos + Vector3.new(0,0.5,0)
+    local newCF = CFrame.new(spawnPos, spawnPos + Vector3.new(0,0,1))
+    
+    for _,p in ipairs(vehicle:GetDescendants()) do
+        if p:IsA("BasePart") then
+            pcall(function()
+                p.AssemblyLinearVelocity = Vector3.zero
+                p.AssemblyAngularVelocity = Vector3.zero
+                p.Anchored = true
+            end)
+        end
+    end
+    task.wait(0.05)
+    
+    if vehicle.PrimaryPart then
+        vehicle:SetPrimaryPartCFrame(newCF)
+    else
+        anchor.CFrame = newCF
+    end
+    task.wait(0.05)
+    
+    for _,p in ipairs(vehicle:GetDescendants()) do
+        if p:IsA("BasePart") then
+            pcall(function()
+                p.Anchored = false
+                p.AssemblyLinearVelocity = Vector3.zero
+                p.AssemblyAngularVelocity = Vector3.zero
+            end)
+        end
+    end
+end
+
+local function stepTeleport(targetPos)
+    local character = player.Character
+    local hum = character and character:FindFirstChildOfClass("Humanoid")
+    if not character or not hum then return end
+    
+    local seatPart = hum.SeatPart
+    if seatPart then
+        local vehicle = seatPart:FindFirstAncestorOfClass("Model")
+        if vehicle then
+            moveVehicle(vehicle, targetPos)
+        end
+    else
+        local hrp = character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = CFrame.new(targetPos)
+        end
+    end
+end
+
 -- ========== TELEPORT TO SAFE ZONE (DENGAN ANCHOR/UNANCHOR + ROTASI) ==========
 local function teleportToSafeZone()
     local character = player.Character
@@ -283,7 +339,6 @@ local function teleportToSafeZone()
     if seatPart then
         local vehicle = seatPart:FindFirstAncestorOfClass("Model")
         if vehicle then
-            -- Untuk vehicle, kita perlu move ke safe zone dengan rotasi yang benar
             local anchor = vehicle.PrimaryPart or vehicle:FindFirstChildOfClass("VehicleSeat") or vehicle:FindFirstChildOfClass("BasePart")
             if anchor then
                 for _,p in ipairs(vehicle:GetDescendants()) do
@@ -386,7 +441,7 @@ end
 -- ========== HP MONITORING & AUTO SAFE TELEPORT ==========
 local hpMonitoringActive = false
 local isInSafeZone = false
-local originalCFrame = nil  -- Sekarang simpan CFrame lengkap (posisi + rotasi)
+local originalCFrame = nil
 local safeZoneTimerThread = nil
 local currentHumanoid = nil
 local lastHealthPercent = 100
@@ -411,7 +466,7 @@ local function saveOriginalPosition()
     local character = player.Character
     local hrp = character and character:FindFirstChild("HumanoidRootPart")
     if hrp then
-        originalCFrame = hrp.CFrame  -- Simpan CFrame lengkap dengan rotasi
+        originalCFrame = hrp.CFrame
         return true
     end
     return false
@@ -457,12 +512,9 @@ local function checkHealthAndTeleport()
         local percentDropped = lastHealthPercent - currentPercent
         
         if percentDropped >= 1 and not isInSafeZone then
-            -- Simpan posisi original LENGKAP dengan rotasi
             saveOriginalPosition()
-            -- Teleport ke safe zone
             if teleportToSafeZone() then
                 isInSafeZone = true
-                -- Mulai timer 8 detik
                 startSafeZoneTimer()
             end
         end
@@ -1196,7 +1248,6 @@ local function startMSLoop()
     HPSafeStatus.Text = "🛡️ HP SAFE: ACTIVE"
     HPSafeStatus.TextColor3 = Color3.fromRGB(100,255,100)
     
-    -- START HP MONITORING
     startHPMonitoring()
     
     task.spawn(function()
@@ -1291,7 +1342,6 @@ local function startMSLoop()
         HPSafeStatus.TextColor3 = Color3.fromRGB(200,200,200)
         updateBuyIndicators()
         
-        -- STOP HP MONITORING
         stopHPMonitoring()
     end)
 end
@@ -1358,7 +1408,6 @@ local function startAutoBuy()
                     BuyStatusValue.Text = "⚠️ Gagal " .. i .. "/" .. amount
                 end
                 
-                -- Delay 0.8-1.2 detik untuk aman
                 task.wait(0.8 + math.random() * 0.4)
             end
             
